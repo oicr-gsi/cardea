@@ -1,4 +1,4 @@
-package ca.on.oicr.gsi.dimsum;
+package ca.on.oicr.gsi.dimsum.controller;
 
 import ca.on.oicr.gsi.status.ConfigurationSection;
 import ca.on.oicr.gsi.status.Header;
