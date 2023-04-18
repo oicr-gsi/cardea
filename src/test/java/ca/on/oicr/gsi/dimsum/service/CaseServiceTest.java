@@ -22,10 +22,6 @@ import ca.on.oicr.gsi.dimsum.data.Donor;
 import ca.on.oicr.gsi.dimsum.data.Requisition;
 import ca.on.oicr.gsi.dimsum.data.Sample;
 import ca.on.oicr.gsi.dimsum.data.Test;
-import ca.on.oicr.gsi.dimsum.service.filtering.CaseSort;
-import ca.on.oicr.gsi.dimsum.service.filtering.RequisitionSort;
-import ca.on.oicr.gsi.dimsum.service.filtering.SampleSort;
-import ca.on.oicr.gsi.dimsum.service.filtering.TableData;
 
 public class CaseServiceTest {
 
@@ -81,29 +77,6 @@ public class CaseServiceTest {
     addSample(test.getFullDepthSequencings(), makeSampleName(caseNumber, testLetter, "E", 2),
         String.format("Run%s", (caseNumber + 1)));
     kase.getTests().add(test);
-  }
-
-  private void assertContainsRequisitions(TableData<Requisition> data, String... requisitionNames) {
-    assertNotNull(data);
-    assertEquals(requisitionNames.length, data.getTotalCount());
-    assertEquals(requisitionNames.length, data.getFilteredCount());
-    assertNotNull(data.getItems());
-    assertEquals(requisitionNames.length, data.getItems().size());
-    for (String requisitionName : requisitionNames) {
-      assertTrue(data.getItems().stream()
-          .anyMatch(requisition -> requisitionName.equals(requisition.getName())));
-    }
-  }
-
-  private void assertContainsSamples(TableData<Sample> data, String... sampleNames) {
-    assertNotNull(data);
-    assertEquals(sampleNames.length, data.getTotalCount());
-    assertEquals(sampleNames.length, data.getFilteredCount());
-    assertNotNull(data.getItems());
-    assertEquals(sampleNames.length, data.getItems().size());
-    for (String sampleName : sampleNames) {
-      assertTrue(data.getItems().stream().anyMatch(sample -> sampleName.equals(sample.getName())));
-    }
   }
 
   private Requisition makeRequisition(int requisitionNumber) {

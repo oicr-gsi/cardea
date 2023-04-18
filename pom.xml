@@ -11,27 +11,6 @@
         <groupId>org.springframework.boot</groupId>
       </plugin>
       <plugin>
-        <artifactId>exec-maven-plugin</artifactId>
-        <executions>
-          <execution>
-            <configuration>
-              <arguments>
-                <argument>run</argument>
-                <argument>build</argument>
-              </arguments>
-              <executable>npm</executable>
-            </configuration>
-            <goals>
-              <goal>exec</goal>
-            </goals>
-            <id>npm-build</id>
-            <phase>generate-resources</phase>
-          </execution>
-        </executions>
-        <groupId>org.codehaus.mojo</groupId>
-        <version>3.0.0</version>
-      </plugin>
-      <plugin>
         <artifactId>maven-surefire-plugin</artifactId>
         <configuration>
           <!-- explicitly control property locations, so local config is never included -->
@@ -64,11 +43,6 @@
       <scope>runtime</scope>
     </dependency>
     <dependency>
-      <artifactId>thymeleaf-layout-dialect</artifactId>
-      <groupId>nz.net.ultraq.thymeleaf</groupId>
-      <version>3.1.0</version>
-    </dependency>
-    <dependency>
       <artifactId>spring-boot-starter-actuator</artifactId>
       <groupId>org.springframework.boot</groupId>
     </dependency>
@@ -82,20 +56,12 @@
       <groupId>org.springframework.boot</groupId>
     </dependency>
     <dependency>
-      <artifactId>spring-boot-starter-thymeleaf</artifactId>
-      <groupId>org.springframework.boot</groupId>
-    </dependency>
-    <dependency>
       <artifactId>spring-boot-starter-web</artifactId>
       <groupId>org.springframework.boot</groupId>
     </dependency>
     <dependency>
       <artifactId>spring-security-saml2-service-provider</artifactId>
       <groupId>org.springframework.security</groupId>
-    </dependency>
-    <dependency>
-      <artifactId>thymeleaf-extras-springsecurity5</artifactId>
-      <groupId>org.thymeleaf.extras</groupId>
     </dependency>
     <dependency>
       <artifactId>spring-boot-devtools</artifactId>

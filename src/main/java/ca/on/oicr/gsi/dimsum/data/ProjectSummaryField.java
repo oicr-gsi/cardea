@@ -2,9 +2,6 @@ package ca.on.oicr.gsi.dimsum.data;
 
 import static java.util.Objects.requireNonNull;
 
-import groovy.transform.Immutable;
-
-@Immutable
 public class ProjectSummaryField {
   private int count;
   private String filterKey;
