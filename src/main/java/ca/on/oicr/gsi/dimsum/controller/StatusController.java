@@ -22,7 +22,7 @@ public class StatusController{
 
         @Override
         public String documentationUrl() {
-          return "index.html";
+          return "swagger-ui.html";
         }
 
         @Override

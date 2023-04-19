@@ -22,6 +22,11 @@
   </build>
   <dependencies>
     <dependency>
+      <artifactId>springdoc-openapi-ui</artifactId>
+      <groupId>org.springdoc</groupId>
+      <version>1.7.0</version>
+    </dependency>
+    <dependency>
       <artifactId>server-utils</artifactId>
       <groupId>ca.on.oicr.gsi</groupId>
       <version>1.0.4</version>
