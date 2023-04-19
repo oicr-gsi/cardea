@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://maven.apache.org/POM/4.0.0" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
-  <artifactId>dimsum</artifactId>
+  <artifactId>qcgateetlapi</artifactId>
   <build>
     <plugins>
       <plugin>
@@ -106,7 +106,7 @@
   <groupId>ca.on.oicr.gsi</groupId>
   <modelVersion>4.0.0</modelVersion>
 
-  <name>Dimsum</name>
+  <name>QC Gate ETL API</name>
 
   <parent>
     <artifactId>spring-boot-starter-parent</artifactId>

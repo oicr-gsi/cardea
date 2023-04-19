@@ -6,7 +6,7 @@
   "configurations": [
     {
       "type": "java",
-      "name": "Debug local Dimsum",
+      "name": "Debug local QC Gate ETL API",
       "request": "attach",
       "hostName": "localhost",
       "port": 8000

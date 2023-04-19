@@ -1,0 +1,336 @@
+package ca.on.oicr.gsi.qcgateetlapi.data;
+
+import static java.util.Objects.requireNonNull;
+import javax.annotation.concurrent.Immutable;
+
+@Immutable
+public class ProjectSummary {
+  public static class Builder {
+
+    private int draftReportCompletedCount = 0;
+    // draft report
+    private int draftReportPendingCount = 0;
+    private int extractionCompletedCount = 0;
+    // extraction
+    private int extractionPendingCount = 0;
+    private int extractionPendingQcCount = 0;
+    private int finalReportCompletedCount = 0;
+    // final report
+    private int finalReportPendingCount = 0;
+    private int fullDepthSeqCompletedCount = 0;
+    // full depth sequencing
+    private int fullDepthSeqPendingCount = 0;
+    private int fullDepthSeqPendingQcCount = 0;
+    private int informaticsCompletedCount = 0;
+    // informatics review
+    private int informaticsPendingCount = 0;
+    private int libraryPrepCompletedCount = 0;
+    // library preparation
+    private int libraryPrepPendingCount = 0;
+    private int libraryPrepPendingQcCount = 0;
+    private int libraryQualCompletedCount = 0;
+    // library qualification
+    private int libraryQualPendingCount = 0;
+    private int libraryQualPendingQcCount = 0;
+    private String name;
+    private int receiptCompletedCount = 0;
+    // receipt
+    private int receiptPendingQcCount = 0;
+    private int totalTestCount = 0;
+
+    public Builder addCounts(ProjectSummary.Builder builder) {
+      this.totalTestCount += builder.totalTestCount;
+      // receipt
+      this.receiptPendingQcCount += builder.receiptPendingQcCount;
+      this.receiptCompletedCount += builder.receiptCompletedCount;
+      // extraction
+      this.extractionPendingCount += builder.extractionPendingCount;
+      this.extractionPendingQcCount += builder.extractionPendingQcCount;
+      this.extractionCompletedCount += builder.extractionCompletedCount;
+      // library preparation
+      this.libraryPrepPendingCount += builder.libraryPrepPendingCount;
+      this.libraryPrepPendingQcCount += builder.libraryPrepPendingQcCount;
+      this.libraryPrepCompletedCount += builder.libraryPrepCompletedCount;
+      // library qualification
+      this.libraryQualPendingCount += builder.libraryQualPendingCount;
+      this.libraryQualPendingQcCount += builder.libraryQualPendingQcCount;
+      this.libraryQualCompletedCount += builder.libraryQualCompletedCount;
+      // full depth sequencing
+      this.fullDepthSeqPendingCount += builder.fullDepthSeqPendingCount;
+      this.fullDepthSeqPendingQcCount += builder.fullDepthSeqPendingQcCount;
+      this.fullDepthSeqCompletedCount += builder.fullDepthSeqCompletedCount;
+      // informatics review
+      this.informaticsPendingCount += builder.informaticsPendingCount;
+      this.informaticsCompletedCount += builder.informaticsCompletedCount;
+      // draft report
+      this.draftReportPendingCount += builder.draftReportPendingCount;
+      this.draftReportCompletedCount += builder.draftReportCompletedCount;
+      // final report
+      this.finalReportPendingCount += builder.finalReportPendingCount;
+      this.finalReportCompletedCount += builder.finalReportCompletedCount;
+      return this;
+    }
+
+    public ProjectSummary build() {
+      return new ProjectSummary(this);
+    }
+
+    public void draftReportCompletedCount(int draftReportCompletedCount) {
+      this.draftReportCompletedCount = draftReportCompletedCount;
+    }
+
+    // draft report
+    public void draftReportPendingCount(int draftReportPendingCount) {
+      this.draftReportPendingCount = draftReportPendingCount;
+    }
+
+    public void finalReportCompletedCount(int finalReportCompletedCount) {
+      this.finalReportCompletedCount = finalReportCompletedCount;
+    }
+
+    // final report
+    public void finalReportPendingCount(int finalReportPendingCount) {
+      this.finalReportPendingCount = finalReportPendingCount;
+    }
+
+    public void incrementExtractionCompletedCount() {
+      this.extractionCompletedCount += 1;
+    }
+
+    // extraction
+    public void incrementExtractionPendingCount() {
+      this.extractionPendingCount += 1;
+    }
+
+    public void incrementExtractionPendingQcCount() {
+      this.extractionPendingQcCount += 1;
+    }
+
+    public void incrementFullDepthSeqCompletedCount() {
+      this.fullDepthSeqCompletedCount += 1;
+    }
+
+    // full depth sequencing
+    public void incrementFullDepthSeqPendingCount() {
+      this.fullDepthSeqPendingCount += 1;
+    }
+
+    public void incrementFullDepthSeqPendingQcCount() {
+      this.fullDepthSeqPendingQcCount += 1;
+
+    }
+
+    public void incrementLibraryPrepCompletedCount() {
+      this.libraryPrepCompletedCount += 1;
+    }
+
+    // library preparation
+    public void incrementLibraryPrepPendingCount() {
+      this.libraryPrepPendingCount += 1;
+    }
+
+    public void incrementLibraryPrepPendingQcCount() {
+      this.libraryPrepPendingQcCount += 1;
+    }
+
+    public void incrementLibraryQualCompletedCount() {
+      this.libraryQualCompletedCount += 1;
+    }
+
+    // library qualification
+    public void incrementLibraryQualPendingCount() {
+      this.libraryQualPendingCount += 1;
+    }
+
+    public void incrementLibraryQualPendingQcCount() {
+      this.libraryQualPendingQcCount += 1;
+    }
+
+    public void informaticsCompletedCount(int informaticsCompletedCount) {
+      this.informaticsCompletedCount = informaticsCompletedCount;
+    }
+
+    // informatics review
+    public void informaticsPendingCount(int informaticsPendingCount) {
+      this.informaticsPendingCount = informaticsPendingCount;
+    }
+
+    public Builder name(String name) {
+      this.name = name;
+      return this;
+    }
+
+    public void receiptCompletedCount(int receiptCompletedCount) {
+      this.receiptCompletedCount = receiptCompletedCount;
+    }
+
+    public void receiptPendingQcCount(int receiptPendingQcCount) {
+      this.receiptPendingQcCount = receiptPendingQcCount;
+    }
+
+    public void totalTestCount(int totalTestCount) {
+      this.totalTestCount = totalTestCount;
+    }
+  }
+  private final int draftReportCompletedCount;
+  // draft report
+  private final int draftReportPendingCount;
+  private final int extractionCompletedCount;
+  // extraction
+  private final int extractionPendingCount;
+  private final int extractionPendingQcCount;
+  private final int finalReportCompletedCount;
+  // final report
+  private final int finalReportPendingCount;
+  private final int fullDepthSeqCompletedCount;
+  // full depth sequencing
+  private final int fullDepthSeqPendingCount;
+  private final int fullDepthSeqPendingQcCount;
+  private final int informaticsCompletedCount;
+  // informatics review
+  private final int informaticsPendingCount;
+  private final int libraryPrepCompletedCount;
+  // library preparation
+  private final int libraryPrepPendingCount;
+  private final int libraryPrepPendingQcCount;
+  private final int libraryQualCompletedCount;
+  // library qualification
+  private final int libraryQualPendingCount;
+  private final int libraryQualPendingQcCount;
+  private final String name;
+  private final int receiptCompletedCount;
+  // receipt
+  private final int receiptPendingQcCount;
+  private final int totalTestCount;
+
+  private ProjectSummary(Builder builder) {
+    this.name = requireNonNull(builder.name);
+    this.totalTestCount = builder.totalTestCount;
+    // receipt
+    this.receiptPendingQcCount = builder.receiptPendingQcCount;
+    this.receiptCompletedCount = builder.receiptCompletedCount;
+    // extraction
+    this.extractionPendingCount = builder.extractionPendingCount;
+    this.extractionPendingQcCount = builder.extractionPendingQcCount;
+    this.extractionCompletedCount = builder.extractionCompletedCount;
+    // library preparation
+    this.libraryPrepPendingCount = builder.libraryPrepPendingCount;
+    this.libraryPrepPendingQcCount = builder.libraryPrepPendingQcCount;
+    this.libraryPrepCompletedCount = builder.libraryPrepCompletedCount;
+    // library qualification
+    this.libraryQualPendingCount = builder.libraryQualPendingCount;
+    this.libraryQualPendingQcCount = builder.libraryQualPendingQcCount;
+    this.libraryQualCompletedCount = builder.libraryQualCompletedCount;
+    // full depth sequencing
+    this.fullDepthSeqPendingCount = builder.fullDepthSeqPendingCount;
+    this.fullDepthSeqPendingQcCount = builder.fullDepthSeqPendingQcCount;
+    this.fullDepthSeqCompletedCount = builder.fullDepthSeqCompletedCount;
+    // informatics review
+    this.informaticsPendingCount = builder.informaticsPendingCount;
+    this.informaticsCompletedCount = builder.informaticsCompletedCount;
+    // draft report
+    this.draftReportPendingCount = builder.draftReportPendingCount;
+    this.draftReportCompletedCount = builder.draftReportCompletedCount;
+    // final report
+    this.finalReportPendingCount = builder.finalReportPendingCount;
+    this.finalReportCompletedCount = builder.finalReportCompletedCount;
+
+
+  }
+
+  public int getDraftReportCompletedCount() {
+    return draftReportCompletedCount;
+  }
+
+  // draft report
+  public int getDraftReportPendingCount() {
+    return draftReportPendingCount;
+  }
+
+  public int getExtractionCompletedCount() {
+    return extractionCompletedCount;
+  }
+
+  // extraction
+  public int getExtractionPendingCount() {
+    return extractionPendingCount;
+  }
+
+  public int getExtractionPendingQcCount() {
+    return extractionPendingQcCount;
+  }
+
+  public int getFinalReportCompletedCount() {
+    return finalReportCompletedCount;
+  }
+
+  // final report
+  public int getFinalReportPendingCount() {
+    return finalReportPendingCount;
+  }
+
+  public int getFullDepthSeqCompletedCount() {
+    return fullDepthSeqCompletedCount;
+  }
+
+  // full depth sequencing
+  public int getFullDepthSeqPendingCount() {
+    return fullDepthSeqPendingCount;
+  }
+
+  public int getFullDepthSeqPendingQcCount() {
+    return fullDepthSeqPendingQcCount;
+  }
+
+  public int getInformaticsCompletedCount() {
+    return informaticsCompletedCount;
+  }
+
+  // informatics review
+  public int getInformaticsPendingCount() {
+    return informaticsPendingCount;
+  }
+
+  public int getLibraryPrepCompletedCount() {
+    return libraryPrepCompletedCount;
+  }
+
+  // library preparation
+  public int getLibraryPrepPendingCount() {
+    return libraryPrepPendingCount;
+  }
+
+  public int getLibraryPrepPendingQcCount() {
+    return libraryPrepPendingQcCount;
+  }
+
+  public int getLibraryQualCompletedCount() {
+    return libraryQualCompletedCount;
+
+  }
+
+  // library qualification
+  public int getLibraryQualPendingCount() {
+    return libraryQualPendingCount;
+  }
+
+  public int getLibraryQualPendingQcCount() {
+    return libraryQualPendingQcCount;
+  }
+
+  public String getName() {
+    return name;
+  }
+
+  public int getReceiptCompletedCount() {
+    return receiptCompletedCount;
+  }
+
+  public int getReceiptPendingQcCount() {
+    return receiptPendingQcCount;
+  }
+
+  public int getTotalTestCount() {
+    return totalTestCount;
+  }
+}
