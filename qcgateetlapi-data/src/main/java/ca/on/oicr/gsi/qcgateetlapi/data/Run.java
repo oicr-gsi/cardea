@@ -6,11 +6,12 @@ import java.time.LocalDate;
 import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
-//import javax.annotation.concurrent.Immutable;
 
-//@Immutable
+import org.immutables.value.Value;
+
 public class Run {
 
+  @Value.Immutable
   public static class Builder {
 
     private Long clustersPf;

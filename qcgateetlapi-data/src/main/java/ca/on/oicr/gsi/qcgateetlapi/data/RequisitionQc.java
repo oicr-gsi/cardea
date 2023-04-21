@@ -4,11 +4,11 @@ import static java.util.Objects.requireNonNull;
 
 import java.time.LocalDate;
 
-//import javax.annotation.concurrent.Immutable;
+import org.immutables.value.Value;
 
-//@Immutable
 public class RequisitionQc {
 
+  @Value.Immutable
   public static class Builder {
 
     private LocalDate qcDate;

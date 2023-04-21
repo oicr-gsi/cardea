@@ -9,11 +9,11 @@ import java.util.List;
 import java.util.function.Function;
 import java.util.stream.Stream;
 
-//import javax.annotation.concurrent.Immutable;
+import org.immutables.value.Value;
 
-//@Immutable
 public class Test {
 
+  @Value.Immutable
   public static class Builder {
 
     private boolean extractionSkipped;

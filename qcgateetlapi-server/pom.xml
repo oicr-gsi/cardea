@@ -35,14 +35,6 @@
       <artifactId>jackson-databind</artifactId>
       <groupId>com.fasterxml.jackson.core</groupId>
     </dependency>
-<!--    <dependency>-->
-<!--      <artifactId>spring-framework-beans</artifactId>-->
-<!--      <groupId>org.springframework</groupId>-->
-<!--    </dependency>-->
-    <dependency>
-      <artifactId>spring-security-saml2-service-provider</artifactId>
-      <groupId>org.springframework.security</groupId>
-    </dependency>
     <dependency>
       <artifactId>spring-boot-devtools</artifactId>
       <groupId>org.springframework.boot</groupId>
@@ -79,10 +71,6 @@
       <version>5.3.19</version>
     </dependency>
     <dependency>
-      <artifactId>spring-boot-starter-security</artifactId>
-      <groupId>org.springframework.boot</groupId>
-    </dependency>
-    <dependency>
       <artifactId>spring-boot-starter-web</artifactId>
       <groupId>org.springframework.boot</groupId>
     </dependency>
@@ -91,12 +79,16 @@
       <groupId>org.springframework.security</groupId>
     </dependency>
     <dependency>
-      <artifactId>springdoc-openapi-ui</artifactId>
+      <artifactId>springdoc-openapi-starter-webmvc-ui</artifactId>
       <groupId>org.springdoc</groupId>
     </dependency>
     <dependency>
       <artifactId>server-utils</artifactId>
       <groupId>ca.on.oicr.gsi</groupId>
+    </dependency>
+    <dependency>
+      <artifactId>jakarta.servlet-api</artifactId>
+      <groupId>jakarta.servlet</groupId>
     </dependency>
   </dependencies>
 

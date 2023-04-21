@@ -5,11 +5,12 @@ import static java.util.Objects.requireNonNull;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
-//import javax.annotation.concurrent.Immutable;
 
-//@Immutable
+import org.immutables.value.Value;
+
 public class RunAndLibraries {
 
+  @Value.Immutable
   public static class Builder {
 
     private Set<Sample> fullDepthSequencings = new HashSet<>();

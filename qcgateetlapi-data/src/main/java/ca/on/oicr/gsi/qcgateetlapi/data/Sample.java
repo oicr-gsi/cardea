@@ -6,11 +6,11 @@ import java.time.LocalDate;
 import java.util.Objects;
 import java.util.stream.Stream;
 
-//import javax.annotation.concurrent.Immutable;
+import org.immutables.value.Value;
 
-//@Immutable
 public class Sample {
 
+  @Value.Immutable
   public static class Builder {
 
     private Integer clustersPerSample;

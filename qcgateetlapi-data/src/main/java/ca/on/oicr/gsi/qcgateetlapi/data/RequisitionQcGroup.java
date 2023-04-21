@@ -3,11 +3,11 @@ package ca.on.oicr.gsi.qcgateetlapi.data;
 import static java.util.Objects.requireNonNull;
 
 import java.math.BigDecimal;
-//import javax.annotation.concurrent.Immutable;
+import org.immutables.value.Value;
 
-//@Immutable
 public class RequisitionQcGroup {
 
+  @Value.Immutable
   public static class Builder {
 
     private BigDecimal callability;

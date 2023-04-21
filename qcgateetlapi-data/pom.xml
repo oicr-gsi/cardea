@@ -17,6 +17,12 @@
   </build>
   <dependencies>
     <dependency>
+      <artifactId>value</artifactId>
+      <groupId>org.immutables</groupId>
+      <scope>provided</scope>
+      <version>2.9.2</version>
+    </dependency>
+    <dependency>
       <artifactId>jackson-core</artifactId>
       <groupId>com.fasterxml.jackson.core</groupId>
     </dependency>

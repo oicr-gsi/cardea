@@ -10,11 +10,11 @@ import java.util.Objects;
 import java.util.function.Function;
 import java.util.stream.Stream;
 
-//import javax.annotation.concurrent.Immutable;
+import org.immutables.value.Value;
 
-//@Immutable
 public class Requisition {
 
+  @Value.Immutable
   public static class Builder {
 
     private Long assayId;

@@ -22,6 +22,7 @@ import java.io.*;
 import java.security.cert.CertificateFactory;
 import java.security.cert.X509Certificate;
 import java.security.interfaces.RSAPrivateKey;
+import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
 @Configuration
 @Profile("!noauth")
@@ -82,13 +83,13 @@ public class SecurityConfiguration {
   @Bean
   public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
     http.authorizeHttpRequests(auth -> auth
-        .antMatchers("/favicon.ico").permitAll()
-        .antMatchers("/css/**").permitAll()
-        .antMatchers("/js/**").permitAll()
-        .antMatchers("/img/**").permitAll()
-        .antMatchers("/libs/**").permitAll()
-        .antMatchers("/metrics").permitAll()
-        .antMatchers(LOGIN_URL).permitAll()
+        .requestMatchers(new AntPathRequestMatcher("/favicon.ico")).permitAll()
+        .requestMatchers(new AntPathRequestMatcher("/css/**")).permitAll()
+        .requestMatchers(new AntPathRequestMatcher("/js/**")).permitAll()
+        .requestMatchers(new AntPathRequestMatcher("/img/**")).permitAll()
+        .requestMatchers(new AntPathRequestMatcher("/libs/**")).permitAll()
+        .requestMatchers(new AntPathRequestMatcher("/metrics")).permitAll()
+        .requestMatchers(new AntPathRequestMatcher(LOGIN_URL)).permitAll()
         .anyRequest().authenticated())
         .saml2Login()
         .loginPage(LOGIN_URL)
