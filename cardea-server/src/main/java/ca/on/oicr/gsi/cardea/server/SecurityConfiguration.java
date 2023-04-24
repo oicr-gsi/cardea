@@ -71,7 +71,7 @@ public class SecurityConfiguration {
     String logoutUrl = baseUrl + "/logout/saml2/slo";
     RelyingPartyRegistration registration =
         RelyingPartyRegistrations.fromMetadataLocation(metadataUrl)
-            .registrationId("qcgateetlapi")
+            .registrationId("cardea")
             .entityId(baseUrl + "/saml2/service-provider-metadata/cardea")
             .assertionConsumerServiceLocation(baseUrl + "/login/saml2/sso/cardea")
             .singleLogoutServiceLocation(logoutUrl)

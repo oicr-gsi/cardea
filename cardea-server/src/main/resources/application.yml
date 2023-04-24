@@ -16,7 +16,7 @@ spring:
     saml2:
       relyingparty:
         registration:
-          qcgateetlapi:
+          cardea:
             signing.credentials:
               - private-key-location: file://${saml.spkey}
                 certificate-location: file://${saml.spcert}
