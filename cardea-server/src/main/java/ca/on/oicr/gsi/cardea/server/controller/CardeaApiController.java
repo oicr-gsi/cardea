@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping("/api")
-public class QcGateEtlApiController {
+public class CardeaApiController {
   @Autowired
   private CaseService caseService;
 

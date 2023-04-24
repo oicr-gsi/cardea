@@ -43,16 +43,6 @@
       <artifactId>spring-boot-starter-security</artifactId>
       <groupId>org.springframework.boot</groupId>
     </dependency>
-<!--    <dependency>-->
-<!--      <artifactId>spring-boot-starter-web</artifactId>-->
-<!--      <groupId>org.springframework.boot</groupId>-->
-<!--    </dependency>-->
-<!--    <dependency>-->
-<!--      <artifactId>micrometer-registry-prometheus</artifactId>-->
-<!--      <groupId>io.micrometer</groupId>-->
-<!--      <scope>runtime</scope>-->
-<!--    </dependency>-->
-
     <dependency>
       <artifactId>spring-boot-starter-actuator</artifactId>
       <groupId>org.springframework.boot</groupId>
@@ -61,14 +51,6 @@
       <artifactId>spring-boot-starter-test</artifactId>
       <groupId>org.springframework.boot</groupId>
       <scope>test</scope>
-    </dependency>
-    <dependency>
-      <!-- keeps Spring dependencies in sync -->
-      <artifactId>spring-framework-bom</artifactId>
-      <groupId>org.springframework</groupId>
-      <scope>import</scope>
-      <type>pom</type>
-      <version>5.3.19</version>
     </dependency>
     <dependency>
       <artifactId>spring-boot-starter-web</artifactId>

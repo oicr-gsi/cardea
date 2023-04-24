@@ -6,10 +6,10 @@ import org.springframework.scheduling.annotation.EnableScheduling;
 
 @SpringBootApplication
 @EnableScheduling
-public class QcGateEtlApiApplication {
+public class CardeaApplication {
 
 	public static void main(String[] args) {
-		SpringApplication.run(QcGateEtlApiApplication.class, args);
+		SpringApplication.run(CardeaApplication.class, args);
 	}
 
 }
