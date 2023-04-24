@@ -1,4 +1,4 @@
-package ca.on.oicr.gsi.qcgateetlapi.data;
+package ca.on.oicr.gsi.cardea.data;
 
 import static java.util.Collections.emptyList;
 import static java.util.Collections.unmodifiableList;
@@ -14,68 +14,6 @@ import org.immutables.value.Value;
 
 public class Requisition {
 
-  @Value.Immutable
-  public static class Builder {
-
-    private Long assayId;
-    private List<RequisitionQc> draftReports;
-    private List<RequisitionQc> finalReports;
-    private long id;
-    private List<RequisitionQc> informaticsReviews;
-    private String name;
-    private List<RequisitionQcGroup> qcGroups;
-    private String stopReason;
-    private boolean stopped;
-
-    public Builder assayId(Long assayId) {
-      this.assayId = assayId;
-      return this;
-    }
-
-    public Requisition build() {
-      return new Requisition(this);
-    }
-
-    public Builder draftReports(List<RequisitionQc> draftReports) {
-      this.draftReports = draftReports;
-      return this;
-    }
-
-    public Builder finalReports(List<RequisitionQc> finalReports) {
-      this.finalReports = finalReports;
-      return this;
-    }
-
-    public Builder id(long id) {
-      this.id = id;
-      return this;
-    }
-
-    public Builder informaticsReviews(List<RequisitionQc> informaticsReviews) {
-      this.informaticsReviews = informaticsReviews;
-      return this;
-    }
-
-    public Builder name(String name) {
-      this.name = name;
-      return this;
-    }
-
-    public Builder qcGroups(List<RequisitionQcGroup> qcGroups) {
-      this.qcGroups = qcGroups;
-      return this;
-    }
-
-    public Builder stopReason(String stopReason) {
-      this.stopReason = stopReason;
-      return this;
-    }
-
-    public Builder stopped(boolean stopped) {
-      this.stopped = stopped;
-      return this;
-    }
-  }
   private final Long assayId;
   private final List<RequisitionQc> draftReports;
   private final List<RequisitionQc> finalReports;
@@ -86,7 +24,6 @@ public class Requisition {
   private final List<RequisitionQcGroup> qcGroups;
   private final String stopReason;
   private final boolean stopped;
-
   private Requisition(Builder builder) {
     this.id = requireNonNull(builder.id);
     this.name = requireNonNull(builder.name);
@@ -161,5 +98,68 @@ public class Requisition {
 
   public boolean isStopped() {
     return stopped;
+  }
+
+  @Value.Immutable
+  public static class Builder {
+
+    private Long assayId;
+    private List<RequisitionQc> draftReports;
+    private List<RequisitionQc> finalReports;
+    private long id;
+    private List<RequisitionQc> informaticsReviews;
+    private String name;
+    private List<RequisitionQcGroup> qcGroups;
+    private String stopReason;
+    private boolean stopped;
+
+    public Builder assayId(Long assayId) {
+      this.assayId = assayId;
+      return this;
+    }
+
+    public Requisition build() {
+      return new Requisition(this);
+    }
+
+    public Builder draftReports(List<RequisitionQc> draftReports) {
+      this.draftReports = draftReports;
+      return this;
+    }
+
+    public Builder finalReports(List<RequisitionQc> finalReports) {
+      this.finalReports = finalReports;
+      return this;
+    }
+
+    public Builder id(long id) {
+      this.id = id;
+      return this;
+    }
+
+    public Builder informaticsReviews(List<RequisitionQc> informaticsReviews) {
+      this.informaticsReviews = informaticsReviews;
+      return this;
+    }
+
+    public Builder name(String name) {
+      this.name = name;
+      return this;
+    }
+
+    public Builder qcGroups(List<RequisitionQcGroup> qcGroups) {
+      this.qcGroups = qcGroups;
+      return this;
+    }
+
+    public Builder stopReason(String stopReason) {
+      this.stopReason = stopReason;
+      return this;
+    }
+
+    public Builder stopped(boolean stopped) {
+      this.stopped = stopped;
+      return this;
+    }
   }
 }

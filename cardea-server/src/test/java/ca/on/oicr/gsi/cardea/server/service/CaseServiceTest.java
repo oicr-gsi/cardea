@@ -2,25 +2,23 @@ package ca.on.oicr.gsi.cardea.server.service;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertNull;
-import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
-import ca.on.oicr.gsi.qcgateetlapi.data.CaseStatusCountsForRun;
-import ca.on.oicr.gsi.qcgateetlapi.data.RequisitionQc;
-import ca.on.oicr.gsi.qcgateetlapi.data.Run;
+import ca.on.oicr.gsi.cardea.data.CaseStatusCountsForRun;
+import ca.on.oicr.gsi.cardea.data.RequisitionQc;
+import ca.on.oicr.gsi.cardea.data.Run;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import org.junit.jupiter.api.BeforeEach;
-import ca.on.oicr.gsi.qcgateetlapi.data.Case;
-import ca.on.oicr.gsi.qcgateetlapi.data.CaseData;
-import ca.on.oicr.gsi.qcgateetlapi.data.Donor;
-import ca.on.oicr.gsi.qcgateetlapi.data.Requisition;
-import ca.on.oicr.gsi.qcgateetlapi.data.Sample;
-import ca.on.oicr.gsi.qcgateetlapi.data.Test;
+import ca.on.oicr.gsi.cardea.data.Case;
+import ca.on.oicr.gsi.cardea.data.CaseData;
+import ca.on.oicr.gsi.cardea.data.Donor;
+import ca.on.oicr.gsi.cardea.data.Requisition;
+import ca.on.oicr.gsi.cardea.data.Sample;
+import ca.on.oicr.gsi.cardea.data.Test;
 
 public class CaseServiceTest {
 

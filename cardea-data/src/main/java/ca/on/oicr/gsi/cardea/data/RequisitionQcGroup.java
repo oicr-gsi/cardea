@@ -1,4 +1,4 @@
-package ca.on.oicr.gsi.qcgateetlapi.data;
+package ca.on.oicr.gsi.cardea.data;
 
 import static java.util.Objects.requireNonNull;
 
@@ -6,6 +6,51 @@ import java.math.BigDecimal;
 import org.immutables.value.Value;
 
 public class RequisitionQcGroup {
+
+  private final BigDecimal callability;
+  private final BigDecimal collapsedCoverage;
+  private final String groupId;
+  private final String libraryDesignCode;
+  private final BigDecimal purity;
+  private final String tissueOrigin;
+  private final String tissueType;
+  private RequisitionQcGroup(Builder builder) {
+    this.tissueOrigin = requireNonNull(builder.tissueOrigin);
+    this.tissueType = requireNonNull(builder.tissueType);
+    this.libraryDesignCode = requireNonNull(builder.libraryDesignCode);
+    this.groupId = builder.groupId;
+    this.purity = builder.purity;
+    this.collapsedCoverage = builder.collapsedCoverage;
+    this.callability = builder.callability;
+  }
+
+  public BigDecimal getCallability() {
+    return callability;
+  }
+
+  public BigDecimal getCollapsedCoverage() {
+    return collapsedCoverage;
+  }
+
+  public String getGroupId() {
+    return groupId;
+  }
+
+  public String getLibraryDesignCode() {
+    return libraryDesignCode;
+  }
+
+  public BigDecimal getPurity() {
+    return purity;
+  }
+
+  public String getTissueOrigin() {
+    return tissueOrigin;
+  }
+
+  public String getTissueType() {
+    return tissueType;
+  }
 
   @Value.Immutable
   public static class Builder {
@@ -57,51 +102,6 @@ public class RequisitionQcGroup {
       return this;
     }
 
-  }
-  private final BigDecimal callability;
-  private final BigDecimal collapsedCoverage;
-  private final String groupId;
-  private final String libraryDesignCode;
-  private final BigDecimal purity;
-  private final String tissueOrigin;
-  private final String tissueType;
-
-  private RequisitionQcGroup(Builder builder) {
-    this.tissueOrigin = requireNonNull(builder.tissueOrigin);
-    this.tissueType = requireNonNull(builder.tissueType);
-    this.libraryDesignCode = requireNonNull(builder.libraryDesignCode);
-    this.groupId = builder.groupId;
-    this.purity = builder.purity;
-    this.collapsedCoverage = builder.collapsedCoverage;
-    this.callability = builder.callability;
-  }
-
-  public BigDecimal getCallability() {
-    return callability;
-  }
-
-  public BigDecimal getCollapsedCoverage() {
-    return collapsedCoverage;
-  }
-
-  public String getGroupId() {
-    return groupId;
-  }
-
-  public String getLibraryDesignCode() {
-    return libraryDesignCode;
-  }
-
-  public BigDecimal getPurity() {
-    return purity;
-  }
-
-  public String getTissueOrigin() {
-    return tissueOrigin;
-  }
-
-  public String getTissueType() {
-    return tissueType;
   }
 
 }

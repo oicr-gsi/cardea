@@ -1,4 +1,4 @@
-package ca.on.oicr.gsi.qcgateetlapi.data;
+package ca.on.oicr.gsi.cardea.data;
 
 import static java.util.Objects.requireNonNull;
 import java.util.Collections;
@@ -9,6 +9,43 @@ import java.util.stream.Collectors;
 
 //@Immutable
 public class Assay {
+
+  private final String description;
+  private final Long id;
+  private final Map<MetricCategory, List<MetricSubcategory>> metricCategories;
+  private final String name;
+  private final String version;
+  public Assay(Builder builder) {
+    this.id = requireNonNull(builder.id);
+    this.name = requireNonNull(builder.name);
+    this.description = builder.description;
+    this.version = requireNonNull(builder.version);
+    Map<MetricCategory, List<MetricSubcategory>> tempMap =
+        builder.metricCategories.entrySet().stream()
+            .collect(Collectors.toMap(entry -> entry.getKey(),
+                entry -> Collections.unmodifiableList(entry.getValue())));
+    this.metricCategories = Collections.unmodifiableMap(tempMap);
+  }
+
+  public String getDescription() {
+    return description;
+  }
+
+  public Long getId() {
+    return id;
+  }
+
+  public Map<MetricCategory, List<MetricSubcategory>> getMetricCategories() {
+    return metricCategories;
+  }
+
+  public String getName() {
+    return name;
+  }
+
+  public String getVersion() {
+    return version;
+  }
 
   public static class Builder {
 
@@ -47,43 +84,6 @@ public class Assay {
       return this;
     }
 
-  }
-  private final String description;
-  private final Long id;
-  private final Map<MetricCategory, List<MetricSubcategory>> metricCategories;
-  private final String name;
-  private final String version;
-
-  public Assay(Builder builder) {
-    this.id = requireNonNull(builder.id);
-    this.name = requireNonNull(builder.name);
-    this.description = builder.description;
-    this.version = requireNonNull(builder.version);
-    Map<MetricCategory, List<MetricSubcategory>> tempMap =
-        builder.metricCategories.entrySet().stream()
-            .collect(Collectors.toMap(entry -> entry.getKey(),
-                entry -> Collections.unmodifiableList(entry.getValue())));
-    this.metricCategories = Collections.unmodifiableMap(tempMap);
-  }
-
-  public String getDescription() {
-    return description;
-  }
-
-  public Long getId() {
-    return id;
-  }
-
-  public Map<MetricCategory, List<MetricSubcategory>> getMetricCategories() {
-    return metricCategories;
-  }
-
-  public String getName() {
-    return name;
-  }
-
-  public String getVersion() {
-    return version;
   }
 
 }

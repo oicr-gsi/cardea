@@ -1,12 +1,52 @@
-package ca.on.oicr.gsi.qcgateetlapi.data;
+package ca.on.oicr.gsi.cardea.data;
+
+import org.immutables.value.Value;
 
 import java.math.BigDecimal;
 import java.util.Objects;
-//import javax.annotation.concurrent.Immutable;
 
-//@Immutable
 public class Lane {
 
+  private final Long clustersPf;
+  private final Integer laneNumber;
+  private final Integer percentOverQ30Read1;
+  private final Integer percentOverQ30Read2;
+  private final BigDecimal percentPfixRead1;
+  private final BigDecimal percentPfixRead2;
+  private Lane(Builder builder) {
+    this.laneNumber = Objects.requireNonNull(builder.laneNumber);
+    this.percentOverQ30Read1 = builder.percentOverQ30Read1;
+    this.percentOverQ30Read2 = builder.percentOverQ30Read2;
+    this.clustersPf = builder.clustersPf;
+    this.percentPfixRead1 = builder.percentPfixRead1;
+    this.percentPfixRead2 = builder.percentPfixRead2;
+  }
+
+  public Long getClustersPf() {
+    return clustersPf;
+  }
+
+  public Integer getLaneNumber() {
+    return laneNumber;
+  }
+
+  public Integer getPercentOverQ30Read1() {
+    return percentOverQ30Read1;
+  }
+
+  public Integer getPercentOverQ30Read2() {
+    return percentOverQ30Read2;
+  }
+
+  public BigDecimal getPercentPfixRead1() {
+    return percentPfixRead1;
+  }
+
+  public BigDecimal getPercentPfixRead2() {
+    return percentPfixRead2;
+  }
+
+  @Value.Immutable
   public static class Builder {
 
     private Long clustersPf;
@@ -50,45 +90,6 @@ public class Lane {
       return this;
     }
 
-  }
-  private final Long clustersPf;
-  private final Integer laneNumber;
-  private final Integer percentOverQ30Read1;
-  private final Integer percentOverQ30Read2;
-  private final BigDecimal percentPfixRead1;
-  private final BigDecimal percentPfixRead2;
-
-  private Lane(Builder builder) {
-    this.laneNumber = Objects.requireNonNull(builder.laneNumber);
-    this.percentOverQ30Read1 = builder.percentOverQ30Read1;
-    this.percentOverQ30Read2 = builder.percentOverQ30Read2;
-    this.clustersPf = builder.clustersPf;
-    this.percentPfixRead1 = builder.percentPfixRead1;
-    this.percentPfixRead2 = builder.percentPfixRead2;
-  }
-
-  public Long getClustersPf() {
-    return clustersPf;
-  }
-
-  public Integer getLaneNumber() {
-    return laneNumber;
-  }
-
-  public Integer getPercentOverQ30Read1() {
-    return percentOverQ30Read1;
-  }
-
-  public Integer getPercentOverQ30Read2() {
-    return percentOverQ30Read2;
-  }
-
-  public BigDecimal getPercentPfixRead1() {
-    return percentPfixRead1;
-  }
-
-  public BigDecimal getPercentPfixRead2() {
-    return percentPfixRead2;
   }
 
 }

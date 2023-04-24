@@ -72,8 +72,8 @@ public class SecurityConfiguration {
     RelyingPartyRegistration registration =
         RelyingPartyRegistrations.fromMetadataLocation(metadataUrl)
             .registrationId("qcgateetlapi")
-            .entityId(baseUrl + "/saml2/service-provider-metadata/qcgateetlapi")
-            .assertionConsumerServiceLocation(baseUrl + "/login/saml2/sso/qcgateetlapi")
+            .entityId(baseUrl + "/saml2/service-provider-metadata/cardea")
+            .assertionConsumerServiceLocation(baseUrl + "/login/saml2/sso/cardea")
             .singleLogoutServiceLocation(logoutUrl)
             .signingX509Credentials(saml2X509Credentials -> saml2X509Credentials.add(credential))
             .build();

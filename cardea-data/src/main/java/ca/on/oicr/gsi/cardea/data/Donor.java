@@ -1,8 +1,29 @@
-package ca.on.oicr.gsi.qcgateetlapi.data;
+package ca.on.oicr.gsi.cardea.data;
 
 import static java.util.Objects.requireNonNull;
 
 public class Donor {
+
+  private final String externalName;
+  private final String id;
+  private final String name;
+  private Donor(Builder builder) {
+    this.id = requireNonNull(builder.id);
+    this.name = requireNonNull(builder.name);
+    this.externalName = requireNonNull(builder.externalName);
+  }
+
+  public String getExternalName() {
+    return externalName;
+  }
+
+  public String getId() {
+    return id;
+  }
+
+  public String getName() {
+    return name;
+  }
 
   public static class Builder {
 
@@ -29,26 +50,5 @@ public class Donor {
       return this;
     }
 
-  }
-  private final String externalName;
-  private final String id;
-  private final String name;
-
-  private Donor(Builder builder) {
-    this.id = requireNonNull(builder.id);
-    this.name = requireNonNull(builder.name);
-    this.externalName = requireNonNull(builder.externalName);
-  }
-
-  public String getExternalName() {
-    return externalName;
-  }
-
-  public String getId() {
-    return id;
-  }
-
-  public String getName() {
-    return name;
   }
 }

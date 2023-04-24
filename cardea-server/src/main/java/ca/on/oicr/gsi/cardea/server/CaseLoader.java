@@ -1,24 +1,24 @@
 package ca.on.oicr.gsi.cardea.server;
 
-import ca.on.oicr.gsi.qcgateetlapi.data.Assay;
-import ca.on.oicr.gsi.qcgateetlapi.data.Case;
-import ca.on.oicr.gsi.qcgateetlapi.data.CaseData;
-import ca.on.oicr.gsi.qcgateetlapi.data.Donor;
-import ca.on.oicr.gsi.qcgateetlapi.data.Lane;
-import ca.on.oicr.gsi.qcgateetlapi.data.Metric;
-import ca.on.oicr.gsi.qcgateetlapi.data.MetricCategory;
-import ca.on.oicr.gsi.qcgateetlapi.data.MetricSubcategory;
-import ca.on.oicr.gsi.qcgateetlapi.data.OmittedSample;
-import ca.on.oicr.gsi.qcgateetlapi.data.Project;
-import ca.on.oicr.gsi.qcgateetlapi.data.Requisition;
-import ca.on.oicr.gsi.qcgateetlapi.data.RequisitionQc;
-import ca.on.oicr.gsi.qcgateetlapi.data.RequisitionQcGroup;
-import ca.on.oicr.gsi.qcgateetlapi.data.Run;
-import ca.on.oicr.gsi.qcgateetlapi.data.RunAndLibraries;
-import ca.on.oicr.gsi.qcgateetlapi.data.RunAndLibraries.Builder;
-import ca.on.oicr.gsi.qcgateetlapi.data.Sample;
-import ca.on.oicr.gsi.qcgateetlapi.data.Test;
-import ca.on.oicr.gsi.qcgateetlapi.data.ThresholdType;
+import ca.on.oicr.gsi.cardea.data.Assay;
+import ca.on.oicr.gsi.cardea.data.Case;
+import ca.on.oicr.gsi.cardea.data.CaseData;
+import ca.on.oicr.gsi.cardea.data.Donor;
+import ca.on.oicr.gsi.cardea.data.Lane;
+import ca.on.oicr.gsi.cardea.data.Metric;
+import ca.on.oicr.gsi.cardea.data.MetricCategory;
+import ca.on.oicr.gsi.cardea.data.MetricSubcategory;
+import ca.on.oicr.gsi.cardea.data.OmittedSample;
+import ca.on.oicr.gsi.cardea.data.Project;
+import ca.on.oicr.gsi.cardea.data.Requisition;
+import ca.on.oicr.gsi.cardea.data.RequisitionQc;
+import ca.on.oicr.gsi.cardea.data.RequisitionQcGroup;
+import ca.on.oicr.gsi.cardea.data.Run;
+import ca.on.oicr.gsi.cardea.data.RunAndLibraries;
+import ca.on.oicr.gsi.cardea.data.RunAndLibraries.Builder;
+import ca.on.oicr.gsi.cardea.data.Sample;
+import ca.on.oicr.gsi.cardea.data.Test;
+import ca.on.oicr.gsi.cardea.data.ThresholdType;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.micrometer.core.instrument.MeterRegistry;
@@ -49,11 +49,39 @@ import java.util.stream.Collectors;
 @Component
 public class CaseLoader {
 
-  @FunctionalInterface
-  private static interface ParseFunction<T, R> {
-    R apply(T input) throws DataParseException;
-  }
   private static final Logger log = LoggerFactory.getLogger(CaseLoader.class);
+  private File assayFile;
+  private File caseFile;
+  private File donorFile;
+  private ObjectMapper mapper = new ObjectMapper();
+  private File noCaseFile;
+  private File projectFile;
+  private Timer refreshTimer = null;
+  private File requisitionFile;
+  private File runFile;
+  private File sampleFile;
+  private File timestampFile;
+
+  public CaseLoader(@Value("${datadirectory}") File dataDirectory,
+      @Autowired MeterRegistry meterRegistry) {
+    if (!dataDirectory.isDirectory() || !dataDirectory.canRead()) {
+      throw new IllegalStateException(
+          String.format("Data directory unreadable: %s", dataDirectory.getAbsolutePath()));
+    }
+    if (meterRegistry != null) {
+      refreshTimer = Timer.builder("case_data_refresh_time")
+          .description("Time taken to refresh the case data").register(meterRegistry);
+    }
+    projectFile = new File(dataDirectory, "projects.json");
+    caseFile = new File(dataDirectory, "cases.json");
+    donorFile = new File(dataDirectory, "donors.json");
+    requisitionFile = new File(dataDirectory, "requisitions.json");
+    runFile = new File(dataDirectory, "runs.json");
+    sampleFile = new File(dataDirectory, "samples.json");
+    assayFile = new File(dataDirectory, "assays.json");
+    timestampFile = new File(dataDirectory, "timestamp");
+    noCaseFile = new File(dataDirectory, "receipts_nocase.json");
+  }
 
   private static JsonNode getNode(JsonNode json, String fieldName, boolean required)
       throws DataParseException {
@@ -202,38 +230,6 @@ public class CaseLoader {
       throws DataParseException {
     JsonNode node = getNode(json, fieldName, required);
     return node == null ? null : node.asText();
-  }
-  private File assayFile;
-  private File caseFile;
-  private File donorFile;
-  private ObjectMapper mapper = new ObjectMapper();
-  private File noCaseFile;
-  private File projectFile;
-  private Timer refreshTimer = null;
-  private File requisitionFile;
-  private File runFile;
-  private File sampleFile;
-  private File timestampFile;
-
-  public CaseLoader(@Value("${datadirectory}") File dataDirectory,
-      @Autowired MeterRegistry meterRegistry) {
-    if (!dataDirectory.isDirectory() || !dataDirectory.canRead()) {
-      throw new IllegalStateException(
-          String.format("Data directory unreadable: %s", dataDirectory.getAbsolutePath()));
-    }
-    if (meterRegistry != null) {
-      refreshTimer = Timer.builder("case_data_refresh_time")
-          .description("Time taken to refresh the case data").register(meterRegistry);
-    }
-    projectFile = new File(dataDirectory, "projects.json");
-    caseFile = new File(dataDirectory, "cases.json");
-    donorFile = new File(dataDirectory, "donors.json");
-    requisitionFile = new File(dataDirectory, "requisitions.json");
-    runFile = new File(dataDirectory, "runs.json");
-    sampleFile = new File(dataDirectory, "samples.json");
-    assayFile = new File(dataDirectory, "assays.json");
-    timestampFile = new File(dataDirectory, "timestamp");
-    noCaseFile = new File(dataDirectory, "receipts_nocase.json");
   }
 
   private void addRunLibrary(Map<String, RunAndLibraries.Builder> map, Sample sample,
@@ -680,6 +676,11 @@ public class CaseLoader {
           .build());
     }
     return tests;
+  }
+
+  @FunctionalInterface
+  private static interface ParseFunction<T, R> {
+    R apply(T input) throws DataParseException;
   }
 
 }

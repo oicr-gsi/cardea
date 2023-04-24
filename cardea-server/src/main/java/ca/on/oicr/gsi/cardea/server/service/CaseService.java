@@ -1,8 +1,8 @@
 package ca.on.oicr.gsi.cardea.server.service;
 
-import ca.on.oicr.gsi.qcgateetlapi.data.CaseStatusCountsForRun;
-import ca.on.oicr.gsi.qcgateetlapi.data.RequisitionQc;
-import ca.on.oicr.gsi.qcgateetlapi.data.Run;
+import ca.on.oicr.gsi.cardea.data.CaseStatusCountsForRun;
+import ca.on.oicr.gsi.cardea.data.RequisitionQc;
+import ca.on.oicr.gsi.cardea.data.Run;
 import java.time.Duration;
 import java.time.ZonedDateTime;
 import java.util.Map;
@@ -18,9 +18,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import ca.on.oicr.gsi.cardea.server.CaseLoader;
-import ca.on.oicr.gsi.qcgateetlapi.data.Case;
-import ca.on.oicr.gsi.qcgateetlapi.data.CaseData;
-import ca.on.oicr.gsi.qcgateetlapi.data.Requisition;
+import ca.on.oicr.gsi.cardea.data.Case;
+import ca.on.oicr.gsi.cardea.data.CaseData;
+import ca.on.oicr.gsi.cardea.data.Requisition;
 import io.micrometer.core.instrument.Gauge;
 import io.micrometer.core.instrument.MeterRegistry;
 
@@ -48,6 +48,10 @@ public class CaseService {
 
   public CaseData getCaseData() {
     return caseData;
+  }
+
+  protected void setCaseData(CaseData caseData) {
+    this.caseData = caseData;
   }
 
   public CaseStatusCountsForRun getCaseStatusCountsForRun(String runName) {
@@ -118,10 +122,6 @@ public class CaseService {
       refreshFailures++;
       log.error("Failed to refresh case data", e);
     }
-  }
-
-  protected void setCaseData(CaseData caseData) {
-    this.caseData = caseData;
   }
 
 }

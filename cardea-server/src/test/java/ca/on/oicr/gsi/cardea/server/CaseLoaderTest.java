@@ -4,20 +4,20 @@ import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
-import ca.on.oicr.gsi.qcgateetlapi.data.Assay;
-import ca.on.oicr.gsi.qcgateetlapi.data.Case;
-import ca.on.oicr.gsi.qcgateetlapi.data.CaseData;
-import ca.on.oicr.gsi.qcgateetlapi.data.Donor;
-import ca.on.oicr.gsi.qcgateetlapi.data.Metric;
-import ca.on.oicr.gsi.qcgateetlapi.data.MetricCategory;
-import ca.on.oicr.gsi.qcgateetlapi.data.MetricSubcategory;
-import ca.on.oicr.gsi.qcgateetlapi.data.OmittedSample;
-import ca.on.oicr.gsi.qcgateetlapi.data.Project;
-import ca.on.oicr.gsi.qcgateetlapi.data.Requisition;
-import ca.on.oicr.gsi.qcgateetlapi.data.RequisitionQc;
-import ca.on.oicr.gsi.qcgateetlapi.data.RequisitionQcGroup;
-import ca.on.oicr.gsi.qcgateetlapi.data.Run;
-import ca.on.oicr.gsi.qcgateetlapi.data.Sample;
+import ca.on.oicr.gsi.cardea.data.Assay;
+import ca.on.oicr.gsi.cardea.data.Case;
+import ca.on.oicr.gsi.cardea.data.CaseData;
+import ca.on.oicr.gsi.cardea.data.Donor;
+import ca.on.oicr.gsi.cardea.data.Metric;
+import ca.on.oicr.gsi.cardea.data.MetricCategory;
+import ca.on.oicr.gsi.cardea.data.MetricSubcategory;
+import ca.on.oicr.gsi.cardea.data.OmittedSample;
+import ca.on.oicr.gsi.cardea.data.Project;
+import ca.on.oicr.gsi.cardea.data.Requisition;
+import ca.on.oicr.gsi.cardea.data.RequisitionQc;
+import ca.on.oicr.gsi.cardea.data.RequisitionQcGroup;
+import ca.on.oicr.gsi.cardea.data.Run;
+import ca.on.oicr.gsi.cardea.data.Sample;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -35,10 +35,12 @@ import java.util.Objects;
 
 public class CaseLoaderTest {
 
-  private static File dataDirectory;
   private static final String testDonorId = "SAM413576";
   private static final String testProjectName = "PROJ";
   private static final String testSampleId = "SAM413577";
+  private static File dataDirectory;
+  private List<Case> cases = MockCase.getCases();
+  private CaseLoader sut;
 
   @BeforeAll
   public static void setupClass() {
@@ -47,8 +49,6 @@ public class CaseLoaderTest {
     File caseFile = new File(caseFileUrl.getFile());
     dataDirectory = caseFile.getParentFile();
   }
-  private List<Case> cases = MockCase.getCases();
-  private CaseLoader sut;
 
   private void assertDonor(Donor donor) {
     assertNotNull(donor);
@@ -117,7 +117,7 @@ public class CaseLoaderTest {
 
     assertNotNull(kase.getTests());
     assertEquals(3, kase.getTests().size());
-    ca.on.oicr.gsi.qcgateetlapi.data.Test test = kase.getTests().stream()
+    ca.on.oicr.gsi.cardea.data.Test test = kase.getTests().stream()
         .filter(x -> x.getName().equals("Normal WG")).findAny().orElse(null);
     assertNotNull(test);
     assertEquals("Normal WG", test.getName());

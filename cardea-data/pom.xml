@@ -44,6 +44,7 @@
   <parent>
     <artifactId>cardea</artifactId>
     <groupId>ca.on.oicr.gsi.cardea</groupId>
+<!--    <relativePath>../pom.xml</relativePath>-->
     <version>0.0.1-SNAPSHOT</version>
   </parent>
 

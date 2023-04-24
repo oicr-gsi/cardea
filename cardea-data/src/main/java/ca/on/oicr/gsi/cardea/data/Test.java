@@ -1,4 +1,4 @@
-package ca.on.oicr.gsi.qcgateetlapi.data;
+package ca.on.oicr.gsi.cardea.data;
 
 import static java.util.Collections.emptyList;
 import static java.util.Collections.unmodifiableList;
@@ -12,6 +12,95 @@ import java.util.stream.Stream;
 import org.immutables.value.Value;
 
 public class Test {
+
+  private final boolean extractionSkipped;
+  private final List<Sample> extractions;
+  private final List<Sample> fullDepthSequencings;
+  private final String groupId;
+  private final LocalDate latestActivityDate;
+  private final boolean libraryPreparationSkipped;
+  private final List<Sample> libraryPreparations;
+  private final List<Sample> libraryQualifications;
+  private final String name;
+  private final String targetedSequencing;
+  private final String timepoint;
+  private final String tissueOrigin;
+  private final String tissueType;
+  private Test(Builder builder) {
+    this.name = requireNonNull(builder.name);
+    this.tissueOrigin = builder.tissueOrigin;
+    this.tissueType = builder.tissueType;
+    this.timepoint = builder.timepoint;
+    this.groupId = builder.groupId;
+    this.targetedSequencing = builder.targetedSequencing;
+    this.extractionSkipped = builder.extractionSkipped;
+    this.libraryPreparationSkipped = builder.libraryPreparationSkipped;
+    this.extractions =
+        builder.extractions == null ? emptyList() : unmodifiableList(builder.extractions);
+    this.libraryPreparations = builder.libraryPreparations == null ? emptyList()
+        : unmodifiableList(builder.libraryPreparations);
+    this.libraryQualifications = builder.libraryQualifications == null ? emptyList()
+        : unmodifiableList(builder.libraryQualifications);
+    this.fullDepthSequencings = builder.fullDepthSequencings == null ? emptyList()
+        : unmodifiableList(builder.fullDepthSequencings);
+    this.latestActivityDate = Stream
+        .of(extractions.stream(), libraryPreparations.stream(), libraryQualifications.stream(),
+            fullDepthSequencings.stream())
+        .flatMap(Function.identity()).map(Sample::getLatestActivityDate).max(LocalDate::compareTo)
+        .orElse(null);
+  }
+
+  public List<Sample> getExtractions() {
+    return extractions;
+  }
+
+  public List<Sample> getFullDepthSequencings() {
+    return fullDepthSequencings;
+  }
+
+  public String getGroupId() {
+    return groupId;
+  }
+
+  public LocalDate getLatestActivityDate() {
+    return latestActivityDate;
+  }
+
+  public List<Sample> getLibraryPreparations() {
+    return libraryPreparations;
+  }
+
+  public List<Sample> getLibraryQualifications() {
+    return libraryQualifications;
+  }
+
+  public String getName() {
+    return name;
+  }
+
+  public String getTargetedSequencing() {
+    return targetedSequencing;
+  }
+
+  public String getTimepoint() {
+    return timepoint;
+  }
+
+  public String getTissueOrigin() {
+    return tissueOrigin;
+  }
+
+  public String getTissueType() {
+    return tissueType;
+  }
+
+  public boolean isExtractionSkipped() {
+    return extractionSkipped;
+  }
+
+  public boolean isLibraryPreparationSkipped() {
+    return libraryPreparationSkipped;
+  }
 
   @Value.Immutable
   public static class Builder {
@@ -92,94 +181,5 @@ public class Test {
       this.tissueType = tissueType;
       return this;
     }
-  }
-  private final boolean extractionSkipped;
-  private final List<Sample> extractions;
-  private final List<Sample> fullDepthSequencings;
-  private final String groupId;
-  private final LocalDate latestActivityDate;
-  private final boolean libraryPreparationSkipped;
-  private final List<Sample> libraryPreparations;
-  private final List<Sample> libraryQualifications;
-  private final String name;
-  private final String targetedSequencing;
-  private final String timepoint;
-  private final String tissueOrigin;
-  private final String tissueType;
-
-  private Test(Builder builder) {
-    this.name = requireNonNull(builder.name);
-    this.tissueOrigin = builder.tissueOrigin;
-    this.tissueType = builder.tissueType;
-    this.timepoint = builder.timepoint;
-    this.groupId = builder.groupId;
-    this.targetedSequencing = builder.targetedSequencing;
-    this.extractionSkipped = builder.extractionSkipped;
-    this.libraryPreparationSkipped = builder.libraryPreparationSkipped;
-    this.extractions =
-        builder.extractions == null ? emptyList() : unmodifiableList(builder.extractions);
-    this.libraryPreparations = builder.libraryPreparations == null ? emptyList()
-        : unmodifiableList(builder.libraryPreparations);
-    this.libraryQualifications = builder.libraryQualifications == null ? emptyList()
-        : unmodifiableList(builder.libraryQualifications);
-    this.fullDepthSequencings = builder.fullDepthSequencings == null ? emptyList()
-        : unmodifiableList(builder.fullDepthSequencings);
-    this.latestActivityDate = Stream
-        .of(extractions.stream(), libraryPreparations.stream(), libraryQualifications.stream(),
-            fullDepthSequencings.stream())
-        .flatMap(Function.identity()).map(Sample::getLatestActivityDate).max(LocalDate::compareTo)
-        .orElse(null);
-  }
-
-  public List<Sample> getExtractions() {
-    return extractions;
-  }
-
-  public List<Sample> getFullDepthSequencings() {
-    return fullDepthSequencings;
-  }
-
-  public String getGroupId() {
-    return groupId;
-  }
-
-  public LocalDate getLatestActivityDate() {
-    return latestActivityDate;
-  }
-
-  public List<Sample> getLibraryPreparations() {
-    return libraryPreparations;
-  }
-
-  public List<Sample> getLibraryQualifications() {
-    return libraryQualifications;
-  }
-
-  public String getName() {
-    return name;
-  }
-
-  public String getTargetedSequencing() {
-    return targetedSequencing;
-  }
-
-  public String getTimepoint() {
-    return timepoint;
-  }
-
-  public String getTissueOrigin() {
-    return tissueOrigin;
-  }
-
-  public String getTissueType() {
-    return tissueType;
-  }
-
-  public boolean isExtractionSkipped() {
-    return extractionSkipped;
-  }
-
-  public boolean isLibraryPreparationSkipped() {
-    return libraryPreparationSkipped;
   }
 }

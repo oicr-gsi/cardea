@@ -1,8 +1,5 @@
-package ca.on.oicr.gsi.qcgateetlapi.data;
+package ca.on.oicr.gsi.cardea.data;
 
-//import javax.annotation.concurrent.Immutable;
-
-//@Immutable
 public class CaseStatusCountsForRun {
   private final Long activeCaseCount;
   private final Long completedCaseCount;

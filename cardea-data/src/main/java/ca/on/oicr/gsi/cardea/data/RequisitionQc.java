@@ -1,4 +1,4 @@
-package ca.on.oicr.gsi.qcgateetlapi.data;
+package ca.on.oicr.gsi.cardea.data;
 
 import static java.util.Objects.requireNonNull;
 
@@ -7,6 +7,27 @@ import java.time.LocalDate;
 import org.immutables.value.Value;
 
 public class RequisitionQc {
+
+  private final LocalDate qcDate;
+  private final boolean qcPassed;
+  private final String qcUser;
+  private RequisitionQc(Builder builder) {
+    this.qcPassed = requireNonNull(builder.qcPassed);
+    this.qcUser = requireNonNull(builder.qcUser);
+    this.qcDate = requireNonNull(builder.qcDate);
+  }
+
+  public LocalDate getQcDate() {
+    return qcDate;
+  }
+
+  public String getQcUser() {
+    return qcUser;
+  }
+
+  public boolean isQcPassed() {
+    return qcPassed;
+  }
 
   @Value.Immutable
   public static class Builder {
@@ -33,26 +54,5 @@ public class RequisitionQc {
       this.qcUser = qcUser;
       return this;
     }
-  }
-  private final LocalDate qcDate;
-  private final boolean qcPassed;
-  private final String qcUser;
-
-  private RequisitionQc(Builder builder) {
-    this.qcPassed = requireNonNull(builder.qcPassed);
-    this.qcUser = requireNonNull(builder.qcUser);
-    this.qcDate = requireNonNull(builder.qcDate);
-  }
-
-  public LocalDate getQcDate() {
-    return qcDate;
-  }
-
-  public String getQcUser() {
-    return qcUser;
-  }
-
-  public boolean isQcPassed() {
-    return qcPassed;
   }
 }

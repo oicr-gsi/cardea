@@ -1,12 +1,26 @@
-package ca.on.oicr.gsi.qcgateetlapi.data;
+package ca.on.oicr.gsi.cardea.data;
 
 import static java.util.Objects.requireNonNull;
+import org.immutables.value.Value.Immutable;
 
-//import javax.annotation.concurrent.Immutable;
-
-//@Immutable
 public class Project {
 
+  private final String name;
+  private final String pipeline;
+  private Project(Builder builder) {
+    this.name = requireNonNull(builder.name);
+    this.pipeline = requireNonNull(builder.pipeline);
+  }
+
+  public String getName() {
+    return name;
+  }
+
+  public String getPipeline() {
+    return pipeline;
+  }
+
+  @Immutable
   public static class Builder {
 
     private String name;
@@ -26,20 +40,5 @@ public class Project {
       return this;
     }
 
-  }
-  private final String name;
-  private final String pipeline;
-
-  private Project(Builder builder) {
-    this.name = requireNonNull(builder.name);
-    this.pipeline = requireNonNull(builder.pipeline);
-  }
-
-  public String getName() {
-    return name;
-  }
-
-  public String getPipeline() {
-    return pipeline;
   }
 }

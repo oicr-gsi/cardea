@@ -1,8 +1,8 @@
 package ca.on.oicr.gsi.cardea.server.controller;
 
 import ca.on.oicr.gsi.cardea.server.service.CaseService;
-import ca.on.oicr.gsi.qcgateetlapi.data.CaseData;
-import ca.on.oicr.gsi.qcgateetlapi.data.CaseStatusCountsForRun;
+import ca.on.oicr.gsi.cardea.data.CaseData;
+import ca.on.oicr.gsi.cardea.data.CaseStatusCountsForRun;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;

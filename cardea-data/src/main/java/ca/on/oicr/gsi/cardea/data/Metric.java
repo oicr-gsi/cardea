@@ -1,13 +1,101 @@
-package ca.on.oicr.gsi.qcgateetlapi.data;
+package ca.on.oicr.gsi.cardea.data;
+
+import org.immutables.value.Value;
 
 import static java.util.Objects.requireNonNull;
 
 import java.math.BigDecimal;
-//import javax.annotation.concurrent.Immutable;
 
-//@Immutable
 public class Metric {
 
+  private final String containerModel;
+  private final BigDecimal maximum;
+  private final BigDecimal minimum;
+  private final String name;
+  private final boolean negateTissueType;
+  private final String nucleicAcidType;
+  private final Integer readLength;
+  private final Integer readLength2;
+  private final Integer sortPriority;
+  private final ThresholdType thresholdType;
+  private final String tissueMaterial;
+  private final String tissueOrigin;
+  private final String tissueType;
+  private final String units;
+  private Metric(Builder builder) {
+    this.name = requireNonNull(builder.name);
+    this.sortPriority = builder.sortPriority;
+    this.minimum = builder.minimum;
+    this.maximum = builder.maximum;
+    this.units = builder.units;
+    this.tissueMaterial = builder.tissueMaterial;
+    this.tissueOrigin = builder.tissueOrigin;
+    this.tissueType = builder.tissueType;
+    this.negateTissueType = builder.negateTissueType;
+    this.nucleicAcidType = builder.nucleicAcidType;
+    this.containerModel = builder.containerModel;
+    this.readLength = builder.readLength;
+    this.readLength2 = builder.readLength2;
+    this.thresholdType = requireNonNull(builder.thresholdType);
+  }
+
+  public String getContainerModel() {
+    return containerModel;
+  }
+
+  public BigDecimal getMaximum() {
+    return maximum;
+  }
+
+  public BigDecimal getMinimum() {
+    return minimum;
+  }
+
+  public String getName() {
+    return name;
+  }
+
+  public String getNucleicAcidType() {
+    return nucleicAcidType;
+  }
+
+  public Integer getReadLength() {
+    return readLength;
+  }
+
+  public Integer getReadLength2() {
+    return readLength2;
+  }
+
+  public Integer getSortPriority() {
+    return sortPriority;
+  }
+
+  public ThresholdType getThresholdType() {
+    return thresholdType;
+  }
+
+  public String getTissueMaterial() {
+    return tissueMaterial;
+  }
+
+  public String getTissueOrigin() {
+    return tissueOrigin;
+  }
+
+  public String getTissueType() {
+    return tissueType;
+  }
+
+  public String getUnits() {
+    return units;
+  }
+
+  public boolean isNegateTissueType() {
+    return negateTissueType;
+  }
+
+  @Value.Immutable
   public static class Builder {
 
     private String containerModel;
@@ -99,93 +187,6 @@ public class Metric {
       return this;
     }
 
-  }
-  private final String containerModel;
-  private final BigDecimal maximum;
-  private final BigDecimal minimum;
-  private final String name;
-  private final boolean negateTissueType;
-  private final String nucleicAcidType;
-  private final Integer readLength;
-  private final Integer readLength2;
-  private final Integer sortPriority;
-  private final ThresholdType thresholdType;
-  private final String tissueMaterial;
-  private final String tissueOrigin;
-  private final String tissueType;
-  private final String units;
-
-  private Metric(Builder builder) {
-    this.name = requireNonNull(builder.name);
-    this.sortPriority = builder.sortPriority;
-    this.minimum = builder.minimum;
-    this.maximum = builder.maximum;
-    this.units = builder.units;
-    this.tissueMaterial = builder.tissueMaterial;
-    this.tissueOrigin = builder.tissueOrigin;
-    this.tissueType = builder.tissueType;
-    this.negateTissueType = builder.negateTissueType;
-    this.nucleicAcidType = builder.nucleicAcidType;
-    this.containerModel = builder.containerModel;
-    this.readLength = builder.readLength;
-    this.readLength2 = builder.readLength2;
-    this.thresholdType = requireNonNull(builder.thresholdType);
-  }
-
-  public String getContainerModel() {
-    return containerModel;
-  }
-
-  public BigDecimal getMaximum() {
-    return maximum;
-  }
-
-  public BigDecimal getMinimum() {
-    return minimum;
-  }
-
-  public String getName() {
-    return name;
-  }
-
-  public String getNucleicAcidType() {
-    return nucleicAcidType;
-  }
-
-  public Integer getReadLength() {
-    return readLength;
-  }
-
-  public Integer getReadLength2() {
-    return readLength2;
-  }
-
-  public Integer getSortPriority() {
-    return sortPriority;
-  }
-
-  public ThresholdType getThresholdType() {
-    return thresholdType;
-  }
-
-  public String getTissueMaterial() {
-    return tissueMaterial;
-  }
-
-  public String getTissueOrigin() {
-    return tissueOrigin;
-  }
-
-  public String getTissueType() {
-    return tissueType;
-  }
-
-  public String getUnits() {
-    return units;
-  }
-
-  public boolean isNegateTissueType() {
-    return negateTissueType;
   }
 
 }

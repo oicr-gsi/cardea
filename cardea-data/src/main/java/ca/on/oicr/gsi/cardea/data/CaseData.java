@@ -1,13 +1,11 @@
-package ca.on.oicr.gsi.qcgateetlapi.data;
+package ca.on.oicr.gsi.cardea.data;
 
 import static java.util.Collections.unmodifiableList;
 import static java.util.Objects.requireNonNull;
 import java.time.ZonedDateTime;
 import java.util.Collections;
 import java.util.List;
-//import javax.annotation.concurrent.Immutable;
 
-//@Immutable
 public class CaseData {
 
   private final List<Case> cases;

@@ -1,4 +1,4 @@
-package ca.on.oicr.gsi.qcgateetlapi.data;
+package ca.on.oicr.gsi.cardea.data;
 
 import static java.util.Objects.requireNonNull;
 import java.math.BigDecimal;
@@ -10,6 +10,131 @@ import java.util.Objects;
 import org.immutables.value.Value;
 
 public class Run {
+
+  private final Long clustersPf;
+  private final LocalDate completionDate;
+  private final String containerModel;
+  private final LocalDate dataReviewDate;
+  private final Boolean dataReviewPassed;
+  private final String dataReviewUser;
+  private final long id;
+  private final boolean joinedLanes;
+  private final List<Lane> lanes;
+  private final String name;
+  private final BigDecimal percentOverQ30;
+  private final LocalDate qcDate;
+  private final Boolean qcPassed;
+  private final String qcUser;
+  private final Integer readLength;
+  private final Integer readLength2;
+  private final String sequencingParameters;
+  private Run(Builder builder) {
+    if (builder.id < 0) {
+      throw new IllegalArgumentException(String.format("Invalid run ID: %d", builder.id));
+    }
+    this.id = builder.id;
+    this.name = requireNonNull(builder.name);
+    this.containerModel = builder.containerModel;
+    this.joinedLanes = builder.joinedLanes;
+    this.sequencingParameters = builder.sequencingParameters;
+    this.readLength = builder.readLength;
+    this.readLength2 = builder.readLength2;
+    this.completionDate = builder.completionDate;
+    this.percentOverQ30 = builder.percentOverQ30;
+    this.clustersPf = builder.clustersPf;
+    this.lanes = Collections.unmodifiableList(requireNonNull(builder.lanes));
+    this.qcPassed = builder.qcPassed;
+    this.qcUser = builder.qcUser;
+    this.qcDate = builder.qcDate;
+    this.dataReviewPassed = builder.dataReviewPassed;
+    this.dataReviewUser = builder.dataReviewUser;
+    this.dataReviewDate = builder.dataReviewDate;
+  }
+
+  @Override
+  public boolean equals(Object obj) {
+    if (this == obj)
+      return true;
+    if (obj == null)
+      return false;
+    if (getClass() != obj.getClass())
+      return false;
+    Run other = (Run) obj;
+    return Objects.equals(id, other.id);
+  }
+
+  public Long getClustersPf() {
+    return clustersPf;
+  }
+
+  public LocalDate getCompletionDate() {
+    return completionDate;
+  }
+
+  public String getContainerModel() {
+    return containerModel;
+  }
+
+  public LocalDate getDataReviewDate() {
+    return dataReviewDate;
+  }
+
+  public Boolean getDataReviewPassed() {
+    return dataReviewPassed;
+  }
+
+  public String getDataReviewUser() {
+    return dataReviewUser;
+  }
+
+  public long getId() {
+    return id;
+  }
+
+  public List<Lane> getLanes() {
+    return lanes;
+  }
+
+  public String getName() {
+    return name;
+  }
+
+  public BigDecimal getPercentOverQ30() {
+    return percentOverQ30;
+  }
+
+  public LocalDate getQcDate() {
+    return qcDate;
+  }
+
+  public Boolean getQcPassed() {
+    return qcPassed;
+  }
+
+  public String getQcUser() {
+    return qcUser;
+  }
+
+  public Integer getReadLength() {
+    return readLength;
+  }
+
+  public Integer getReadLength2() {
+    return readLength2;
+  }
+
+  public String getSequencingParameters() {
+    return sequencingParameters;
+  }
+
+  public boolean hasJoinedLanes() {
+    return joinedLanes;
+  }
+
+  @Override
+  public int hashCode() {
+    return Objects.hash(id);
+  }
 
   @Value.Immutable
   public static class Builder {
@@ -121,131 +246,6 @@ public class Run {
       return this;
     }
 
-  }
-  private final Long clustersPf;
-  private final LocalDate completionDate;
-  private final String containerModel;
-  private final LocalDate dataReviewDate;
-  private final Boolean dataReviewPassed;
-  private final String dataReviewUser;
-  private final long id;
-  private final boolean joinedLanes;
-  private final List<Lane> lanes;
-  private final String name;
-  private final BigDecimal percentOverQ30;
-  private final LocalDate qcDate;
-  private final Boolean qcPassed;
-  private final String qcUser;
-  private final Integer readLength;
-  private final Integer readLength2;
-  private final String sequencingParameters;
-
-  private Run(Builder builder) {
-    if (builder.id < 0) {
-      throw new IllegalArgumentException(String.format("Invalid run ID: %d", builder.id));
-    }
-    this.id = builder.id;
-    this.name = requireNonNull(builder.name);
-    this.containerModel = builder.containerModel;
-    this.joinedLanes = builder.joinedLanes;
-    this.sequencingParameters = builder.sequencingParameters;
-    this.readLength = builder.readLength;
-    this.readLength2 = builder.readLength2;
-    this.completionDate = builder.completionDate;
-    this.percentOverQ30 = builder.percentOverQ30;
-    this.clustersPf = builder.clustersPf;
-    this.lanes = Collections.unmodifiableList(requireNonNull(builder.lanes));
-    this.qcPassed = builder.qcPassed;
-    this.qcUser = builder.qcUser;
-    this.qcDate = builder.qcDate;
-    this.dataReviewPassed = builder.dataReviewPassed;
-    this.dataReviewUser = builder.dataReviewUser;
-    this.dataReviewDate = builder.dataReviewDate;
-  }
-
-  @Override
-  public boolean equals(Object obj) {
-    if (this == obj)
-      return true;
-    if (obj == null)
-      return false;
-    if (getClass() != obj.getClass())
-      return false;
-    Run other = (Run) obj;
-    return Objects.equals(id, other.id);
-  }
-
-  public Long getClustersPf() {
-    return clustersPf;
-  }
-
-  public LocalDate getCompletionDate() {
-    return completionDate;
-  }
-
-  public String getContainerModel() {
-    return containerModel;
-  }
-
-  public LocalDate getDataReviewDate() {
-    return dataReviewDate;
-  }
-
-  public Boolean getDataReviewPassed() {
-    return dataReviewPassed;
-  }
-
-  public String getDataReviewUser() {
-    return dataReviewUser;
-  }
-
-  public long getId() {
-    return id;
-  }
-
-  public List<Lane> getLanes() {
-    return lanes;
-  }
-
-  public String getName() {
-    return name;
-  }
-
-  public BigDecimal getPercentOverQ30() {
-    return percentOverQ30;
-  }
-
-  public LocalDate getQcDate() {
-    return qcDate;
-  }
-
-  public Boolean getQcPassed() {
-    return qcPassed;
-  }
-
-  public String getQcUser() {
-    return qcUser;
-  }
-
-  public Integer getReadLength() {
-    return readLength;
-  }
-
-  public Integer getReadLength2() {
-    return readLength2;
-  }
-
-  public String getSequencingParameters() {
-    return sequencingParameters;
-  }
-
-  public boolean hasJoinedLanes() {
-    return joinedLanes;
-  }
-
-  @Override
-  public int hashCode() {
-    return Objects.hash(id);
   }
 
 }

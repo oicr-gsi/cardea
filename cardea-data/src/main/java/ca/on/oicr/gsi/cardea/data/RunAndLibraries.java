@@ -1,4 +1,4 @@
-package ca.on.oicr.gsi.qcgateetlapi.data;
+package ca.on.oicr.gsi.cardea.data;
 
 import static java.util.Objects.requireNonNull;
 
@@ -9,6 +9,27 @@ import java.util.Set;
 import org.immutables.value.Value;
 
 public class RunAndLibraries {
+
+  private Set<Sample> fullDepthSequencings;
+  private Set<Sample> libraryQualifications;
+  private Run run;
+  private RunAndLibraries(Builder builder) {
+    this.run = requireNonNull(builder.run);
+    this.libraryQualifications = Collections.unmodifiableSet(builder.libraryQualifications);
+    this.fullDepthSequencings = Collections.unmodifiableSet(builder.fullDepthSequencings);
+  }
+
+  public Set<Sample> getFullDepthSequencings() {
+    return fullDepthSequencings;
+  }
+
+  public Set<Sample> getLibraryQualifications() {
+    return libraryQualifications;
+  }
+
+  public Run getRun() {
+    return run;
+  }
 
   @Value.Immutable
   public static class Builder {
@@ -36,27 +57,6 @@ public class RunAndLibraries {
       return this;
     }
 
-  }
-  private Set<Sample> fullDepthSequencings;
-  private Set<Sample> libraryQualifications;
-  private Run run;
-
-  private RunAndLibraries(Builder builder) {
-    this.run = requireNonNull(builder.run);
-    this.libraryQualifications = Collections.unmodifiableSet(builder.libraryQualifications);
-    this.fullDepthSequencings = Collections.unmodifiableSet(builder.fullDepthSequencings);
-  }
-
-  public Set<Sample> getFullDepthSequencings() {
-    return fullDepthSequencings;
-  }
-
-  public Set<Sample> getLibraryQualifications() {
-    return libraryQualifications;
-  }
-
-  public Run getRun() {
-    return run;
   }
 
 }

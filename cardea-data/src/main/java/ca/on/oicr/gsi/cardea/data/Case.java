@@ -1,4 +1,4 @@
-package ca.on.oicr.gsi.qcgateetlapi.data;
+package ca.on.oicr.gsi.cardea.data;
 
 import static java.util.Collections.unmodifiableList;
 import static java.util.Collections.unmodifiableSet;
@@ -13,77 +13,10 @@ import java.util.stream.Stream;
 
 //import javax.annotation.concurrent.Immutable;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import org.immutables.value.Value;
 
-//@Immutable
 public class Case {
 
-  public static class Builder {
-
-    private Assay assay;
-    private Donor donor;
-    private String id;
-    private Set<Project> projects;
-    private List<Sample> receipts;
-    private Requisition requisition;
-    private List<Test> tests;
-    private String timepoint;
-    private String tissueOrigin;
-    private String tissueType;
-
-    public Builder assay(Assay assay) {
-      this.assay = assay;
-      return this;
-    }
-
-    public Case build() {
-      return new Case(this);
-    }
-
-    public Builder donor(Donor donor) {
-      this.donor = donor;
-      return this;
-    }
-
-    public Builder id(String id) {
-      this.id = id;
-      return this;
-    }
-
-    public Builder projects(Set<Project> projects) {
-      this.projects = projects;
-      return this;
-    }
-
-    public Builder receipts(List<Sample> receipts) {
-      this.receipts = receipts;
-      return this;
-    }
-
-    public Builder requisition(Requisition requisition) {
-      this.requisition = requisition;
-      return this;
-    }
-
-    public Builder tests(List<Test> tests) {
-      this.tests = tests;
-      return this;
-    }
-
-    public Builder timepoint(String timepoint) {
-      this.timepoint = timepoint;
-      return this;
-    }
-
-    public Builder tissueOrigin(String tissueOrigin) {
-      this.tissueOrigin = tissueOrigin;
-      return this;
-    }
-
-    public Builder tissueType(String tissueType) {
-      this.tissueType = tissueType;
-      return this;
-    }
-  }
   private final Assay assay;
   private final long assayId;
   private final Donor donor;
@@ -97,7 +30,6 @@ public class Case {
   private final String timepoint;
   private final String tissueOrigin;
   private final String tissueType;
-
   private Case(Builder builder) {
     this.id = requireNonNull(builder.id);
     this.donor = requireNonNull(builder.donor);
@@ -173,5 +105,74 @@ public class Case {
 
   public String getTissueType() {
     return tissueType;
+  }
+
+  @Value.Immutable
+  public static class Builder {
+
+    private Assay assay;
+    private Donor donor;
+    private String id;
+    private Set<Project> projects;
+    private List<Sample> receipts;
+    private Requisition requisition;
+    private List<Test> tests;
+    private String timepoint;
+    private String tissueOrigin;
+    private String tissueType;
+
+    public Builder assay(Assay assay) {
+      this.assay = assay;
+      return this;
+    }
+
+    public Case build() {
+      return new Case(this);
+    }
+
+    public Builder donor(Donor donor) {
+      this.donor = donor;
+      return this;
+    }
+
+    public Builder id(String id) {
+      this.id = id;
+      return this;
+    }
+
+    public Builder projects(Set<Project> projects) {
+      this.projects = projects;
+      return this;
+    }
+
+    public Builder receipts(List<Sample> receipts) {
+      this.receipts = receipts;
+      return this;
+    }
+
+    public Builder requisition(Requisition requisition) {
+      this.requisition = requisition;
+      return this;
+    }
+
+    public Builder tests(List<Test> tests) {
+      this.tests = tests;
+      return this;
+    }
+
+    public Builder timepoint(String timepoint) {
+      this.timepoint = timepoint;
+      return this;
+    }
+
+    public Builder tissueOrigin(String tissueOrigin) {
+      this.tissueOrigin = tissueOrigin;
+      return this;
+    }
+
+    public Builder tissueType(String tissueType) {
+      this.tissueType = tissueType;
+      return this;
+    }
   }
 }
