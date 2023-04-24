@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://maven.apache.org/POM/4.0.0" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
-  <artifactId>qcgateetlapi</artifactId>
+  <artifactId>cardea</artifactId>
   <dependencies>
   </dependencies>
   <dependencyManagement>
@@ -24,8 +24,8 @@
         <version>1.0.4</version>
       </dependency>
       <dependency>
-        <artifactId>qcgateetlapi-data</artifactId>
-        <groupId>ca.on.oicr.gsi.qcgateetlapi</groupId>
+        <artifactId>cardea-data</artifactId>
+        <groupId>ca.on.oicr.gsi.cardea</groupId>
         <version>${project.version}</version>
       </dependency>
       <dependency>
@@ -40,7 +40,7 @@
       </dependency>
     </dependencies>
   </dependencyManagement>
-  <description>QC Tracking Dashboard</description>
+  <description>Cardea Case data API</description>
   <distributionManagement>
     <downloadUrl>https://artifacts.oicr.on.ca/artifactory/gsi-release</downloadUrl>
     <repository>
@@ -49,13 +49,13 @@
       <url>https://artifacts.oicr.on.ca/artifactory/gsi-release</url>
     </repository>
   </distributionManagement>
-  <groupId>ca.on.oicr.gsi.qcgateetlapi</groupId>
+  <groupId>ca.on.oicr.gsi.cardea</groupId>
   <modelVersion>4.0.0</modelVersion>
   <modules>
-    <module>qcgateetlapi-data</module>
-    <module>qcgateetlapi-server</module>
+    <module>cardea-data</module>
+    <module>cardea-server</module>
   </modules>
-  <name>QC Gate ETL API</name>
+  <name>Cardea Case API</name>
 
   <packaging>pom</packaging>
 
