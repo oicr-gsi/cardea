@@ -16,8 +16,4 @@ jobs:
           distribution: 'temurin'
           java-version: '17'
           cache: 'maven'
-      - uses: actions/setup-node@v3
-        with:
-          node-version: 17
-          cache: 'npm'
       - run: mvn --batch-mode package
