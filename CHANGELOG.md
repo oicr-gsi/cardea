@@ -9,4 +9,4 @@ This file is updated automatically as described in [Unreleased Changes](changes/
 
 # Unreleased
 
-* Copied the Dimsum project and modified it to serve as the basis for the QC Gate ETL API project
+* Copied the Dimsum project and modified it to serve as the basis for the Cardea project
