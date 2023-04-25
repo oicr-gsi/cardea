@@ -5,7 +5,7 @@ target/
 !**/src/test/**/target/
 site/
 
-cardea-server/application.properties
+cardea-server/config/
 
 ### STS ###
 .apt_generated
