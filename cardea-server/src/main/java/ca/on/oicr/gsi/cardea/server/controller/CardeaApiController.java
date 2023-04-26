@@ -3,10 +3,11 @@ package ca.on.oicr.gsi.cardea.server.controller;
 import ca.on.oicr.gsi.cardea.server.service.CaseService;
 import ca.on.oicr.gsi.cardea.data.CaseData;
 import ca.on.oicr.gsi.cardea.data.CaseStatusCountsForRun;
+import ca.on.oicr.gsi.cardea.data.ShesmuCase;
 
-import java.time.Instant;
-import java.time.ZoneId;
 import java.time.ZonedDateTime;
+
+import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -38,6 +39,11 @@ public class CardeaApiController {
     } else {
       return caseData.getTimestamp();
     }
+  }
+
+  @GetMapping("/shesmu-cases")
+  public Set<ShesmuCase> getShesmuCases() {
+    return caseService.getShesmuCases();
   }
 
 }

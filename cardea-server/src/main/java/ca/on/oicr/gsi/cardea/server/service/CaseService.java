@@ -4,13 +4,20 @@ import ca.on.oicr.gsi.cardea.data.Case;
 import ca.on.oicr.gsi.cardea.data.CaseData;
 import ca.on.oicr.gsi.cardea.data.CaseStatus;
 import ca.on.oicr.gsi.cardea.data.CaseStatusCountsForRun;
+import ca.on.oicr.gsi.cardea.data.Requisition;
 import ca.on.oicr.gsi.cardea.data.RequisitionQc;
 import ca.on.oicr.gsi.cardea.data.Run;
+import ca.on.oicr.gsi.cardea.data.Sample;
+import ca.on.oicr.gsi.cardea.data.ShesmuCase;
 import ca.on.oicr.gsi.cardea.server.CaseLoader;
+
 import java.time.Duration;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.ZonedDateTime;
 import java.util.Map;
 import java.util.Objects;
+import java.util.Optional;
 import java.util.Set;
 import java.util.concurrent.TimeUnit;
 import java.util.function.Function;
@@ -21,7 +28,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
-import ca.on.oicr.gsi.cardea.data.Requisition;
 import io.micrometer.core.instrument.Gauge;
 import io.micrometer.core.instrument.MeterRegistry;
 
@@ -94,12 +100,49 @@ public class CaseService {
   private Set<String> getRunNamesFor(Case kase) {
     return kase.getTests().stream()
         .map(test -> {
-          var lqs = test.getLibraryQualifications().stream().map(lq -> lq.getRun());
-          var fdls = test.getFullDepthSequencings().stream().map(fdl -> fdl.getRun());
-          return Stream.concat(lqs, fdls).filter(Objects::nonNull).map(Run::getName).collect(Collectors.toSet());
+          var lqs = test.getLibraryQualifications().stream().map(Sample::getRun);
+          var fdls = test.getFullDepthSequencings().stream().map(Sample::getRun);
+          return Stream.concat(lqs, fdls)
+              .filter(Objects::nonNull)
+              .map(Run::getName)
+              .collect(Collectors.toSet());
         })
         .flatMap(Set::stream)
         .collect(Collectors.toSet());
+  }
+
+  public Set<ShesmuCase> getShesmuCases() {
+    return caseData.getCases().stream()
+        .map(kase -> convertCaseToShesmuCase(kase))
+        .collect(Collectors.toSet());
+  }
+
+  private Set<String> getLimsIusIdsFor(Case kase) {
+    return kase.getTests().stream()
+        .map(test -> {
+          var lqs = test.getLibraryQualifications().stream().map(Sample::getId);
+          var fdls = test.getFullDepthSequencings().stream().map(Sample::getId);
+          return Stream.concat(lqs, fdls)
+              .filter(Objects::nonNull)
+              .collect(Collectors.toSet());
+        })
+        .flatMap(Set::stream)
+        .collect(Collectors.toSet());
+  }
+
+  private ShesmuCase convertCaseToShesmuCase(Case kase) {
+    Optional<LocalDate> completedDate = kase.getRequisition().getFinalReports().stream()
+        .map(qc -> qc.getQcDate())
+        .max(LocalDate::compareTo);
+    return new ShesmuCase.Builder()
+        .assayName(kase.getAssay().getName())
+        .assayVersion(kase.getAssay().getVersion())
+        .caseIdentifier(kase.getId())
+        .caseStatus(getReqStatus(kase.getRequisition()))
+        .completedDate(completedDate.orElse(null))
+        .requisitionId(kase.getRequisition().getId())
+        .limsIds(getLimsIusIdsFor(kase))
+        .build();
   }
 
   @Scheduled(fixedDelay = 1L, timeUnit = TimeUnit.MINUTES)
