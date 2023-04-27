@@ -59,6 +59,12 @@
         <groupId>jakarta.servlet</groupId>
         <version>5.0.0</version>
       </dependency>
+      <dependency>
+        <groupId>io.micrometer</groupId>
+        <artifactId>micrometer-registry-prometheus</artifactId>
+        <scope>runtime</scope>
+        <version>1.10.6</version>
+    </dependency>
     </dependencies>
   </dependencyManagement>
   
