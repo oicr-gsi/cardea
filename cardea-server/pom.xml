@@ -73,10 +73,6 @@
       <groupId>org.springframework.boot</groupId>
     </dependency>
     <dependency>
-      <artifactId>spring-security-saml2-service-provider</artifactId>
-      <groupId>org.springframework.security</groupId>
-    </dependency>
-    <dependency>
       <artifactId>springdoc-openapi-starter-webmvc-ui</artifactId>
       <groupId>org.springdoc</groupId>
     </dependency>

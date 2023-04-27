@@ -10,14 +10,12 @@
 1. Create a `config` subdirectory within the directory you will run the app from
 2. Copy [example-application.properties](example-application.properties) into the `config`
    directory and rename it to `application.properties`
-3. Add the following line to `application.properties` to disable authentication:
-     `spring.profiles.active=noauth`
 
 ## Build/Run
 
 From the project root, build runnable `.jar` file (located in `cardea-server/target`): 
 
-`mvn clean package`
+`mvn clean package && java -jar cardea-server/target/cardea-server*jar`
 
 Or run server via Maven:
 
