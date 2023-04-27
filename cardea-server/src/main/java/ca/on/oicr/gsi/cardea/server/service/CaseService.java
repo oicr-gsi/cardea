@@ -84,13 +84,11 @@ public class CaseService {
     var reqQcs = req.getFinalReports().stream().map(RequisitionQc::isQcPassed).collect(Collectors.toSet());
     if (reqQcs.isEmpty()) {
       return CaseStatus.ACTIVE;
-    }
-    if (reqQcs.stream().allMatch(status -> status.equals(true))) {
+    } else if (reqQcs.stream().anyMatch(status -> status.equals(true))) {
       return CaseStatus.COMPLETED;
     } else {
       return CaseStatus.ACTIVE;
     }
-
   }
 
   private Set<String> getRunNamesFor(Case kase) {
