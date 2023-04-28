@@ -12,19 +12,6 @@ spring:
     exclude:
       # Disable UserDetailsServiceAutoConfiguration to prevent auto-creation of a test user
       - org.springframework.boot.autoconfigure.security.servlet.UserDetailsServiceAutoConfiguration
-  security:
-    saml2:
-      relyingparty:
-        registration:
-          cardea:
-            signing.credentials:
-              - private-key-location: file://${saml.spkey}
-                certificate-location: file://${saml.spcert}
-            identityprovider:
-              entity-id: ${saml.idpid}
-              verification.credentials:
-                - certificate-location: file://${saml.idpcertificate}
-              singlesignon.url: ${saml.ssourl}
 
 build:
   version: "@project.version@"
