@@ -1,8 +1,12 @@
 package ca.on.oicr.gsi.cardea.server.service;
 
+import ca.on.oicr.gsi.cardea.data.Case;
+import ca.on.oicr.gsi.cardea.data.CaseData;
+import ca.on.oicr.gsi.cardea.data.CaseStatus;
 import ca.on.oicr.gsi.cardea.data.CaseStatusCountsForRun;
 import ca.on.oicr.gsi.cardea.data.RequisitionQc;
 import ca.on.oicr.gsi.cardea.data.Run;
+import ca.on.oicr.gsi.cardea.server.CaseLoader;
 import java.time.Duration;
 import java.time.ZonedDateTime;
 import java.util.Map;
@@ -17,9 +21,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
-import ca.on.oicr.gsi.cardea.server.CaseLoader;
-import ca.on.oicr.gsi.cardea.data.Case;
-import ca.on.oicr.gsi.cardea.data.CaseData;
 import ca.on.oicr.gsi.cardea.data.Requisition;
 import io.micrometer.core.instrument.Gauge;
 import io.micrometer.core.instrument.MeterRegistry;
@@ -27,9 +28,6 @@ import io.micrometer.core.instrument.MeterRegistry;
 @Service
 public class CaseService {
 
-  private static final String CASE_ACTIVE = "active";
-  private static final String CASE_COMPLETED = "completed";
-  private static final String CASE_STOPPED = "stopped";
   private static final Logger log = LoggerFactory.getLogger(CaseService.class);
   private CaseData caseData;
   @Autowired
@@ -59,12 +57,12 @@ public class CaseService {
         .filter(kase -> getRunNamesFor(kase).stream().anyMatch(rName -> runName.equals(rName)))
         .collect(Collectors.toSet());
 
-    Map<String, Long> statusCountsForRun = casesMatchingRunName.stream()
+    Map<CaseStatus, Long> statusCountsForRun = casesMatchingRunName.stream()
         .map(kase -> getReqStatus(kase.getRequisition()))
         .collect(Collectors.groupingBy(Function.identity(), Collectors.counting()));
 
-    return new CaseStatusCountsForRun(statusCountsForRun.get(CASE_ACTIVE), statusCountsForRun.get(
-        CASE_COMPLETED), statusCountsForRun.get(CASE_STOPPED));
+    return new CaseStatusCountsForRun(statusCountsForRun.get(CaseStatus.ACTIVE), statusCountsForRun.get(
+        CaseStatus.COMPLETED), statusCountsForRun.get(CaseStatus.STOPPED));
   }
 
   public Duration getDataAge() {
@@ -79,31 +77,26 @@ public class CaseService {
     return refreshFailures;
   }
 
-  private String getReqStatus(Requisition req) {
+  private CaseStatus getReqStatus(Requisition req) {
     if (req.isStopped()) {
-      return CASE_STOPPED;
+      return CaseStatus.STOPPED;
     }
-    var reqQcs =
-        req.getFinalReports().stream().map(RequisitionQc::isQcPassed).collect(Collectors.toSet());
+    var reqQcs = req.getFinalReports().stream().map(RequisitionQc::isQcPassed).collect(Collectors.toSet());
     if (reqQcs.isEmpty()) {
-      return CASE_ACTIVE;
-    }
-    if (reqQcs.stream().allMatch(status -> status.equals(true))) {
-      return CASE_COMPLETED;
+      return CaseStatus.ACTIVE;
+    } else if (reqQcs.stream().anyMatch(status -> status.equals(true))) {
+      return CaseStatus.COMPLETED;
     } else {
-      return CASE_ACTIVE;
+      return CaseStatus.ACTIVE;
     }
-
   }
 
   private Set<String> getRunNamesFor(Case kase) {
     return kase.getTests().stream()
         .map(test -> {
-          var lqs =
-              test.getLibraryQualifications().stream().map(lq -> lq.getRun());
+          var lqs = test.getLibraryQualifications().stream().map(lq -> lq.getRun());
           var fdls = test.getFullDepthSequencings().stream().map(fdl -> fdl.getRun());
-          return
-              Stream.concat(lqs, fdls).filter(Objects::nonNull).map(Run::getName).collect(Collectors.toSet());
+          return Stream.concat(lqs, fdls).filter(Objects::nonNull).map(Run::getName).collect(Collectors.toSet());
         })
         .flatMap(Set::stream)
         .collect(Collectors.toSet());

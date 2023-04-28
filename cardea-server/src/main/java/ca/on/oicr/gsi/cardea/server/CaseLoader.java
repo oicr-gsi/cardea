@@ -14,8 +14,6 @@ import ca.on.oicr.gsi.cardea.data.Requisition;
 import ca.on.oicr.gsi.cardea.data.RequisitionQc;
 import ca.on.oicr.gsi.cardea.data.RequisitionQcGroup;
 import ca.on.oicr.gsi.cardea.data.Run;
-import ca.on.oicr.gsi.cardea.data.RunAndLibraries;
-import ca.on.oicr.gsi.cardea.data.RunAndLibraries.Builder;
 import ca.on.oicr.gsi.cardea.data.Sample;
 import ca.on.oicr.gsi.cardea.data.Test;
 import ca.on.oicr.gsi.cardea.data.ThresholdType;
@@ -23,7 +21,6 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.micrometer.core.instrument.MeterRegistry;
 import io.micrometer.core.instrument.Timer;
-import java.util.function.BiConsumer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -53,14 +50,16 @@ public class CaseLoader {
   private File assayFile;
   private File caseFile;
   private File donorFile;
-  private ObjectMapper mapper = new ObjectMapper();
   private File noCaseFile;
   private File projectFile;
-  private Timer refreshTimer = null;
   private File requisitionFile;
   private File runFile;
   private File sampleFile;
   private File timestampFile;
+
+  private Timer refreshTimer = null;
+
+  private ObjectMapper mapper = new ObjectMapper();
 
   public CaseLoader(@Value("${datadirectory}") File dataDirectory,
       @Autowired MeterRegistry meterRegistry) {
@@ -83,174 +82,9 @@ public class CaseLoader {
     noCaseFile = new File(dataDirectory, "receipts_nocase.json");
   }
 
-  private static JsonNode getNode(JsonNode json, String fieldName, boolean required)
-      throws DataParseException {
-    JsonNode node = json.get(fieldName);
-    if (node == null || node.isNull()) {
-      if (required) {
-        throw new DataParseException(makeMissingFieldMessage(fieldName));
-      } else {
-        return null;
-      }
-    } else {
-      return node;
-    }
-  }
-
-  private static String makeMissingFieldMessage(String fieldName) {
-    return String.format("Required value '%s' missing", fieldName);
-  }
-
-  private static boolean parseBoolean(JsonNode json, String fieldName) throws DataParseException {
-    JsonNode node = json.get(fieldName);
-    if (node == null || node.isNull()) {
-      throw new DataParseException(makeMissingFieldMessage(fieldName));
-    } else {
-      return node.asBoolean();
-    }
-  }
-
-  private static Boolean parseDataReviewPassed(JsonNode json, String fieldName)
-      throws DataParseException {
-    String qcState = parseString(json, fieldName);
-    if (qcState == null) {
-      return null;
-    }
-    switch (qcState) {
-      case "Passed":
-        return Boolean.TRUE;
-      case "Failed":
-        return Boolean.FALSE;
-      case "Pending":
-        return null;
-      default:
-        throw new DataParseException(String.format("Unhandled data review state: %s", qcState));
-    }
-  }
-
-  private static LocalDate parseDate(JsonNode json, String fieldName) throws DataParseException {
-    String dateString = parseString(json, fieldName);
-    if (dateString == null) {
-      return null;
-    }
-    // Remove time portion if included. Result is original recorded date (unmodified by timezone)
-    if (dateString.contains("T")) {
-      dateString = dateString.split("T")[0];
-    }
-    try {
-      return LocalDate.parse(dateString);
-    } catch (DateTimeParseException e) {
-      throw new DataParseException(String.format("Bad date format: %s", dateString));
-    }
-  }
-
-  private static BigDecimal parseDecimal(JsonNode json, String fieldName, boolean required)
-      throws DataParseException {
-    String stringValue = parseString(json, fieldName, required);
-    return stringValue == null ? null : new BigDecimal(stringValue);
-  }
-
-  private static Integer parseInteger(JsonNode json, String fieldName, boolean required)
-      throws DataParseException {
-    JsonNode node = getNode(json, fieldName, required);
-    return node == null ? null : node.asInt();
-  }
-
-  private static Long parseLong(JsonNode json, String fieldName, boolean required)
-      throws DataParseException {
-    JsonNode node = getNode(json, fieldName, required);
-    return node == null ? null : node.asLong();
-  }
-
-  private static Boolean parseQcPassed(JsonNode json, String fieldName) throws DataParseException {
-    String qcState = parseString(json, fieldName, true);
-    switch (qcState) {
-      case "Ready":
-        return Boolean.TRUE;
-      case "Failed":
-        return Boolean.FALSE;
-      case "Not Ready":
-        return null;
-      default:
-        throw new DataParseException(String.format("Unhandled QC state: %s", qcState));
-    }
-  }
-
-  private static List<RequisitionQcGroup> parseRequisitionQcGroups(JsonNode json)
-      throws DataParseException {
-    if (json == null || !json.isArray()) {
-      throw new DataParseException("Invalid requisition qc_groups");
-    }
-    List<RequisitionQcGroup> qcGroups = new ArrayList<>();
-    for (JsonNode node : json) {
-      qcGroups.add(new RequisitionQcGroup.Builder()
-          .tissueOrigin(parseString(node, "tissue_origin", true))
-          .tissueType(parseString(node, "tissue_type", true))
-          .libraryDesignCode(parseString(node, "library_design", true))
-          .groupId(parseString(node, "group_id", false))
-          .purity(parseDecimal(node, "purity", false))
-          .collapsedCoverage(parseDecimal(node, "collapsed_coverage", false))
-          .callability(parseDecimal(node, "callability", false))
-          .build());
-    }
-    return qcGroups;
-  }
-
-  private static List<RequisitionQc> parseRequisitionQcs(JsonNode json, String fieldName)
-      throws DataParseException {
-    JsonNode arr = json.get(fieldName);
-    if (arr == null || !arr.isArray()) {
-      throw new DataParseException(String.format("%s is not an array", fieldName));
-    }
-    List<RequisitionQc> qcs = new ArrayList<>();
-    for (JsonNode node : arr) {
-      qcs.add(new RequisitionQc.Builder().qcPassed(parseQcPassed(node, "qc_state"))
-          .qcUser(parseString(node, "qc_user")).qcDate(parseDate(node, "qc_date")).build());
-    }
-    return qcs;
-  }
-
-  private static LocalDate parseSampleCreatedDate(JsonNode json) throws DataParseException {
-    LocalDate receivedDate = parseDate(json, "received");
-    if (receivedDate != null) {
-      return receivedDate;
-    }
-    LocalDate createdDate = parseDate(json, "created");
-    if (createdDate != null) {
-      return createdDate;
-    }
-    return parseDate(json, "entered");
-  }
-
-  private static String parseString(JsonNode json, String fieldName) throws DataParseException {
-    return parseString(json, fieldName, false);
-  }
-
-  private static String parseString(JsonNode json, String fieldName, boolean required)
-      throws DataParseException {
-    JsonNode node = getNode(json, fieldName, required);
-    return node == null ? null : node.asText();
-  }
-
-  private void addRunLibrary(Map<String, RunAndLibraries.Builder> map, Sample sample,
-      BiConsumer<Builder, Sample> addSample) {
-    String runName = sample.getRun().getName();
-    if (!map.containsKey(runName)) {
-      map.put(runName, new RunAndLibraries.Builder().run(sample.getRun()));
-    }
-    addSample.accept(map.get(runName), sample);
-  }
-
-  protected FileReader getAssayReader() throws FileNotFoundException {
-    return new FileReader(assayFile);
-  }
-
-  protected FileReader getCaseReader() throws FileNotFoundException {
-    return new FileReader(caseFile);
-  }
-
   /**
-   * @return The time that the data finished writing, or null if the data is currently being written
+   * @return The time that the data finished writing, or null if the data is
+   *         currently being written
    * @throws IOException if there is an error reading the timestamp file from disk
    */
   private ZonedDateTime getDataTimestamp() throws IOException {
@@ -261,37 +95,14 @@ public class CaseLoader {
     return ZonedDateTime.parse(timeString, DateTimeFormatter.ISO_DATE_TIME);
   }
 
-  protected FileReader getDonorReader() throws FileNotFoundException {
-    return new FileReader(donorFile);
-  }
-
-  protected FileReader getNoCaseReader() throws FileNotFoundException {
-    return new FileReader(noCaseFile);
-  }
-
-  protected FileReader getProjectReader() throws FileNotFoundException {
-    return new FileReader(projectFile);
-  }
-
-  protected FileReader getRequisitionReader() throws FileNotFoundException {
-    return new FileReader(requisitionFile);
-  }
-
-  protected FileReader getRunReader() throws FileNotFoundException {
-    return new FileReader(runFile);
-  }
-
-  protected FileReader getSampleReader() throws FileNotFoundException {
-    return new FileReader(sampleFile);
-  }
-
   /**
    * Loads new case data if available
    *
    * @param previousTimestamp timestamp of previous successful load
-   * @return case data if it is available and newer than the previousTimestamp; null otherwise
+   * @return case data if it is available and newer than the previousTimestamp;
+   *         null otherwise
    * @throws DataParseException if there is an error parsing the data from file
-   * @throws IOException if there is an error reading from disk
+   * @throws IOException        if there is an error reading from disk
    */
   public CaseData load(ZonedDateTime previousTimestamp) throws DataParseException, IOException {
     log.debug("Loading case data...");
@@ -325,10 +136,8 @@ public class CaseLoader {
       Map<String, Donor> donorsById = loadDonors(donorReader);
       Map<Long, Run> runsById = loadRuns(runReader);
       Map<Long, Requisition> requisitionsById = loadRequisitions(requisitionReader);
-      Map<String, Sample> samplesById =
-          loadSamples(sampleReader, donorsById, runsById, requisitionsById);
-      List<OmittedSample> omittedSamples =
-          loadOmittedSamples(nocaseReader, donorsById, requisitionsById);
+      Map<String, Sample> samplesById = loadSamples(sampleReader, donorsById, runsById, requisitionsById);
+      List<OmittedSample> omittedSamples = loadOmittedSamples(nocaseReader, donorsById, requisitionsById);
       Map<Long, Assay> assaysById = loadAssays(assayReader);
       List<Case> cases = loadCases(caseReader, projectsByName, samplesById, donorsById,
           requisitionsById, assaysById);
@@ -336,13 +145,44 @@ public class CaseLoader {
         refreshTimer.record(System.currentTimeMillis() - startTimeMillis, TimeUnit.MILLISECONDS);
       }
 
-      CaseData caseData =
-          new CaseData(cases, omittedSamples, afterTimestamp);
+      CaseData caseData = new CaseData(cases, omittedSamples, afterTimestamp);
 
       log.debug(String.format("Completed loading %d cases.", cases.size()));
 
       return caseData;
     }
+  }
+
+  protected FileReader getAssayReader() throws FileNotFoundException {
+    return new FileReader(assayFile);
+  }
+
+  protected FileReader getCaseReader() throws FileNotFoundException {
+    return new FileReader(caseFile);
+  }
+
+  protected FileReader getDonorReader() throws FileNotFoundException {
+    return new FileReader(donorFile);
+  }
+
+  protected FileReader getNoCaseReader() throws FileNotFoundException {
+    return new FileReader(noCaseFile);
+  }
+
+  protected FileReader getProjectReader() throws FileNotFoundException {
+    return new FileReader(projectFile);
+  }
+
+  protected FileReader getRequisitionReader() throws FileNotFoundException {
+    return new FileReader(requisitionFile);
+  }
+
+  protected FileReader getRunReader() throws FileNotFoundException {
+    return new FileReader(runFile);
+  }
+
+  protected FileReader getSampleReader() throws FileNotFoundException {
+    return new FileReader(sampleFile);
   }
 
   protected Map<Long, Assay> loadAssays(FileReader fileReader)
@@ -532,6 +372,156 @@ public class CaseLoader {
     });
 
     return samples.stream().collect(Collectors.toMap(Sample::getId, Function.identity()));
+  }
+
+  private static JsonNode getNode(JsonNode json, String fieldName, boolean required)
+      throws DataParseException {
+    JsonNode node = json.get(fieldName);
+    if (node == null || node.isNull()) {
+      if (required) {
+        throw new DataParseException(makeMissingFieldMessage(fieldName));
+      } else {
+        return null;
+      }
+    } else {
+      return node;
+    }
+  }
+
+  private static String makeMissingFieldMessage(String fieldName) {
+    return String.format("Required value '%s' missing", fieldName);
+  }
+
+  private static boolean parseBoolean(JsonNode json, String fieldName) throws DataParseException {
+    JsonNode node = json.get(fieldName);
+    if (node == null || node.isNull()) {
+      throw new DataParseException(makeMissingFieldMessage(fieldName));
+    } else {
+      return node.asBoolean();
+    }
+  }
+
+  private static Boolean parseDataReviewPassed(JsonNode json, String fieldName)
+      throws DataParseException {
+    String qcState = parseString(json, fieldName);
+    if (qcState == null) {
+      return null;
+    }
+    switch (qcState) {
+      case "Passed":
+        return Boolean.TRUE;
+      case "Failed":
+        return Boolean.FALSE;
+      case "Pending":
+        return null;
+      default:
+        throw new DataParseException(String.format("Unhandled data review state: %s", qcState));
+    }
+  }
+
+  private static LocalDate parseDate(JsonNode json, String fieldName) throws DataParseException {
+    String dateString = parseString(json, fieldName);
+    if (dateString == null) {
+      return null;
+    }
+    // Remove time portion if included. Result is original recorded date (unmodified
+    // by timezone)
+    if (dateString.contains("T")) {
+      dateString = dateString.split("T")[0];
+    }
+    try {
+      return LocalDate.parse(dateString);
+    } catch (DateTimeParseException e) {
+      throw new DataParseException(String.format("Bad date format: %s", dateString));
+    }
+  }
+
+  private static BigDecimal parseDecimal(JsonNode json, String fieldName, boolean required)
+      throws DataParseException {
+    String stringValue = parseString(json, fieldName, required);
+    return stringValue == null ? null : new BigDecimal(stringValue);
+  }
+
+  private static Integer parseInteger(JsonNode json, String fieldName, boolean required)
+      throws DataParseException {
+    JsonNode node = getNode(json, fieldName, required);
+    return node == null ? null : node.asInt();
+  }
+
+  private static Long parseLong(JsonNode json, String fieldName, boolean required)
+      throws DataParseException {
+    JsonNode node = getNode(json, fieldName, required);
+    return node == null ? null : node.asLong();
+  }
+
+  private static Boolean parseQcPassed(JsonNode json, String fieldName) throws DataParseException {
+    String qcState = parseString(json, fieldName, true);
+    switch (qcState) {
+      case "Ready":
+        return Boolean.TRUE;
+      case "Failed":
+        return Boolean.FALSE;
+      case "Not Ready":
+        return null;
+      default:
+        throw new DataParseException(String.format("Unhandled QC state: %s", qcState));
+    }
+  }
+
+  private static List<RequisitionQcGroup> parseRequisitionQcGroups(JsonNode json)
+      throws DataParseException {
+    if (json == null || !json.isArray()) {
+      throw new DataParseException("Invalid requisition qc_groups");
+    }
+    List<RequisitionQcGroup> qcGroups = new ArrayList<>();
+    for (JsonNode node : json) {
+      qcGroups.add(new RequisitionQcGroup.Builder()
+          .tissueOrigin(parseString(node, "tissue_origin", true))
+          .tissueType(parseString(node, "tissue_type", true))
+          .libraryDesignCode(parseString(node, "library_design", true))
+          .groupId(parseString(node, "group_id", false))
+          .purity(parseDecimal(node, "purity", false))
+          .collapsedCoverage(parseDecimal(node, "collapsed_coverage", false))
+          .callability(parseDecimal(node, "callability", false))
+          .build());
+    }
+    return qcGroups;
+  }
+
+  private static List<RequisitionQc> parseRequisitionQcs(JsonNode json, String fieldName)
+      throws DataParseException {
+    JsonNode arr = json.get(fieldName);
+    if (arr == null || !arr.isArray()) {
+      throw new DataParseException(String.format("%s is not an array", fieldName));
+    }
+    List<RequisitionQc> qcs = new ArrayList<>();
+    for (JsonNode node : arr) {
+      qcs.add(new RequisitionQc.Builder().qcPassed(parseQcPassed(node, "qc_state"))
+          .qcUser(parseString(node, "qc_user")).qcDate(parseDate(node, "qc_date")).build());
+    }
+    return qcs;
+  }
+
+  private static LocalDate parseSampleCreatedDate(JsonNode json) throws DataParseException {
+    LocalDate receivedDate = parseDate(json, "received");
+    if (receivedDate != null) {
+      return receivedDate;
+    }
+    LocalDate createdDate = parseDate(json, "created");
+    if (createdDate != null) {
+      return createdDate;
+    }
+    return parseDate(json, "entered");
+  }
+
+  private static String parseString(JsonNode json, String fieldName) throws DataParseException {
+    return parseString(json, fieldName, false);
+  }
+
+  private static String parseString(JsonNode json, String fieldName, boolean required)
+      throws DataParseException {
+    JsonNode node = getNode(json, fieldName, required);
+    return node == null ? null : node.asText();
   }
 
   private <I, T> List<T> parseIdsAndGet(JsonNode json, String idsFieldName,

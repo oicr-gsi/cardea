@@ -10,8 +10,6 @@
 1. Create a `config` subdirectory within the directory you will run the app from
 2. Copy [example-application.properties](example-application.properties) into the `config`
    directory and rename it to `application.properties`
-3. Add the following line to `application.properties` to disable authentication:
-     `spring.profiles.active=noauth`
 
 ## Build/Run
 

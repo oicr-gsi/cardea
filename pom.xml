@@ -1,8 +1,29 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://maven.apache.org/POM/4.0.0" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+
   <artifactId>cardea</artifactId>
-  <dependencies>
-  </dependencies>
+  <groupId>ca.on.oicr.gsi.cardea</groupId>
+  <version>0.0.1-SNAPSHOT</version> 
+  <modelVersion>4.0.0</modelVersion>
+
+  <name>Cardea Case API</name>
+  <description>Cardea Case data API</description>
+
+  <packaging>pom</packaging>
+
+  <modules>
+    <module>cardea-data</module>
+    <module>cardea-server</module>
+  </modules>
+
+  <parent>
+    <artifactId>spring-boot-starter-parent</artifactId>
+    <groupId>org.springframework.boot</groupId>
+    <relativePath />
+    <version>3.0.6</version>
+    <!-- lookup parent from repository -->
+  </parent>
+
   <dependencyManagement>
     <dependencies>
       <dependency>
@@ -38,9 +59,15 @@
         <groupId>jakarta.servlet</groupId>
         <version>5.0.0</version>
       </dependency>
+      <dependency>
+        <groupId>io.micrometer</groupId>
+        <artifactId>micrometer-registry-prometheus</artifactId>
+        <scope>runtime</scope>
+        <version>1.10.6</version>
+    </dependency>
     </dependencies>
   </dependencyManagement>
-  <description>Cardea Case data API</description>
+  
   <distributionManagement>
     <downloadUrl>https://artifacts.oicr.on.ca/artifactory/gsi-release</downloadUrl>
     <repository>
@@ -49,23 +76,6 @@
       <url>https://artifacts.oicr.on.ca/artifactory/gsi-release</url>
     </repository>
   </distributionManagement>
-  <groupId>ca.on.oicr.gsi.cardea</groupId>
-  <modelVersion>4.0.0</modelVersion>
-  <modules>
-    <module>cardea-data</module>
-    <module>cardea-server</module>
-  </modules>
-  <name>Cardea Case API</name>
-
-  <packaging>pom</packaging>
-
-  <parent>
-    <artifactId>spring-boot-starter-parent</artifactId>
-    <groupId>org.springframework.boot</groupId>
-    <relativePath />
-    <version>3.0.6</version>
-    <!-- lookup parent from repository -->
-  </parent>
 
   <properties>
     <java.version>17</java.version>
@@ -93,7 +103,5 @@
       <url>https://artifacts.oicr.on.ca/artifactory/gsi-release</url>
     </repository>
   </repositories>
-
-  <version>0.0.1-SNAPSHOT</version>
 
 </project>

@@ -3,6 +3,11 @@ package ca.on.oicr.gsi.cardea.server.controller;
 import ca.on.oicr.gsi.cardea.server.service.CaseService;
 import ca.on.oicr.gsi.cardea.data.CaseData;
 import ca.on.oicr.gsi.cardea.data.CaseStatusCountsForRun;
+
+import java.time.Instant;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -10,7 +15,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("/api")
+@RequestMapping("/")
 public class CardeaApiController {
   @Autowired
   private CaseService caseService;
@@ -23,6 +28,16 @@ public class CardeaApiController {
   @GetMapping("/dimsum")
   public CaseData getDimsumData() {
     return caseService.getCaseData();
+  }
+
+  @GetMapping("/timestamp")
+  public ZonedDateTime getDataTimestamp() {
+    CaseData caseData = caseService.getCaseData();
+    if (caseData == null) {
+      return null;
+    } else {
+      return caseData.getTimestamp();
+    }
   }
 
 }

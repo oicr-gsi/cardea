@@ -2,7 +2,21 @@
 <project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
   xmlns="http://maven.apache.org/POM/4.0.0"
   xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+
   <artifactId>cardea-server</artifactId>
+  <groupId>ca.on.oicr.gsi.cardea</groupId>
+
+  <modelVersion>4.0.0</modelVersion>
+  <name>Cardea Case API server</name>
+
+  <packaging>jar</packaging>
+
+  <parent>
+    <artifactId>cardea</artifactId>
+    <groupId>ca.on.oicr.gsi.cardea</groupId>
+    <version>0.0.1-SNAPSHOT</version>
+  </parent>
+
   <build>
     <plugins>
       <plugin>
@@ -22,6 +36,7 @@
       </plugin>
     </plugins>
   </build>
+
   <dependencies>
     <dependency>
       <artifactId>cardea-data</artifactId>
@@ -57,10 +72,6 @@
       <groupId>org.springframework.boot</groupId>
     </dependency>
     <dependency>
-      <artifactId>spring-security-saml2-service-provider</artifactId>
-      <groupId>org.springframework.security</groupId>
-    </dependency>
-    <dependency>
       <artifactId>springdoc-openapi-starter-webmvc-ui</artifactId>
       <groupId>org.springdoc</groupId>
     </dependency>
@@ -72,17 +83,11 @@
       <artifactId>jakarta.servlet-api</artifactId>
       <groupId>jakarta.servlet</groupId>
     </dependency>
+    <dependency>
+      <groupId>io.micrometer</groupId>
+      <artifactId>micrometer-registry-prometheus</artifactId>
+      <scope>runtime</scope>
+    </dependency>
   </dependencies>
-
-  <modelVersion>4.0.0</modelVersion>
-  <name>Cardea Case API server</name>
-
-  <packaging>jar</packaging>
-  <parent>
-    <artifactId>cardea</artifactId>
-    <groupId>ca.on.oicr.gsi.cardea</groupId>
-    <relativePath>../pom.xml</relativePath>
-    <version>0.0.1-SNAPSHOT</version>
-  </parent>
 
 </project>
