@@ -15,7 +15,7 @@
 
 From the project root, build runnable `.jar` file (located in `cardea-server/target`): 
 
-`mvn clean package && java -jar cardea-server/target/cardea-server*jar`
+`mvn clean package`
 
 Or run server via Maven:
 
