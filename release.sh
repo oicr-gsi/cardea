@@ -2,7 +2,7 @@
 
 set -euo pipefail
 
-PROJECT="Dimsum"
+PROJECT="Cardea"
 MAIN_BRANCH="main"
 CHANGE_DIR="changes"
 
