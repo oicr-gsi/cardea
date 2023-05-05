@@ -18,6 +18,7 @@ public class ShesmuCase {
   private final LocalDate completedDate;
   private final Set<String> limsIds;
   private final long requisitionId;
+  private final String requisitionName;
 
   private ShesmuCase(Builder builder) {
     this.assayName = requireNonNull(builder.assayName);
@@ -27,6 +28,7 @@ public class ShesmuCase {
     this.completedDate = builder.completedDate;
     this.limsIds = unmodifiableSet(requireNonNull(builder.limsIds));
     this.requisitionId = requireNonNull(builder.requisitionId);
+    this.requisitionName = requireNonNull(builder.requisitionName);
   }
 
   public String getAssayName() {
@@ -57,6 +59,10 @@ public class ShesmuCase {
     return requisitionId;
   }
 
+  public String getRequisitionName() {
+    return requisitionName;
+  }
+
   public static class Builder {
 
     private String assayName;
@@ -66,6 +72,7 @@ public class ShesmuCase {
     private LocalDate completedDate;
     private Set<String> limsIds;
     private long requisitionId;
+    private String requisitionName;
 
     public ShesmuCase build() {
       return new ShesmuCase(this);
@@ -103,6 +110,11 @@ public class ShesmuCase {
 
     public Builder requisitionId(long requisitionId) {
       this.requisitionId = requisitionId;
+      return this;
+    }
+
+    public Builder requisitionName(String requisitionName) {
+      this.requisitionName = requisitionName;
       return this;
     }
   }

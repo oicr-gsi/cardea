@@ -140,8 +140,9 @@ public class CaseService {
         .caseIdentifier(kase.getId())
         .caseStatus(getReqStatus(kase.getRequisition()))
         .completedDate(completedDate.orElse(null))
-        .requisitionId(kase.getRequisition().getId())
         .limsIds(getLimsIusIdsFor(kase))
+        .requisitionId(kase.getRequisition().getId())
+        .requisitionName(kase.getRequisition().getName())
         .build();
   }
 
