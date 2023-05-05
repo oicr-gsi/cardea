@@ -32,7 +32,7 @@ public class StatusController{
 
         @Override
         public String name() {
-          return "QC Gate ETL API";
+          return "Cardea API";
         }
 
         @Override
