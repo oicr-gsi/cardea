@@ -7,6 +7,18 @@ This file is updated automatically as described in [Unreleased Changes](changes/
 
 ---------------------------------------------------------------------------------------------------
 
+## [1.0.0] - 2023-05-08
+
+### Added
+
+* Add /shesmu-cases endpoint
+
+### Fixed
+
+* OpenAPI URLs now displays correct URL scheme
+* Forward headers for correct URL display in OpenAPI docs
+
+
 # Unreleased
 
 * Copied the Dimsum project and modified it to serve as the basis for the Cardea project
