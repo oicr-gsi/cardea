@@ -5,17 +5,25 @@ import ca.on.oicr.gsi.cardea.data.CaseStatus;
 import static java.util.Collections.unmodifiableSet;
 import static java.util.Objects.requireNonNull;
 
+import java.time.Instant;
 import java.time.LocalDate;
+import java.time.LocalTime;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
 
+import java.util.Optional;
 import java.util.Set;
 
+/**
+ * Immutable ShesmuCase
+ */
 public class ShesmuCase {
 
   private final String assayName;
   private final String assayVersion;
   private final String caseIdentifier;
   private final String caseStatus;
-  private final LocalDate completedDate;
+  private final Optional<Instant> completedDate;
   private final Set<String> limsIds;
   private final long requisitionId;
   private final String requisitionName;
@@ -47,7 +55,7 @@ public class ShesmuCase {
     return caseStatus;
   }
 
-  public LocalDate getCompletedDate() {
+  public Optional<Instant> getCompletedDate() {
     return completedDate;
   }
 
@@ -69,7 +77,7 @@ public class ShesmuCase {
     private String assayVersion;
     private String caseIdentifier;
     private CaseStatus caseStatus;
-    private LocalDate completedDate;
+    private Optional<Instant> completedDate;
     private Set<String> limsIds;
     private long requisitionId;
     private String requisitionName;
@@ -99,7 +107,7 @@ public class ShesmuCase {
     }
 
     public Builder completedDate(LocalDate completedDate) {
-      this.completedDate = completedDate;
+      this.completedDate = convertCompletedDate(completedDate);
       return this;
     }
 
@@ -116,6 +124,17 @@ public class ShesmuCase {
     public Builder requisitionName(String requisitionName) {
       this.requisitionName = requisitionName;
       return this;
+    }
+
+    private Optional<Instant> convertCompletedDate(LocalDate completedDate) {
+      if (completedDate == null) {
+        return Optional.empty();
+      }
+      return Optional.of(
+          ZonedDateTime.of(
+              completedDate,
+              LocalTime.MIDNIGHT,
+              ZoneId.of("UTC")).toInstant());
     }
   }
 }
