@@ -7,6 +7,13 @@ This file is updated automatically as described in [Unreleased Changes](changes/
 
 ---------------------------------------------------------------------------------------------------
 
+## [1.0.1] - 2023-05-10
+
+### Fixed
+
+* Convert `/shesmu-cases` `completedDate` to Instant for better Shesmu compatibility
+
+
 ## [1.0.0] - 2023-05-08
 
 ### Added
