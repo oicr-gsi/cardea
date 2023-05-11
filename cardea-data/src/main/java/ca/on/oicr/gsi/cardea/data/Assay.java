@@ -5,9 +5,10 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
-//import javax.annotations.*;
 
-//@Immutable
+/**
+ * Immutable Assay
+ */
 public class Assay {
 
   private final String description;
@@ -15,15 +16,15 @@ public class Assay {
   private final Map<MetricCategory, List<MetricSubcategory>> metricCategories;
   private final String name;
   private final String version;
+
   public Assay(Builder builder) {
     this.id = requireNonNull(builder.id);
     this.name = requireNonNull(builder.name);
     this.description = builder.description;
     this.version = requireNonNull(builder.version);
-    Map<MetricCategory, List<MetricSubcategory>> tempMap =
-        builder.metricCategories.entrySet().stream()
-            .collect(Collectors.toMap(entry -> entry.getKey(),
-                entry -> Collections.unmodifiableList(entry.getValue())));
+    Map<MetricCategory, List<MetricSubcategory>> tempMap = builder.metricCategories.entrySet().stream()
+        .collect(Collectors.toMap(entry -> entry.getKey(),
+            entry -> Collections.unmodifiableList(entry.getValue())));
     this.metricCategories = Collections.unmodifiableMap(tempMap);
   }
 

@@ -7,8 +7,9 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 
-import org.immutables.value.Value;
-
+/**
+ * Immutable Run
+ */
 public class Run {
 
   private final Long clustersPf;
@@ -28,6 +29,7 @@ public class Run {
   private final Integer readLength;
   private final Integer readLength2;
   private final String sequencingParameters;
+
   private Run(Builder builder) {
     if (builder.id < 0) {
       throw new IllegalArgumentException(String.format("Invalid run ID: %d", builder.id));
@@ -136,7 +138,6 @@ public class Run {
     return Objects.hash(id);
   }
 
-  @Value.Immutable
   public static class Builder {
 
     private Long clustersPf;

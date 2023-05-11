@@ -1,5 +1,8 @@
 package ca.on.oicr.gsi.cardea.data;
 
+/**
+ * Immutable CaseStatusCountsForRun
+ */
 public class CaseStatusCountsForRun {
   private final Long activeCaseCount;
   private final Long completedCaseCount;
@@ -11,7 +14,15 @@ public class CaseStatusCountsForRun {
     this.stoppedCaseCount = stoppedCaseCount == null ? 0L : stoppedCaseCount;
   }
 
-  public Long getActiveCaseCount() { return activeCaseCount; }
-  public Long getCompletedCaseCount() { return completedCaseCount; }
-  public Long getStoppedCaseCount() { return stoppedCaseCount; }
+  public Long getActiveCaseCount() {
+    return activeCaseCount;
+  }
+
+  public Long getCompletedCaseCount() {
+    return completedCaseCount;
+  }
+
+  public Long getStoppedCaseCount() {
+    return stoppedCaseCount;
+  }
 }

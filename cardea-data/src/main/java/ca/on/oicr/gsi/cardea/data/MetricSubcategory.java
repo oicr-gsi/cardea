@@ -1,15 +1,18 @@
 package ca.on.oicr.gsi.cardea.data;
 
-import org.immutables.value.Value;
 import java.util.Collections;
 import java.util.List;
 
+/**
+ * Immutable MetricSubcategory
+ */
 public class MetricSubcategory {
 
   private final String libraryDesignCode;
   private final List<Metric> metrics;
   private final String name;
   private final Integer sortPriority;
+
   private MetricSubcategory(Builder builder) {
     this.name = builder.name;
     this.sortPriority = builder.sortPriority;
@@ -33,7 +36,6 @@ public class MetricSubcategory {
     return sortPriority;
   }
 
-  @Value.Immutable
   public static class Builder {
 
     private String libraryDesignCode;

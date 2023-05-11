@@ -10,8 +10,9 @@ import java.util.Objects;
 import java.util.function.Function;
 import java.util.stream.Stream;
 
-import org.immutables.value.Value;
-
+/**
+ * Immutable Requisition
+ */
 public class Requisition {
 
   private final Long assayId;
@@ -24,6 +25,7 @@ public class Requisition {
   private final List<RequisitionQcGroup> qcGroups;
   private final String stopReason;
   private final boolean stopped;
+
   private Requisition(Builder builder) {
     this.id = requireNonNull(builder.id);
     this.name = requireNonNull(builder.name);
@@ -33,14 +35,11 @@ public class Requisition {
     this.qcGroups = builder.qcGroups == null ? emptyList() : unmodifiableList(builder.qcGroups);
     this.informaticsReviews = builder.informaticsReviews == null ? emptyList()
         : unmodifiableList(builder.informaticsReviews);
-    this.draftReports =
-        builder.draftReports == null ? emptyList() : unmodifiableList(builder.draftReports);
-    this.finalReports =
-        builder.finalReports == null ? emptyList() : unmodifiableList(builder.finalReports);
-    this.latestActivityDate =
-        Stream.of(informaticsReviews.stream(), draftReports.stream(), finalReports.stream())
-            .flatMap(Function.identity()).map(RequisitionQc::getQcDate).max(LocalDate::compareTo)
-            .orElse(null);
+    this.draftReports = builder.draftReports == null ? emptyList() : unmodifiableList(builder.draftReports);
+    this.finalReports = builder.finalReports == null ? emptyList() : unmodifiableList(builder.finalReports);
+    this.latestActivityDate = Stream.of(informaticsReviews.stream(), draftReports.stream(), finalReports.stream())
+        .flatMap(Function.identity()).map(RequisitionQc::getQcDate).max(LocalDate::compareTo)
+        .orElse(null);
   }
 
   @Override
@@ -100,7 +99,6 @@ public class Requisition {
     return stopped;
   }
 
-  @Value.Immutable
   public static class Builder {
 
     private Long assayId;

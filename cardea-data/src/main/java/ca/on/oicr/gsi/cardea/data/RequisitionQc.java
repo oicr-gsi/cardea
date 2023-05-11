@@ -4,13 +4,15 @@ import static java.util.Objects.requireNonNull;
 
 import java.time.LocalDate;
 
-import org.immutables.value.Value;
-
+/**
+ * Immutable RequisitionQc
+ */
 public class RequisitionQc {
 
   private final LocalDate qcDate;
   private final boolean qcPassed;
   private final String qcUser;
+
   private RequisitionQc(Builder builder) {
     this.qcPassed = requireNonNull(builder.qcPassed);
     this.qcUser = requireNonNull(builder.qcUser);
@@ -29,7 +31,6 @@ public class RequisitionQc {
     return qcPassed;
   }
 
-  @Value.Immutable
   public static class Builder {
 
     private LocalDate qcDate;

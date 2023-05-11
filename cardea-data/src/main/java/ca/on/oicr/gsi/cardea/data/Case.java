@@ -11,10 +11,11 @@ import java.util.Set;
 import java.util.function.Function;
 import java.util.stream.Stream;
 
-//import javax.annotation.concurrent.Immutable;
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import org.immutables.value.Value;
 
+/**
+ * Immutable case
+ */
 public class Case {
 
   private final Assay assay;
@@ -30,6 +31,7 @@ public class Case {
   private final String timepoint;
   private final String tissueOrigin;
   private final String tissueType;
+
   private Case(Builder builder) {
     this.id = requireNonNull(builder.id);
     this.donor = requireNonNull(builder.donor);
@@ -107,7 +109,6 @@ public class Case {
     return tissueType;
   }
 
-  @Value.Immutable
   public static class Builder {
 
     private Assay assay;

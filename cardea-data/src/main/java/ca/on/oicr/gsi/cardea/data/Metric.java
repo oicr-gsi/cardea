@@ -1,11 +1,12 @@
 package ca.on.oicr.gsi.cardea.data;
 
-import org.immutables.value.Value;
-
 import static java.util.Objects.requireNonNull;
 
 import java.math.BigDecimal;
 
+/**
+ * Immutable Metric
+ */
 public class Metric {
 
   private final String containerModel;
@@ -22,6 +23,7 @@ public class Metric {
   private final String tissueOrigin;
   private final String tissueType;
   private final String units;
+
   private Metric(Builder builder) {
     this.name = requireNonNull(builder.name);
     this.sortPriority = builder.sortPriority;
@@ -95,7 +97,6 @@ public class Metric {
     return negateTissueType;
   }
 
-  @Value.Immutable
   public static class Builder {
 
     private String containerModel;

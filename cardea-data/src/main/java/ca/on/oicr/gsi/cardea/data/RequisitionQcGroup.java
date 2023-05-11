@@ -3,8 +3,10 @@ package ca.on.oicr.gsi.cardea.data;
 import static java.util.Objects.requireNonNull;
 
 import java.math.BigDecimal;
-import org.immutables.value.Value;
 
+/**
+ * Immutable RequisitionQcGroup
+ */
 public class RequisitionQcGroup {
 
   private final BigDecimal callability;
@@ -14,6 +16,7 @@ public class RequisitionQcGroup {
   private final BigDecimal purity;
   private final String tissueOrigin;
   private final String tissueType;
+
   private RequisitionQcGroup(Builder builder) {
     this.tissueOrigin = requireNonNull(builder.tissueOrigin);
     this.tissueType = requireNonNull(builder.tissueType);
@@ -52,7 +55,6 @@ public class RequisitionQcGroup {
     return tissueType;
   }
 
-  @Value.Immutable
   public static class Builder {
 
     private BigDecimal callability;

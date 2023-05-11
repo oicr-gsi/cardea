@@ -1,10 +1,11 @@
 package ca.on.oicr.gsi.cardea.data;
 
-import org.immutables.value.Value;
-
 import java.math.BigDecimal;
 import java.util.Objects;
 
+/**
+ * Immutable Lane
+ */
 public class Lane {
 
   private final Long clustersPf;
@@ -13,6 +14,7 @@ public class Lane {
   private final Integer percentOverQ30Read2;
   private final BigDecimal percentPfixRead1;
   private final BigDecimal percentPfixRead2;
+
   private Lane(Builder builder) {
     this.laneNumber = Objects.requireNonNull(builder.laneNumber);
     this.percentOverQ30Read1 = builder.percentOverQ30Read1;
@@ -46,7 +48,6 @@ public class Lane {
     return percentPfixRead2;
   }
 
-  @Value.Immutable
   public static class Builder {
 
     private Long clustersPf;

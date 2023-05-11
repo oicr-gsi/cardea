@@ -6,8 +6,9 @@ import java.time.LocalDate;
 import java.util.Objects;
 import java.util.stream.Stream;
 
-import org.immutables.value.Value;
-
+/**
+ * Immutable Sample
+ */
 public class Sample {
 
   private final Long assayId;
@@ -53,6 +54,7 @@ public class Sample {
   private final String tissueOrigin;
   private final String tissueType;
   private final BigDecimal volume;
+
   private Sample(Builder builder) {
     this.id = requireNonNull(builder.id);
     this.name = requireNonNull(builder.name);
@@ -291,7 +293,6 @@ public class Sample {
     return Objects.hash(id, run, sequencingLane);
   }
 
-  @Value.Immutable
   public static class Builder {
 
     private Integer clustersPerSample;

@@ -6,6 +6,9 @@ import java.time.ZonedDateTime;
 import java.util.Collections;
 import java.util.List;
 
+/**
+ * Immutable CaseData
+ */
 public class CaseData {
 
   private final List<Case> cases;
