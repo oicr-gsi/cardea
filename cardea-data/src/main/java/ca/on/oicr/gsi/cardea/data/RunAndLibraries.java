@@ -6,13 +6,15 @@ import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
 
-import org.immutables.value.Value;
-
+/**
+ * Immutable RunAndLibraries
+ */
 public class RunAndLibraries {
 
   private Set<Sample> fullDepthSequencings;
   private Set<Sample> libraryQualifications;
   private Run run;
+
   private RunAndLibraries(Builder builder) {
     this.run = requireNonNull(builder.run);
     this.libraryQualifications = Collections.unmodifiableSet(builder.libraryQualifications);
@@ -31,7 +33,6 @@ public class RunAndLibraries {
     return run;
   }
 
-  @Value.Immutable
   public static class Builder {
 
     private Set<Sample> fullDepthSequencings = new HashSet<>();

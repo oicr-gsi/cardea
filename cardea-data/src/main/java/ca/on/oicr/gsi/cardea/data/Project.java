@@ -1,12 +1,15 @@
 package ca.on.oicr.gsi.cardea.data;
 
 import static java.util.Objects.requireNonNull;
-import org.immutables.value.Value.Immutable;
 
+/**
+ * Immutable Project
+ */
 public class Project {
 
   private final String name;
   private final String pipeline;
+
   private Project(Builder builder) {
     this.name = requireNonNull(builder.name);
     this.pipeline = requireNonNull(builder.pipeline);
@@ -20,7 +23,6 @@ public class Project {
     return pipeline;
   }
 
-  @Immutable
   public static class Builder {
 
     private String name;

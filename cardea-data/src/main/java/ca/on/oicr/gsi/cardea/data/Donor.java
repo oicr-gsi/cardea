@@ -2,11 +2,15 @@ package ca.on.oicr.gsi.cardea.data;
 
 import static java.util.Objects.requireNonNull;
 
+/**
+ * Immutable Donor
+ */
 public class Donor {
 
   private final String externalName;
   private final String id;
   private final String name;
+
   private Donor(Builder builder) {
     this.id = requireNonNull(builder.id);
     this.name = requireNonNull(builder.name);

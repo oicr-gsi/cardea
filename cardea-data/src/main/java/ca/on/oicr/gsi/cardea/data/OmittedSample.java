@@ -1,11 +1,12 @@
 package ca.on.oicr.gsi.cardea.data;
 
-import org.immutables.value.Value;
-
 import static java.util.Objects.requireNonNull;
 
 import java.time.LocalDate;
 
+/**
+ * Immutable OmittedSample
+ */
 public class OmittedSample {
 
   private final Long assayId;
@@ -16,6 +17,7 @@ public class OmittedSample {
   private final String project;
   private final Long requisitionId;
   private final String requisitionName;
+
   private OmittedSample(Builder builder) {
     this.id = requireNonNull(builder.id);
     this.name = requireNonNull(builder.name);
@@ -59,7 +61,6 @@ public class OmittedSample {
     return requisitionName;
   }
 
-  @Value.Immutable
   public static class Builder {
 
     private LocalDate createdDate;
@@ -104,6 +105,5 @@ public class OmittedSample {
     }
 
   }
-
 
 }

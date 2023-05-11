@@ -9,8 +9,9 @@ import java.util.List;
 import java.util.function.Function;
 import java.util.stream.Stream;
 
-import org.immutables.value.Value;
-
+/**
+ * Immutable Test
+ */
 public class Test {
 
   private final boolean extractionSkipped;
@@ -26,6 +27,7 @@ public class Test {
   private final String timepoint;
   private final String tissueOrigin;
   private final String tissueType;
+
   private Test(Builder builder) {
     this.name = requireNonNull(builder.name);
     this.tissueOrigin = builder.tissueOrigin;
@@ -35,8 +37,7 @@ public class Test {
     this.targetedSequencing = builder.targetedSequencing;
     this.extractionSkipped = builder.extractionSkipped;
     this.libraryPreparationSkipped = builder.libraryPreparationSkipped;
-    this.extractions =
-        builder.extractions == null ? emptyList() : unmodifiableList(builder.extractions);
+    this.extractions = builder.extractions == null ? emptyList() : unmodifiableList(builder.extractions);
     this.libraryPreparations = builder.libraryPreparations == null ? emptyList()
         : unmodifiableList(builder.libraryPreparations);
     this.libraryQualifications = builder.libraryQualifications == null ? emptyList()
@@ -102,7 +103,6 @@ public class Test {
     return libraryPreparationSkipped;
   }
 
-  @Value.Immutable
   public static class Builder {
 
     private boolean extractionSkipped;
