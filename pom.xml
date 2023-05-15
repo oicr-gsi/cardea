@@ -63,7 +63,7 @@
         <groupId>io.micrometer</groupId>
         <artifactId>micrometer-registry-prometheus</artifactId>
         <scope>runtime</scope>
-        <version>1.10.6</version>
+        <version>1.11.0</version>
     </dependency>
     </dependencies>
   </dependencyManagement>
