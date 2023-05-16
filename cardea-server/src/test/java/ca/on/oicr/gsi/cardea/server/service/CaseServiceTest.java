@@ -2,6 +2,7 @@ package ca.on.oicr.gsi.cardea.server.service;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
@@ -27,6 +28,7 @@ public class CaseServiceTest {
 
   private void addCase(CaseData data, int caseNumber, int requisitionNumber) {
     Case kase = mock(Case.class);
+    when(kase.getId()).thenReturn("R" + caseNumber);
     when(kase.getLatestActivityDate()).thenReturn(LocalDate.now().minusDays(caseNumber));
     when(kase.getReceipts()).thenReturn(new ArrayList<>());
     addSample(kase.getReceipts(), makeSampleName(caseNumber, "N", "A", 1), null);
@@ -40,7 +42,8 @@ public class CaseServiceTest {
 
   private void addSample(Collection<Sample> collection, String name, String runName) {
     Sample newSample;
-    // Not using mocks because we're kind-of testing hashcode for distinct filters here too
+    // Not using mocks because we're kind-of testing hashcode for distinct filters
+    // here too
     if (runName == null) {
       newSample = new Sample.Builder().id(name).name(name).donor(mock(Donor.class)).project("PROJ")
           .tissueOrigin("To").tissueType("T")
@@ -77,19 +80,21 @@ public class CaseServiceTest {
   }
 
   private Requisition makeRequisition(int requisitionNumber) {
-    // Not using mocks because we're kind-of testing hashcode for distinct filters here too
+    // Not using mocks because we're kind-of testing hashcode for distinct filters
+    // here too
     return new Requisition.Builder()
         .id(requisitionNumber)
         .name(String.format("REQ_%d", requisitionNumber))
         .assayId(2L)
         .stopped(requisitionNumber % 2 == 1 ? true : false)
-        .finalReports(requisitionNumber % 2 == 1 ? null :
-            Arrays.asList(new RequisitionQc.Builder().qcPassed(true).qcUser("test").qcDate(
+        .finalReports(requisitionNumber % 2 == 1 ? null
+            : Arrays.asList(new RequisitionQc.Builder().qcPassed(true).qcUser("test").qcDate(
                 LocalDate.now()).build()))
         .build();
   }
 
-  // Sample names are case number + test letter (N if n/a) + gate letter (receipt=A, extract=B,
+  // Sample names are case number + test letter (N if n/a) + gate letter
+  // (receipt=A, extract=B,
   // etc.) + sample number
   private String makeSampleName(int caseNumber, String testLetter, String gateLetter,
       int sampleNumber) {
@@ -109,25 +114,25 @@ public class CaseServiceTest {
   @org.junit.jupiter.api.Test
   public void testGetCaseCountsForRun_noMatchingRuns() {
     CaseStatusCountsForRun matches = sut.getCaseStatusCountsForRun("Run100");
-    assertEquals(0, matches.getCompletedCaseCount());
-    assertEquals(0, matches.getStoppedCaseCount());
-    assertEquals(0, matches.getActiveCaseCount());
+    assertEquals(0, matches.getCompletedCaseCount().size());
+    assertEquals(0, matches.getStoppedCaseCount().size());
+    assertEquals(0, matches.getActiveCaseCount().size());
   }
 
   @org.junit.jupiter.api.Test
   public void testGetCaseCountsForRun_oneMatchingRun() {
     CaseStatusCountsForRun matches = sut.getCaseStatusCountsForRun("Run1");
-    assertEquals(0, matches.getCompletedCaseCount());
-    assertEquals(1, matches.getStoppedCaseCount());
-    assertEquals(0, matches.getActiveCaseCount());
+    assertEquals(0, matches.getCompletedCaseCount().size());
+    assertEquals(1, matches.getStoppedCaseCount().size());
+    assertEquals(0, matches.getActiveCaseCount().size());
   }
 
   @org.junit.jupiter.api.Test
   public void testGetCaseCountsForRun_twoMatchingRuns() {
     CaseStatusCountsForRun matches = sut.getCaseStatusCountsForRun("Run2");
-    assertEquals(1, matches.getCompletedCaseCount());
-    assertEquals(1, matches.getStoppedCaseCount());
-    assertEquals(0, matches.getActiveCaseCount());
+    assertEquals(1, matches.getCompletedCaseCount().size());
+    assertEquals(1, matches.getStoppedCaseCount().size());
+    assertEquals(0, matches.getActiveCaseCount().size());
   }
 
   @org.junit.jupiter.api.Test

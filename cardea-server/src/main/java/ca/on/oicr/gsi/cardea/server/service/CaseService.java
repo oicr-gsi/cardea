@@ -11,14 +11,21 @@ import ca.on.oicr.gsi.cardea.data.Sample;
 import ca.on.oicr.gsi.cardea.data.ShesmuCase;
 import ca.on.oicr.gsi.cardea.server.CaseLoader;
 
+import ca.on.oicr.gsi.Pair;
+
 import java.time.Duration;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.ZonedDateTime;
+import java.util.EnumMap;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.Set;
+import java.util.Map.Entry;
 import java.util.concurrent.TimeUnit;
 import java.util.function.Function;
 import java.util.stream.Collectors;
@@ -63,12 +70,19 @@ public class CaseService {
         .filter(kase -> getRunNamesFor(kase).stream().anyMatch(rName -> runName.equals(rName)))
         .collect(Collectors.toSet());
 
-    Map<CaseStatus, Long> statusCountsForRun = casesMatchingRunName.stream()
-        .map(kase -> getReqStatus(kase.getRequisition()))
-        .collect(Collectors.groupingBy(Function.identity(), Collectors.counting()));
+    List<Pair<String, String>> x = casesMatchingRunName.stream()
+        .map(k -> new Pair<String, String>(getReqStatus(k.getRequisition()).getLabel(), k.getId()))
+        .collect(Collectors.toList());
+    Map<String, Set<String>> statusCountsForRun = new HashMap<String, Set<String>>();
+    x.forEach((p) -> {
+      if (statusCountsForRun.get(p.first()) == null) {
+        statusCountsForRun.put(p.first(), new HashSet<>());
+      }
+      statusCountsForRun.get(p.first()).add(p.second());
+    });
 
-    return new CaseStatusCountsForRun(statusCountsForRun.get(CaseStatus.ACTIVE), statusCountsForRun.get(
-        CaseStatus.COMPLETED), statusCountsForRun.get(CaseStatus.STOPPED));
+    return new CaseStatusCountsForRun(statusCountsForRun.get(CaseStatus.ACTIVE.getLabel()), statusCountsForRun.get(
+        CaseStatus.COMPLETED.getLabel()), statusCountsForRun.get(CaseStatus.STOPPED.getLabel()));
   }
 
   public Duration getDataAge() {
