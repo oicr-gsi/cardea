@@ -3,7 +3,7 @@ package ca.on.oicr.gsi.cardea.server.service;
 import ca.on.oicr.gsi.cardea.data.Case;
 import ca.on.oicr.gsi.cardea.data.CaseData;
 import ca.on.oicr.gsi.cardea.data.CaseStatus;
-import ca.on.oicr.gsi.cardea.data.CaseStatusCountsForRun;
+import ca.on.oicr.gsi.cardea.data.CaseStatusesForRun;
 import ca.on.oicr.gsi.cardea.data.Requisition;
 import ca.on.oicr.gsi.cardea.data.RequisitionQc;
 import ca.on.oicr.gsi.cardea.data.Run;
@@ -11,14 +11,21 @@ import ca.on.oicr.gsi.cardea.data.Sample;
 import ca.on.oicr.gsi.cardea.data.ShesmuCase;
 import ca.on.oicr.gsi.cardea.server.CaseLoader;
 
+import ca.on.oicr.gsi.Pair;
+
 import java.time.Duration;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.ZonedDateTime;
+import java.util.EnumMap;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.Set;
+import java.util.Map.Entry;
 import java.util.concurrent.TimeUnit;
 import java.util.function.Function;
 import java.util.stream.Collectors;
@@ -58,17 +65,24 @@ public class CaseService {
     this.caseData = caseData;
   }
 
-  public CaseStatusCountsForRun getCaseStatusCountsForRun(String runName) {
+  public CaseStatusesForRun getCaseStatusesForRun(String runName) {
     Set<Case> casesMatchingRunName = caseData.getCases().stream()
         .filter(kase -> getRunNamesFor(kase).stream().anyMatch(rName -> runName.equals(rName)))
         .collect(Collectors.toSet());
 
-    Map<CaseStatus, Long> statusCountsForRun = casesMatchingRunName.stream()
-        .map(kase -> getReqStatus(kase.getRequisition()))
-        .collect(Collectors.groupingBy(Function.identity(), Collectors.counting()));
+    List<Pair<String, String>> statusForCaseList = casesMatchingRunName.stream()
+        .map(k -> new Pair<String, String>(getReqStatus(k.getRequisition()).getLabel(), k.getId()))
+        .collect(Collectors.toList());
+    Map<String, Set<String>> statusesForRun = new HashMap<String, Set<String>>();
+    statusForCaseList.forEach((p) -> {
+      if (statusesForRun.get(p.first()) == null) {
+        statusesForRun.put(p.first(), new HashSet<>());
+      }
+      statusesForRun.get(p.first()).add(p.second());
+    });
 
-    return new CaseStatusCountsForRun(statusCountsForRun.get(CaseStatus.ACTIVE), statusCountsForRun.get(
-        CaseStatus.COMPLETED), statusCountsForRun.get(CaseStatus.STOPPED));
+    return new CaseStatusesForRun(statusesForRun.get(CaseStatus.ACTIVE.getLabel()), statusesForRun.get(
+        CaseStatus.COMPLETED.getLabel()), statusesForRun.get(CaseStatus.STOPPED.getLabel()));
   }
 
   public Duration getDataAge() {
