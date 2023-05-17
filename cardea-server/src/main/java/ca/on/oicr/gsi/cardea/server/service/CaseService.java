@@ -3,7 +3,7 @@ package ca.on.oicr.gsi.cardea.server.service;
 import ca.on.oicr.gsi.cardea.data.Case;
 import ca.on.oicr.gsi.cardea.data.CaseData;
 import ca.on.oicr.gsi.cardea.data.CaseStatus;
-import ca.on.oicr.gsi.cardea.data.CaseStatusCountsForRun;
+import ca.on.oicr.gsi.cardea.data.CaseStatusesForRun;
 import ca.on.oicr.gsi.cardea.data.Requisition;
 import ca.on.oicr.gsi.cardea.data.RequisitionQc;
 import ca.on.oicr.gsi.cardea.data.Run;
@@ -65,24 +65,24 @@ public class CaseService {
     this.caseData = caseData;
   }
 
-  public CaseStatusCountsForRun getCaseStatusCountsForRun(String runName) {
+  public CaseStatusesForRun getCaseStatusesForRun(String runName) {
     Set<Case> casesMatchingRunName = caseData.getCases().stream()
         .filter(kase -> getRunNamesFor(kase).stream().anyMatch(rName -> runName.equals(rName)))
         .collect(Collectors.toSet());
 
-    List<Pair<String, String>> x = casesMatchingRunName.stream()
+    List<Pair<String, String>> statusForCaseList = casesMatchingRunName.stream()
         .map(k -> new Pair<String, String>(getReqStatus(k.getRequisition()).getLabel(), k.getId()))
         .collect(Collectors.toList());
-    Map<String, Set<String>> statusCountsForRun = new HashMap<String, Set<String>>();
-    x.forEach((p) -> {
-      if (statusCountsForRun.get(p.first()) == null) {
-        statusCountsForRun.put(p.first(), new HashSet<>());
+    Map<String, Set<String>> statusesForRun = new HashMap<String, Set<String>>();
+    statusForCaseList.forEach((p) -> {
+      if (statusesForRun.get(p.first()) == null) {
+        statusesForRun.put(p.first(), new HashSet<>());
       }
-      statusCountsForRun.get(p.first()).add(p.second());
+      statusesForRun.get(p.first()).add(p.second());
     });
 
-    return new CaseStatusCountsForRun(statusCountsForRun.get(CaseStatus.ACTIVE.getLabel()), statusCountsForRun.get(
-        CaseStatus.COMPLETED.getLabel()), statusCountsForRun.get(CaseStatus.STOPPED.getLabel()));
+    return new CaseStatusesForRun(statusesForRun.get(CaseStatus.ACTIVE.getLabel()), statusesForRun.get(
+        CaseStatus.COMPLETED.getLabel()), statusesForRun.get(CaseStatus.STOPPED.getLabel()));
   }
 
   public Duration getDataAge() {

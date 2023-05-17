@@ -6,7 +6,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
-import ca.on.oicr.gsi.cardea.data.CaseStatusCountsForRun;
+import ca.on.oicr.gsi.cardea.data.CaseStatusesForRun;
 import ca.on.oicr.gsi.cardea.data.RequisitionQc;
 import ca.on.oicr.gsi.cardea.data.Run;
 import java.time.LocalDate;
@@ -113,26 +113,26 @@ public class CaseServiceTest {
 
   @org.junit.jupiter.api.Test
   public void testGetCaseCountsForRun_noMatchingRuns() {
-    CaseStatusCountsForRun matches = sut.getCaseStatusCountsForRun("Run100");
-    assertEquals(0, matches.getCompletedCaseCount().size());
-    assertEquals(0, matches.getStoppedCaseCount().size());
-    assertEquals(0, matches.getActiveCaseCount().size());
+    CaseStatusesForRun matches = sut.getCaseStatusesForRun("Run100");
+    assertEquals(0, matches.getCompletedCases().size());
+    assertEquals(0, matches.getStoppedCases().size());
+    assertEquals(0, matches.getActiveCases().size());
   }
 
   @org.junit.jupiter.api.Test
   public void testGetCaseCountsForRun_oneMatchingRun() {
-    CaseStatusCountsForRun matches = sut.getCaseStatusCountsForRun("Run1");
-    assertEquals(0, matches.getCompletedCaseCount().size());
-    assertEquals(1, matches.getStoppedCaseCount().size());
-    assertEquals(0, matches.getActiveCaseCount().size());
+    CaseStatusesForRun matches = sut.getCaseStatusesForRun("Run1");
+    assertEquals(0, matches.getCompletedCases().size());
+    assertEquals(1, matches.getStoppedCases().size());
+    assertEquals(0, matches.getActiveCases().size());
   }
 
   @org.junit.jupiter.api.Test
   public void testGetCaseCountsForRun_twoMatchingRuns() {
-    CaseStatusCountsForRun matches = sut.getCaseStatusCountsForRun("Run2");
-    assertEquals(1, matches.getCompletedCaseCount().size());
-    assertEquals(1, matches.getStoppedCaseCount().size());
-    assertEquals(0, matches.getActiveCaseCount().size());
+    CaseStatusesForRun matches = sut.getCaseStatusesForRun("Run2");
+    assertEquals(1, matches.getCompletedCases().size());
+    assertEquals(1, matches.getStoppedCases().size());
+    assertEquals(0, matches.getActiveCases().size());
   }
 
   @org.junit.jupiter.api.Test

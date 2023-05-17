@@ -2,7 +2,7 @@ package ca.on.oicr.gsi.cardea.server.controller;
 
 import ca.on.oicr.gsi.cardea.server.service.CaseService;
 import ca.on.oicr.gsi.cardea.data.CaseData;
-import ca.on.oicr.gsi.cardea.data.CaseStatusCountsForRun;
+import ca.on.oicr.gsi.cardea.data.CaseStatusesForRun;
 import ca.on.oicr.gsi.cardea.data.ShesmuCase;
 
 import java.time.ZonedDateTime;
@@ -21,9 +21,9 @@ public class CardeaApiController {
   @Autowired
   private CaseService caseService;
 
-  @GetMapping("/case-status-counts/{runName}")
-  public CaseStatusCountsForRun getCaseStatusCountsForRun(@PathVariable String runName) {
-    return caseService.getCaseStatusCountsForRun(runName);
+  @GetMapping("/case-statuses/{runName}")
+  public CaseStatusesForRun getCaseStatusesForRun(@PathVariable String runName) {
+    return caseService.getCaseStatusesForRun(runName);
   }
 
   @GetMapping("/dimsum")
