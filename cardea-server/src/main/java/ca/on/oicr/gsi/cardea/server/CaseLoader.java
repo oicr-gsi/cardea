@@ -145,7 +145,7 @@ public class CaseLoader {
         refreshTimer.record(System.currentTimeMillis() - startTimeMillis, TimeUnit.MILLISECONDS);
       }
 
-      CaseData caseData = new CaseData(cases, omittedSamples, afterTimestamp);
+      CaseData caseData = new CaseData(cases, omittedSamples, assaysById, afterTimestamp);
 
       log.debug(String.format("Completed loading %d cases.", cases.size()));
 
