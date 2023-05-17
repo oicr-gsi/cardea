@@ -1,9 +1,11 @@
 package ca.on.oicr.gsi.cardea.server.service;
 
+import ca.on.oicr.gsi.cardea.data.Assay;
 import ca.on.oicr.gsi.cardea.data.Case;
 import ca.on.oicr.gsi.cardea.data.CaseData;
 import ca.on.oicr.gsi.cardea.data.CaseStatus;
 import ca.on.oicr.gsi.cardea.data.CaseStatusesForRun;
+import ca.on.oicr.gsi.cardea.data.DjerbaCases;
 import ca.on.oicr.gsi.cardea.data.Requisition;
 import ca.on.oicr.gsi.cardea.data.RequisitionQc;
 import ca.on.oicr.gsi.cardea.data.Run;
@@ -15,9 +17,7 @@ import ca.on.oicr.gsi.Pair;
 
 import java.time.Duration;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.time.ZonedDateTime;
-import java.util.EnumMap;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -25,9 +25,7 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.Set;
-import java.util.Map.Entry;
 import java.util.concurrent.TimeUnit;
-import java.util.function.Function;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 import org.slf4j.Logger;
@@ -123,6 +121,25 @@ public class CaseService {
         })
         .flatMap(Set::stream)
         .collect(Collectors.toSet());
+  }
+
+  public DjerbaCases getDjerbaCases(String requisitionName) {
+    Set<Case> cases = caseData.getCases().stream()
+        .filter(kase -> requisitionName.equals(kase.getRequisition().getName()))
+        .collect(Collectors.toSet());
+    Long assayId = cases.stream()
+        .map(kase -> kase.getRequisition().getAssayId())
+        .findFirst().get();
+
+    Assay assay = caseData.getAssaysById().get(assayId);
+    if (cases.isEmpty() || assayId == null) {
+      return null;
+    }
+    return new DjerbaCases.Builder()
+        .assayName(assay.getName())
+        .assayVersion(assay.getVersion())
+        .cases(cases)
+        .build();
   }
 
   public Set<ShesmuCase> getShesmuCases() {
