@@ -45,11 +45,11 @@ public class CardeaApiController {
   @GetMapping("/requisition-cases/{requisitionName}")
   public CasesForRequisition getCasesForRequisition(@PathVariable String requisitionName) {
     if (requisitionName == null || requisitionName.isBlank()) {
-      throw new BadRequestException("must provide requisition name in URL");
+      throw new BadRequestException("missing requisition name in URL");
     }
     CasesForRequisition casesForRequisition = caseService.getCasesForRequisition(requisitionName);
     if (casesForRequisition == null) {
-      throw new NotFoundException("could not find requisition with name " + requisitionName);
+      throw new NotFoundException(String.format("could not find requisition with name '%s'", requisitionName));
     }
     return casesForRequisition;
   }
