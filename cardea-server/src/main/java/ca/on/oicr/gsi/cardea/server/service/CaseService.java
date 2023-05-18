@@ -5,7 +5,7 @@ import ca.on.oicr.gsi.cardea.data.Case;
 import ca.on.oicr.gsi.cardea.data.CaseData;
 import ca.on.oicr.gsi.cardea.data.CaseStatus;
 import ca.on.oicr.gsi.cardea.data.CaseStatusesForRun;
-import ca.on.oicr.gsi.cardea.data.DjerbaCases;
+import ca.on.oicr.gsi.cardea.data.CasesForRequisition;
 import ca.on.oicr.gsi.cardea.data.Requisition;
 import ca.on.oicr.gsi.cardea.data.RequisitionQc;
 import ca.on.oicr.gsi.cardea.data.Run;
@@ -123,7 +123,7 @@ public class CaseService {
         .collect(Collectors.toSet());
   }
 
-  public DjerbaCases getDjerbaCases(String requisitionName) {
+  public CasesForRequisition getCasesForRequisition(String requisitionName) {
     Set<Case> cases = caseData.getCases().stream()
         .filter(kase -> requisitionName.equals(kase.getRequisition().getName()))
         .collect(Collectors.toSet());
@@ -138,7 +138,7 @@ public class CaseService {
     if (cases.isEmpty() || assayId == null) {
       return null;
     }
-    return new DjerbaCases.Builder()
+    return new CasesForRequisition.Builder()
         .assayName(assay.getName())
         .assayVersion(assay.getVersion())
         .cases(cases)

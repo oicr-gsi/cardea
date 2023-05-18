@@ -11,13 +11,13 @@ import static java.util.Objects.requireNonNull;
  * A set of Cases that all have the same requisition (and therefore the same
  * assay)
  */
-public class DjerbaCases {
+public class CasesForRequisition {
 
   private final String assayName;
   private final String assayVersion;
   private final Set<Case> cases;
 
-  private DjerbaCases(Builder builder) {
+  private CasesForRequisition(Builder builder) {
     // older assays might be null
     this.assayName = builder.assayName;
     this.assayVersion = builder.assayVersion;
@@ -42,8 +42,8 @@ public class DjerbaCases {
     private String assayVersion;
     private Set<Case> cases;
 
-    public DjerbaCases build() {
-      return new DjerbaCases(this);
+    public CasesForRequisition build() {
+      return new CasesForRequisition(this);
     }
 
     public Builder assayName(String assayName) {
