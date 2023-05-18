@@ -18,7 +18,7 @@ server:
   use-forwarded-headers: true
   forward-headers-strategy: framework
   error:
-    include-stacktrace: on_param
+    include-stacktrace: never
 
 build:
   version: "@project.version@"
