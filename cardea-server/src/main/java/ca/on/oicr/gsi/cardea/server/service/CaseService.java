@@ -135,9 +135,7 @@ public class CaseService {
         .findFirst().get();
 
     Assay assay = caseData.getAssaysById().get(assayId);
-    if (cases.isEmpty() || assayId == null) {
-      return null;
-    }
+
     return new CasesForRequisition.Builder()
         .assayName(assay.getName())
         .assayVersion(assay.getVersion())
