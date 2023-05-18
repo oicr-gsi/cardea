@@ -1,1 +1,1 @@
-Add `/djerba-cases/{requisitionName}` endpoint
+Add `/requisition-cases/{requisitionName}` endpoint
