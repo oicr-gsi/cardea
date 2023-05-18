@@ -11,12 +11,10 @@ import java.time.ZonedDateTime;
 import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.server.ResponseStatusException;
 
 @RestController
 @RequestMapping("/")
@@ -46,13 +44,12 @@ public class CardeaApiController {
 
   @GetMapping("/djerba-cases/{requisitionName}")
   public DjerbaCases getDjerbaCases(@PathVariable String requisitionName) {
-    if (requisitionName == null) {
-      throw new ResponseStatusException(HttpStatus.NOT_FOUND, "must provide requisition name in URL");
+    if (requisitionName == null || requisitionName.isBlank()) {
+      throw new BadRequestException("must provide requisition name in URL");
     }
     DjerbaCases djerbaCases = caseService.getDjerbaCases(requisitionName);
     if (djerbaCases == null) {
-      throw new ResponseStatusException(HttpStatus.NOT_FOUND,
-          "could not find requisition with name " + requisitionName);
+      throw new NotFoundException("could not find requisition with name " + requisitionName);
     }
     return djerbaCases;
   }

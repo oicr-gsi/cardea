@@ -127,6 +127,9 @@ public class CaseService {
     Set<Case> cases = caseData.getCases().stream()
         .filter(kase -> requisitionName.equals(kase.getRequisition().getName()))
         .collect(Collectors.toSet());
+    if (cases.isEmpty()) {
+      return null;
+    }
     Long assayId = cases.stream()
         .map(kase -> kase.getRequisition().getAssayId())
         .findFirst().get();

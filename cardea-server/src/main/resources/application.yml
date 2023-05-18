@@ -17,6 +17,8 @@ spring:
 server:
   use-forwarded-headers: true
   forward-headers-strategy: framework
+  error:
+    include-stacktrace: on_param
 
 build:
   version: "@project.version@"
