@@ -7,6 +7,17 @@ This file is updated automatically as described in [Unreleased Changes](changes/
 
 ---------------------------------------------------------------------------------------------------
 
+## [1.1.0] - 2023-05-19
+
+### Added
+
+* Add `/requisition-cases/{requisitionName}` endpoint
+
+### Fixed
+
+* Return list of case IDs instead of count of cases in summary by run
+
+
 ## [1.0.1] - 2023-05-10
 
 ### Fixed
