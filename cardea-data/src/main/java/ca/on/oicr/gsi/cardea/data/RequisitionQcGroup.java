@@ -11,6 +11,7 @@ public class RequisitionQcGroup {
 
   private final BigDecimal callability;
   private final BigDecimal collapsedCoverage;
+  private final Donor donor;
   private final String groupId;
   private final String libraryDesignCode;
   private final BigDecimal purity;
@@ -18,6 +19,7 @@ public class RequisitionQcGroup {
   private final String tissueType;
 
   private RequisitionQcGroup(Builder builder) {
+    this.donor = requireNonNull(builder.donor);
     this.tissueOrigin = requireNonNull(builder.tissueOrigin);
     this.tissueType = requireNonNull(builder.tissueType);
     this.libraryDesignCode = requireNonNull(builder.libraryDesignCode);
@@ -33,6 +35,10 @@ public class RequisitionQcGroup {
 
   public BigDecimal getCollapsedCoverage() {
     return collapsedCoverage;
+  }
+
+  public Donor getDonor() {
+    return donor;
   }
 
   public String getGroupId() {
@@ -59,6 +65,7 @@ public class RequisitionQcGroup {
 
     private BigDecimal callability;
     private BigDecimal collapsedCoverage;
+    private Donor donor;
     private String groupId;
     private String libraryDesignCode;
     private BigDecimal purity;
@@ -76,6 +83,11 @@ public class RequisitionQcGroup {
 
     public Builder collapsedCoverage(BigDecimal collapsedCoverage) {
       this.collapsedCoverage = collapsedCoverage;
+      return this;
+    }
+
+    public Builder donor(Donor donor) {
+      this.donor = donor;
       return this;
     }
 
