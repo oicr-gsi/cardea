@@ -13,6 +13,7 @@ public class Sample {
 
   private final Long assayId;
   private final Integer clustersPerSample; // AKA "Pass Filter Clusters" for full-depth (call ready)
+  private final Integer preliminaryClustersPerSample;
   private final BigDecimal concentration;
   private final String concentrationUnits;
   private final LocalDate createdDate;
@@ -30,6 +31,7 @@ public class Sample {
   private final Integer librarySize;
   private final BigDecimal mappedToCoding;
   private final BigDecimal meanCoverageDeduplicated;
+  private final BigDecimal preliminaryMeanCoverageDeduplicated;
   private final BigDecimal meanInsertSize;
   private final String name;
   private final String nucleicAcidType;
@@ -80,8 +82,10 @@ public class Sample {
     this.donor = requireNonNull(builder.donor);
     this.meanInsertSize = builder.meanInsertSize;
     this.clustersPerSample = builder.clustersPerSample;
+    this.preliminaryClustersPerSample = builder.preliminaryClustersPerSample;
     this.duplicationRate = builder.duplicationRate;
     this.meanCoverageDeduplicated = builder.meanCoverageDeduplicated;
+    this.preliminaryMeanCoverageDeduplicated = builder.preliminaryMeanCoverageDeduplicated;
     this.rRnaContamination = builder.rRnaContamination;
     this.mappedToCoding = builder.mappedToCoding;
     this.rawCoverage = builder.rawCoverage;
@@ -122,6 +126,10 @@ public class Sample {
 
   public Integer getClustersPerSample() {
     return clustersPerSample;
+  }
+
+  public Integer getPreliminaryClustersPerSample() {
+    return preliminaryClustersPerSample;
   }
 
   public BigDecimal getConcentration() {
@@ -190,6 +198,10 @@ public class Sample {
 
   public BigDecimal getMeanCoverageDeduplicated() {
     return meanCoverageDeduplicated;
+  }
+
+  public BigDecimal getPreliminaryMeanCoverageDeduplicated() {
+    return preliminaryMeanCoverageDeduplicated;
   }
 
   public BigDecimal getMeanInsertSize() {
@@ -296,6 +308,7 @@ public class Sample {
   public static class Builder {
 
     private Integer clustersPerSample;
+    private Integer preliminaryClustersPerSample;
     private BigDecimal concentration;
     private String concentrationUnits;
     private LocalDate createdDate;
@@ -312,6 +325,7 @@ public class Sample {
     private Integer librarySize;
     private BigDecimal mappedToCoding;
     private BigDecimal meanCoverageDeduplicated;
+    private BigDecimal preliminaryMeanCoverageDeduplicated;
     private BigDecimal meanInsertSize;
     private String name;
     private String nucleicAcidType;
@@ -342,6 +356,11 @@ public class Sample {
 
     public Builder clustersPerSample(Integer clustersPerSample) {
       this.clustersPerSample = clustersPerSample;
+      return this;
+    }
+
+    public Builder preliminaryClustersPerSample(Integer preliminaryClustersPerSample) {
+      this.preliminaryClustersPerSample = preliminaryClustersPerSample;
       return this;
     }
 
@@ -422,6 +441,12 @@ public class Sample {
 
     public Builder meanCoverageDeduplicated(BigDecimal meanCoverageDeduplicated) {
       this.meanCoverageDeduplicated = meanCoverageDeduplicated;
+      return this;
+    }
+
+    public Builder preliminaryMeanCoverageDeduplicated(
+        BigDecimal preliminaryMeanCoverageDeduplicated) {
+      this.preliminaryMeanCoverageDeduplicated = preliminaryMeanCoverageDeduplicated;
       return this;
     }
 

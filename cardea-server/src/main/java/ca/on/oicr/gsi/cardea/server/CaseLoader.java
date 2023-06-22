@@ -83,8 +83,7 @@ public class CaseLoader {
   }
 
   /**
-   * @return The time that the data finished writing, or null if the data is
-   *         currently being written
+   * @return The time that the data finished writing, or null if the data is currently being written
    * @throws IOException if there is an error reading the timestamp file from disk
    */
   private ZonedDateTime getDataTimestamp() throws IOException {
@@ -99,10 +98,9 @@ public class CaseLoader {
    * Loads new case data if available
    *
    * @param previousTimestamp timestamp of previous successful load
-   * @return case data if it is available and newer than the previousTimestamp;
-   *         null otherwise
+   * @return case data if it is available and newer than the previousTimestamp; null otherwise
    * @throws DataParseException if there is an error parsing the data from file
-   * @throws IOException        if there is an error reading from disk
+   * @throws IOException if there is an error reading from disk
    */
   public CaseData load(ZonedDateTime previousTimestamp) throws DataParseException, IOException {
     log.debug("Loading case data...");
@@ -136,8 +134,10 @@ public class CaseLoader {
       Map<String, Donor> donorsById = loadDonors(donorReader);
       Map<Long, Run> runsById = loadRuns(runReader);
       Map<Long, Requisition> requisitionsById = loadRequisitions(requisitionReader, donorsById);
-      Map<String, Sample> samplesById = loadSamples(sampleReader, donorsById, runsById, requisitionsById);
-      List<OmittedSample> omittedSamples = loadOmittedSamples(nocaseReader, donorsById, requisitionsById);
+      Map<String, Sample> samplesById =
+          loadSamples(sampleReader, donorsById, runsById, requisitionsById);
+      List<OmittedSample> omittedSamples =
+          loadOmittedSamples(nocaseReader, donorsById, requisitionsById);
       Map<Long, Assay> assaysById = loadAssays(assayReader);
       List<Case> cases = loadCases(caseReader, projectsByName, samplesById, donorsById,
           requisitionsById, assaysById);
@@ -350,8 +350,12 @@ public class CaseLoader {
           .donor(donorsById.get(parseString(json, "donor_id")))
           .meanInsertSize(parseDecimal(json, "mean_insert", false))
           .clustersPerSample(parseInteger(json, "clusters_per_sample", false))
+          .preliminaryClustersPerSample(
+              parseInteger(json, "preliminary_clusters_per_sample", false))
           .duplicationRate(parseDecimal(json, "duplication_rate", false))
           .meanCoverageDeduplicated(parseDecimal(json, "mean_coverage_deduplicated", false))
+          .preliminaryMeanCoverageDeduplicated(
+              parseDecimal(json, "preliminary_mean_coverage_deduplicated", false))
           .rRnaContamination(parseDecimal(json, "rrna_contamination", false))
           .mappedToCoding(parseDecimal(json, "mapped_to_coding", false))
           .rawCoverage(parseDecimal(json, "raw_coverage", false))
