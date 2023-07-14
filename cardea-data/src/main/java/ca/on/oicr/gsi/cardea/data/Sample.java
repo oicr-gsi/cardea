@@ -33,6 +33,7 @@ public class Sample {
   private final BigDecimal meanCoverageDeduplicated;
   private final BigDecimal preliminaryMeanCoverageDeduplicated;
   private final BigDecimal meanInsertSize;
+  private final BigDecimal medianInsertSize;
   private final String name;
   private final String nucleicAcidType;
   private final BigDecimal onTargetReads;
@@ -81,6 +82,7 @@ public class Sample {
     this.run = builder.run;
     this.donor = requireNonNull(builder.donor);
     this.meanInsertSize = builder.meanInsertSize;
+    this.medianInsertSize = builder.medianInsertSize;
     this.clustersPerSample = builder.clustersPerSample;
     this.preliminaryClustersPerSample = builder.preliminaryClustersPerSample;
     this.duplicationRate = builder.duplicationRate;
@@ -208,6 +210,10 @@ public class Sample {
     return meanInsertSize;
   }
 
+  public BigDecimal getMedianInsertSize() {
+    return medianInsertSize;
+  }
+
   public String getName() {
     return name;
   }
@@ -327,6 +333,7 @@ public class Sample {
     private BigDecimal meanCoverageDeduplicated;
     private BigDecimal preliminaryMeanCoverageDeduplicated;
     private BigDecimal meanInsertSize;
+    private BigDecimal medianInsertSize;
     private String name;
     private String nucleicAcidType;
     private BigDecimal onTargetReads;
@@ -452,6 +459,11 @@ public class Sample {
 
     public Builder meanInsertSize(BigDecimal meanInsertSize) {
       this.meanInsertSize = meanInsertSize;
+      return this;
+    }
+
+    public Builder medianInsertSize(BigDecimal medianInsertSize) {
+      this.medianInsertSize = medianInsertSize;
       return this;
     }
 
