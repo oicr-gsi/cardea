@@ -349,6 +349,7 @@ public class CaseLoader {
           .run(runsById.get(runId))
           .donor(donorsById.get(parseString(json, "donor_id")))
           .meanInsertSize(parseDecimal(json, "mean_insert", false))
+          .medianInsertSize(parseDecimal(json, "median_insert", false))
           .clustersPerSample(parseInteger(json, "clusters_per_sample", false))
           .preliminaryClustersPerSample(
               parseInteger(json, "preliminary_clusters_per_sample", false))
