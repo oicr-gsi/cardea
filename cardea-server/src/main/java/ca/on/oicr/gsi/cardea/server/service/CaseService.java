@@ -149,10 +149,13 @@ public class CaseService {
         .collect(Collectors.toSet());
   }
 
-  private Set<String> getLimsIusIdsFor(Case kase) {
+  private Set<String> getLimsIusIdsForShesmu(Case kase) {
     return kase.getTests().stream()
         .map(test -> {
-          var lqs = test.getLibraryQualifications().stream().map(Sample::getId);
+          var lqs = test.getLibraryQualifications()
+              .stream()
+              .filter(s -> s.getRun() != null) // only keep library qualifications that are run-libraries/IUSes
+              .map(Sample::getId);
           var fdls = test.getFullDepthSequencings().stream().map(Sample::getId);
           return Stream.concat(lqs, fdls)
               .filter(Objects::nonNull)
@@ -172,7 +175,7 @@ public class CaseService {
         .caseIdentifier(kase.getId())
         .caseStatus(getReqStatus(kase.getRequisition()))
         .completedDate(completedDate.orElse(null))
-        .limsIds(getLimsIusIdsFor(kase))
+        .limsIds(getLimsIusIdsForShesmu(kase))
         .requisitionId(kase.getRequisition().getId())
         .requisitionName(kase.getRequisition().getName())
         .build();
