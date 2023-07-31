@@ -109,6 +109,11 @@ public class Case {
     return tissueType;
   }
 
+  // method used by Dimsum
+  public boolean isStopped() {
+    return requisition.isStopped();
+  }
+
   public static class Builder {
 
     private Assay assay;

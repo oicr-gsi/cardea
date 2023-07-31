@@ -27,6 +27,7 @@ public class Test {
   private final String timepoint;
   private final String tissueOrigin;
   private final String tissueType;
+  private final String libraryDesignCode;
 
   private Test(Builder builder) {
     this.name = requireNonNull(builder.name);
@@ -34,10 +35,12 @@ public class Test {
     this.tissueType = builder.tissueType;
     this.timepoint = builder.timepoint;
     this.groupId = builder.groupId;
+    this.libraryDesignCode = builder.libraryDesignCode;
     this.targetedSequencing = builder.targetedSequencing;
     this.extractionSkipped = builder.extractionSkipped;
     this.libraryPreparationSkipped = builder.libraryPreparationSkipped;
-    this.extractions = builder.extractions == null ? emptyList() : unmodifiableList(builder.extractions);
+    this.extractions =
+        builder.extractions == null ? emptyList() : unmodifiableList(builder.extractions);
     this.libraryPreparations = builder.libraryPreparations == null ? emptyList()
         : unmodifiableList(builder.libraryPreparations);
     this.libraryQualifications = builder.libraryQualifications == null ? emptyList()
@@ -61,6 +64,10 @@ public class Test {
 
   public String getGroupId() {
     return groupId;
+  }
+
+  public String getLibraryDesignCode() {
+    return libraryDesignCode;
   }
 
   public LocalDate getLatestActivityDate() {
@@ -109,6 +116,7 @@ public class Test {
     private List<Sample> extractions;
     private List<Sample> fullDepthSequencings;
     private String groupId;
+    private String libraryDesignCode;
     private boolean libraryPreparationSkipped;
     private List<Sample> libraryPreparations;
     private List<Sample> libraryQualifications;
@@ -139,6 +147,11 @@ public class Test {
 
     public Builder groupId(String groupId) {
       this.groupId = groupId;
+      return this;
+    }
+
+    public Builder libraryDesignCode(String libraryDesignCode) {
+      this.libraryDesignCode = libraryDesignCode;
       return this;
     }
 
