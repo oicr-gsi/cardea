@@ -7,6 +7,20 @@ This file is updated automatically as described in [Unreleased Changes](changes/
 
 ---------------------------------------------------------------------------------------------------
 
+## [1.2.0] - 2023-07-31
+
+### Added
+
+* Preliminary coverage for full-depth WG libraries, and preliminary clusters for full-depth WT libraries
+* isStopped() function in Case and Test library design code field
+* Sample median insert size field
+
+### Fixed
+
+* data for the wrong donor could be included in Informatics Review metrics on the Case QC Report
+* Only run-library IUSes are included in `shesmu-cases` limsIds field
+
+
 ## [1.1.0] - 2023-05-19
 
 ### Added

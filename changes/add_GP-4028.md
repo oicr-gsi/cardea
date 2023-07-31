@@ -1,1 +1,0 @@
-isStopped() function in Case and Test library design code field
