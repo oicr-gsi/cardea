@@ -1,1 +1,1 @@
-capability for Jackson parsing Json strings into data models
+capability for Jackson parsing for data models using Builder notation
