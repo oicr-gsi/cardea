@@ -1,10 +1,13 @@
 package ca.on.oicr.gsi.cardea.data;
 
 import static java.util.Objects.requireNonNull;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.databind.annotation.JsonPOJOBuilder;
 
 /**
  * Immutable Donor
  */
+@JsonDeserialize(builder = Donor.Builder.class)
 public class Donor {
 
   private final String externalName;
@@ -29,6 +32,7 @@ public class Donor {
     return name;
   }
 
+  @JsonPOJOBuilder(withPrefix = "")
   public static class Builder {
 
     private String externalName;

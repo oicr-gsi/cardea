@@ -12,10 +12,13 @@ import java.util.function.Function;
 import java.util.stream.Stream;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.databind.annotation.JsonPOJOBuilder;
 
 /**
  * Immutable case
  */
+@JsonDeserialize(builder = Case.Builder.class)
 public class Case {
 
   private final Assay assay;
@@ -114,6 +117,7 @@ public class Case {
     return requisition.isStopped();
   }
 
+  @JsonPOJOBuilder(withPrefix = "")
   public static class Builder {
 
     private Assay assay;

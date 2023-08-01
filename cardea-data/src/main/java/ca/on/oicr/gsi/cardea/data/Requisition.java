@@ -9,10 +9,13 @@ import java.util.List;
 import java.util.Objects;
 import java.util.function.Function;
 import java.util.stream.Stream;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.databind.annotation.JsonPOJOBuilder;
 
 /**
  * Immutable Requisition
  */
+@JsonDeserialize(builder = Requisition.Builder.class)
 public class Requisition {
 
   private final Long assayId;
@@ -35,11 +38,14 @@ public class Requisition {
     this.qcGroups = builder.qcGroups == null ? emptyList() : unmodifiableList(builder.qcGroups);
     this.informaticsReviews = builder.informaticsReviews == null ? emptyList()
         : unmodifiableList(builder.informaticsReviews);
-    this.draftReports = builder.draftReports == null ? emptyList() : unmodifiableList(builder.draftReports);
-    this.finalReports = builder.finalReports == null ? emptyList() : unmodifiableList(builder.finalReports);
-    this.latestActivityDate = Stream.of(informaticsReviews.stream(), draftReports.stream(), finalReports.stream())
-        .flatMap(Function.identity()).map(RequisitionQc::getQcDate).max(LocalDate::compareTo)
-        .orElse(null);
+    this.draftReports =
+        builder.draftReports == null ? emptyList() : unmodifiableList(builder.draftReports);
+    this.finalReports =
+        builder.finalReports == null ? emptyList() : unmodifiableList(builder.finalReports);
+    this.latestActivityDate =
+        Stream.of(informaticsReviews.stream(), draftReports.stream(), finalReports.stream())
+            .flatMap(Function.identity()).map(RequisitionQc::getQcDate).max(LocalDate::compareTo)
+            .orElse(null);
   }
 
   @Override
@@ -99,6 +105,7 @@ public class Requisition {
     return stopped;
   }
 
+  @JsonPOJOBuilder(withPrefix = "")
   public static class Builder {
 
     private Long assayId;

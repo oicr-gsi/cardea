@@ -5,10 +5,13 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.databind.annotation.JsonPOJOBuilder;
 
 /**
  * Immutable Assay
  */
+@JsonDeserialize(builder = Assay.Builder.class)
 public class Assay {
 
   private final String description;
@@ -22,9 +25,10 @@ public class Assay {
     this.name = requireNonNull(builder.name);
     this.description = builder.description;
     this.version = requireNonNull(builder.version);
-    Map<MetricCategory, List<MetricSubcategory>> tempMap = builder.metricCategories.entrySet().stream()
-        .collect(Collectors.toMap(entry -> entry.getKey(),
-            entry -> Collections.unmodifiableList(entry.getValue())));
+    Map<MetricCategory, List<MetricSubcategory>> tempMap =
+        builder.metricCategories.entrySet().stream()
+            .collect(Collectors.toMap(entry -> entry.getKey(),
+                entry -> Collections.unmodifiableList(entry.getValue())));
     this.metricCategories = Collections.unmodifiableMap(tempMap);
   }
 
@@ -48,6 +52,7 @@ public class Assay {
     return version;
   }
 
+  @JsonPOJOBuilder(withPrefix = "")
   public static class Builder {
 
     private String description;

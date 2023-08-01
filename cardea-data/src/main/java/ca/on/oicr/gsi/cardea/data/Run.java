@@ -6,10 +6,13 @@ import java.time.LocalDate;
 import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.databind.annotation.JsonPOJOBuilder;
 
 /**
  * Immutable Run
  */
+@JsonDeserialize(builder = Run.Builder.class)
 public class Run {
 
   private final Long clustersPf;
@@ -138,6 +141,7 @@ public class Run {
     return Objects.hash(id);
   }
 
+  @JsonPOJOBuilder(withPrefix = "")
   public static class Builder {
 
     private Long clustersPf;
