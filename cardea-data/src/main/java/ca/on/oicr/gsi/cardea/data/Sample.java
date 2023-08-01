@@ -43,6 +43,7 @@ public class Sample {
   private final LocalDate qcDate;
   private final Boolean qcPassed;
   private final String qcReason;
+  private final String qcNote;
   private final String qcUser;
   private final BigDecimal rRnaContamination;
   private final BigDecimal rawCoverage;
@@ -98,6 +99,7 @@ public class Sample {
     this.puc19Clusters = builder.puc19Clusters;
     this.qcPassed = builder.qcPassed;
     this.qcReason = builder.qcReason;
+    this.qcNote = builder.qcNote;
     this.qcUser = builder.qcUser;
     this.qcDate = builder.qcDate;
     this.dataReviewPassed = builder.dataReviewPassed;
@@ -250,6 +252,10 @@ public class Sample {
     return qcReason;
   }
 
+  public String getQCNote() {
+    return qcNote;
+  }
+
   public String getQcUser() {
     return qcUser;
   }
@@ -343,6 +349,7 @@ public class Sample {
     private LocalDate qcDate;
     private Boolean qcPassed;
     private String qcReason;
+    private String qcNote;
     private String qcUser;
     private BigDecimal rRnaContamination;
     private BigDecimal rawCoverage;
@@ -509,6 +516,11 @@ public class Sample {
 
     public Builder qcReason(String qcReason) {
       this.qcReason = qcReason;
+      return this;
+    }
+
+    public Builder qcNote(String qcNote) {
+      this.qcNote = qcNote;
       return this;
     }
 
