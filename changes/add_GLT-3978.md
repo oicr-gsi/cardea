@@ -1,0 +1,1 @@
+capability for Jackson parsing Json strings into data models
