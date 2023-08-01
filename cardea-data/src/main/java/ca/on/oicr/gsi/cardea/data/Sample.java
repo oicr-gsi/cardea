@@ -252,7 +252,7 @@ public class Sample {
     return qcReason;
   }
 
-  public String getQCNote() {
+  public String getQcNote() {
     return qcNote;
   }
 
