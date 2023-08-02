@@ -5,10 +5,13 @@ import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.Objects;
 import java.util.stream.Stream;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.databind.annotation.JsonPOJOBuilder;
 
 /**
  * Immutable Sample
  */
+@JsonDeserialize(builder = Sample.Builder.class)
 public class Sample {
 
   private final Long assayId;
@@ -317,6 +320,7 @@ public class Sample {
     return Objects.hash(id, run, sequencingLane);
   }
 
+  @JsonPOJOBuilder(withPrefix = "")
   public static class Builder {
 
     private Integer clustersPerSample;

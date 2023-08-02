@@ -3,10 +3,13 @@ package ca.on.oicr.gsi.cardea.data;
 import static java.util.Objects.requireNonNull;
 
 import java.time.LocalDate;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.databind.annotation.JsonPOJOBuilder;
 
 /**
  * Immutable OmittedSample
  */
+@JsonDeserialize(builder = OmittedSample.Builder.class)
 public class OmittedSample {
 
   private final Long assayId;
@@ -61,6 +64,7 @@ public class OmittedSample {
     return requisitionName;
   }
 
+  @JsonPOJOBuilder(withPrefix = "")
   public static class Builder {
 
     private LocalDate createdDate;

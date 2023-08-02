@@ -3,10 +3,13 @@ package ca.on.oicr.gsi.cardea.data;
 import static java.util.Objects.requireNonNull;
 
 import java.time.LocalDate;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.databind.annotation.JsonPOJOBuilder;
 
 /**
  * Immutable RequisitionQc
  */
+@JsonDeserialize(builder = RequisitionQc.Builder.class)
 public class RequisitionQc {
 
   private final LocalDate qcDate;
@@ -31,6 +34,7 @@ public class RequisitionQc {
     return qcPassed;
   }
 
+  @JsonPOJOBuilder(withPrefix = "")
   public static class Builder {
 
     private LocalDate qcDate;

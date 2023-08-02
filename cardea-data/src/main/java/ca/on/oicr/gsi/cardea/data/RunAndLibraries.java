@@ -5,10 +5,13 @@ import static java.util.Objects.requireNonNull;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.databind.annotation.JsonPOJOBuilder;
 
 /**
  * Immutable RunAndLibraries
  */
+@JsonDeserialize(builder = RunAndLibraries.Builder.class)
 public class RunAndLibraries {
 
   private Set<Sample> fullDepthSequencings;
@@ -33,6 +36,7 @@ public class RunAndLibraries {
     return run;
   }
 
+  @JsonPOJOBuilder(withPrefix = "")
   public static class Builder {
 
     private Set<Sample> fullDepthSequencings = new HashSet<>();

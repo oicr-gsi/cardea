@@ -8,10 +8,13 @@ import java.time.LocalDate;
 import java.util.List;
 import java.util.function.Function;
 import java.util.stream.Stream;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.databind.annotation.JsonPOJOBuilder;
 
 /**
  * Immutable Test
  */
+@JsonDeserialize(builder = Test.Builder.class)
 public class Test {
 
   private final boolean extractionSkipped;
@@ -110,6 +113,7 @@ public class Test {
     return libraryPreparationSkipped;
   }
 
+  @JsonPOJOBuilder(withPrefix = "")
   public static class Builder {
 
     private boolean extractionSkipped;
