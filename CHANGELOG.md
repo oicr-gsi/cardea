@@ -7,6 +7,14 @@ This file is updated automatically as described in [Unreleased Changes](changes/
 
 ---------------------------------------------------------------------------------------------------
 
+## [1.3.0] - 2023-08-08
+
+### Added
+
+* Sample QC Note field
+* capability for Jackson parsing for data models using Builder notation
+
+
 ## [1.2.0] - 2023-07-31
 
 ### Added

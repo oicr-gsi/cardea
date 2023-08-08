@@ -1,1 +1,0 @@
-capability for Jackson parsing for data models using Builder notation

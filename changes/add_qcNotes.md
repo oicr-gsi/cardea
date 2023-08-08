@@ -1,1 +1,0 @@
-Sample QC Note field
