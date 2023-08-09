@@ -39,8 +39,12 @@ public class Case {
     this.id = requireNonNull(builder.id);
     this.donor = requireNonNull(builder.donor);
     this.projects = unmodifiableSet(builder.projects);
-    this.assay = requireNonNull(builder.assay);
-    this.assayId = this.assay.getId();
+    this.assay = builder.assay;
+    if (this.assay != null) { // assay is left null within Cardea to reduce output size of data
+      this.assayId = this.assay.getId();
+    } else {
+      this.assayId = builder.assayId;
+    }
     this.tissueOrigin = requireNonNull(builder.tissueOrigin);
     this.tissueType = requireNonNull(builder.tissueType);
     this.timepoint = builder.timepoint;
@@ -48,7 +52,8 @@ public class Case {
     this.tests = unmodifiableList(builder.tests);
     this.requisition = builder.requisition;
     this.startDate = builder.receipts.stream()
-        .filter(sample -> sample.getRequisitionId().longValue() == builder.requisition.getId())
+        .filter(sample -> sample.getRequisitionId() != null
+            && sample.getRequisitionId().longValue() == builder.requisition.getId())
         .map(Sample::getCreatedDate)
         .min(LocalDate::compareTo).orElse(null);
     this.latestActivityDate = Stream
@@ -121,6 +126,7 @@ public class Case {
   public static class Builder {
 
     private Assay assay;
+    private long assayId;
     private Donor donor;
     private String id;
     private Set<Project> projects;
@@ -131,13 +137,18 @@ public class Case {
     private String tissueOrigin;
     private String tissueType;
 
+    public Case build() {
+      return new Case(this);
+    }
+
     public Builder assay(Assay assay) {
       this.assay = assay;
       return this;
     }
 
-    public Case build() {
-      return new Case(this);
+    public Builder assayId(long assayId) {
+      this.assayId = assayId;
+      return this;
     }
 
     public Builder donor(Donor donor) {
