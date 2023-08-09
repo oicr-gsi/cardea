@@ -40,7 +40,7 @@ public class Case {
     this.donor = requireNonNull(builder.donor);
     this.projects = unmodifiableSet(builder.projects);
     this.assay = builder.assay;
-    if (this.assay != null) {
+    if (this.assay != null) { // assay is left null within Cardea to reduce output size of data
       this.assayId = this.assay.getId();
     } else {
       this.assayId = builder.assayId;
