@@ -64,7 +64,6 @@ public class Case {
         .orElse(null);
   }
 
-
   @JsonIgnore
   public Assay getAssay() {
     return assay;
