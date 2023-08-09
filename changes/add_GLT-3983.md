@@ -1,0 +1,1 @@
+Case data model to match Dimsum
