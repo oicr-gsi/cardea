@@ -55,7 +55,7 @@ public class Case {
         .filter(sample -> sample.getRequisitionId() != null
             && sample.getRequisitionId().longValue() == builder.requisition.getId())
         .map(Sample::getCreatedDate)
-        .min(LocalDate::compareTo).orElse(null);
+        .min(LocalDate::compareTo).orElse(builder.startDate);
     this.latestActivityDate = Stream
         .of(receipts.stream().map(Sample::getLatestActivityDate),
             tests.stream().map(Test::getLatestActivityDate),
@@ -136,6 +136,7 @@ public class Case {
     private String timepoint;
     private String tissueOrigin;
     private String tissueType;
+    private LocalDate startDate;
 
     public Case build() {
       return new Case(this);
@@ -153,6 +154,11 @@ public class Case {
 
     public Builder donor(Donor donor) {
       this.donor = donor;
+      return this;
+    }
+
+    public Builder startDate(LocalDate starDate) {
+      this.startDate = starDate;
       return this;
     }
 

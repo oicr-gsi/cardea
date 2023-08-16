@@ -1,29 +1,28 @@
 package ca.on.oicr.gsi.cardea.data;
 
-import static java.util.Collections.unmodifiableList;
+import static java.util.Collections.*;
 import static java.util.Objects.requireNonNull;
 import java.time.ZonedDateTime;
-import java.util.Collections;
 import java.util.List;
 import java.util.Map;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.databind.annotation.JsonPOJOBuilder;
 
 /**
  * Immutable CaseData
  */
+@JsonDeserialize(builder = CaseData.Builder.class)
 public class CaseData {
-
   private final Map<Long, Assay> assaysById;
   private final List<Case> cases;
   private final List<OmittedSample> omittedSamples;
   private final ZonedDateTime timestamp;
 
-  public CaseData(List<Case> cases, List<OmittedSample> omittedSamples, Map<Long, Assay> assaysById,
-      ZonedDateTime timestamp) {
-    this.assaysById = Collections.unmodifiableMap(assaysById);
-    this.cases = unmodifiableList(cases);
-    this.omittedSamples = Collections.unmodifiableList(omittedSamples);
-    this.timestamp = requireNonNull(timestamp);
-
+  private CaseData(Builder builder) {
+    this.assaysById = unmodifiableMap(builder.assaysById);
+    this.cases = unmodifiableList(builder.cases);
+    this.omittedSamples = unmodifiableList(builder.omittedSamples);
+    this.timestamp = requireNonNull(builder.timestamp);
   }
 
   public Map<Long, Assay> getAssaysById() {
@@ -41,4 +40,39 @@ public class CaseData {
   public ZonedDateTime getTimestamp() {
     return timestamp;
   }
+
+  @JsonPOJOBuilder(withPrefix = "")
+  public static class Builder {
+    private Map<Long, Assay> assaysById;
+    private List<Case> cases;
+    private List<OmittedSample> omittedSamples;
+    private ZonedDateTime timestamp;
+
+    public CaseData build() {
+      return new CaseData(this);
+    }
+
+    public Builder assaysById(Map<Long, Assay> assaysById) {
+      this.assaysById = assaysById;
+      return this;
+    }
+
+    public Builder cases(List<Case> cases) {
+      this.cases = cases;
+      return this;
+    }
+
+    public Builder omittedSamples(List<OmittedSample> omittedSamples) {
+      this.omittedSamples = omittedSamples;
+      return this;
+    }
+
+    public Builder timestamp(ZonedDateTime timestamp) {
+      this.timestamp = timestamp;
+      return this;
+    }
+
+
+  }
+
 }

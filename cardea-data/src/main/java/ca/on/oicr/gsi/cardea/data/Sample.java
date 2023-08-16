@@ -65,9 +65,21 @@ public class Sample {
   private Sample(Builder builder) {
     this.id = requireNonNull(builder.id);
     this.name = requireNonNull(builder.name);
-    this.requisitionId = builder.requisition == null ? null : builder.requisition.getId();
-    this.requisitionName = builder.requisition == null ? null : builder.requisition.getName();
-    this.assayId = builder.requisition == null ? null : builder.requisition.getAssayId();
+    if (builder.requisitionId != null) {
+      this.requisitionId = builder.requisitionId;
+    } else {
+      this.requisitionId = builder.requisition == null ? null : builder.requisition.getId();
+    }
+    if (builder.requisitionName != null) {
+      this.requisitionName = builder.requisitionName;
+    } else {
+      this.requisitionName = builder.requisition == null ? null : builder.requisition.getName();
+    }
+    if (builder.assayId != null) {
+      this.assayId = builder.assayId;
+    } else {
+      this.assayId = builder.requisition == null ? null : builder.requisition.getAssayId();
+    }
     this.tissueOrigin = requireNonNull(builder.tissueOrigin);
     this.tissueType = requireNonNull(builder.tissueType);
     this.tissueMaterial = builder.tissueMaterial;
@@ -323,6 +335,7 @@ public class Sample {
   @JsonPOJOBuilder(withPrefix = "")
   public static class Builder {
 
+    private Long assayId;
     private Integer clustersPerSample;
     private Integer preliminaryClustersPerSample;
     private BigDecimal concentration;
@@ -358,6 +371,8 @@ public class Sample {
     private BigDecimal rRnaContamination;
     private BigDecimal rawCoverage;
     private Requisition requisition;
+    private Long requisitionId;
+    private String requisitionName;
     private Run run;
     private String secondaryId;
     private String sequencingLane;
@@ -370,6 +385,11 @@ public class Sample {
 
     public Sample build() {
       return new Sample(this);
+    }
+
+    public Builder assayId(Long assayId) {
+      this.assayId = assayId;
+      return this;
     }
 
     public Builder clustersPerSample(Integer clustersPerSample) {
@@ -545,6 +565,16 @@ public class Sample {
 
     public Builder requisition(Requisition requisition) {
       this.requisition = requisition;
+      return this;
+    }
+
+    public Builder requisitionId(Long requisitionId) {
+      this.requisitionId = requisitionId;
+      return this;
+    }
+
+    public Builder requisitionName(String requisitionName) {
+      this.requisitionName = requisitionName;
       return this;
     }
 
