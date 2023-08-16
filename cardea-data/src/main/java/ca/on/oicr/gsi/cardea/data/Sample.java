@@ -65,6 +65,9 @@ public class Sample {
   private Sample(Builder builder) {
     this.id = requireNonNull(builder.id);
     this.name = requireNonNull(builder.name);
+
+    // requisition is left null within Cardea to reduce output size of data, but instead sends
+    // assayId, requisitionId and requisitionName
     if (builder.requisitionId != null) {
       this.requisitionId = builder.requisitionId;
     } else {
