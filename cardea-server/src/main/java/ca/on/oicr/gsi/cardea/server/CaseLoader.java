@@ -151,7 +151,6 @@ public class CaseLoader {
           .omittedSamples(omittedSamples)
           .timestamp(afterTimestamp)
           .build();
-      // CaseData caseData = new CaseData(cases, omittedSamples, assaysById, afterTimestamp);
 
       log.debug(String.format("Completed loading %d cases.", cases.size()));
 

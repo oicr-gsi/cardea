@@ -138,6 +138,7 @@ public class Case {
     private String tissueType;
     private LocalDate startDate;
 
+
     public Case build() {
       return new Case(this);
     }
