@@ -66,23 +66,9 @@ public class Sample {
     this.id = requireNonNull(builder.id);
     this.name = requireNonNull(builder.name);
 
-    // requisition is left null within Cardea to reduce output size of data, but instead sends
-    // assayId, requisitionId and requisitionName
-    if (builder.requisitionId != null) {
-      this.requisitionId = builder.requisitionId;
-    } else {
-      this.requisitionId = builder.requisition == null ? null : builder.requisition.getId();
-    }
-    if (builder.requisitionName != null) {
-      this.requisitionName = builder.requisitionName;
-    } else {
-      this.requisitionName = builder.requisition == null ? null : builder.requisition.getName();
-    }
-    if (builder.assayId != null) {
-      this.assayId = builder.assayId;
-    } else {
-      this.assayId = builder.requisition == null ? null : builder.requisition.getAssayId();
-    }
+    this.requisitionId = builder.requisitionId;
+    this.requisitionName = builder.requisitionName;
+    this.assayId = builder.assayId;
     this.tissueOrigin = requireNonNull(builder.tissueOrigin);
     this.tissueType = requireNonNull(builder.tissueType);
     this.tissueMaterial = builder.tissueMaterial;
@@ -373,7 +359,6 @@ public class Sample {
     private String qcUser;
     private BigDecimal rRnaContamination;
     private BigDecimal rawCoverage;
-    private Requisition requisition;
     private Long requisitionId;
     private String requisitionName;
     private Run run;
@@ -563,11 +548,6 @@ public class Sample {
 
     public Builder rawCoverage(BigDecimal rawCoverage) {
       this.rawCoverage = rawCoverage;
-      return this;
-    }
-
-    public Builder requisition(Requisition requisition) {
-      this.requisition = requisition;
       return this;
     }
 
