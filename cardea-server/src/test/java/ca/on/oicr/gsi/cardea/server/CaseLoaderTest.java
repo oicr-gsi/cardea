@@ -107,7 +107,7 @@ public class CaseLoaderTest {
     Project project = kase.getProjects().iterator().next();
     assertProject(project);
 
-    assertEquals("WGTS - 40XT/30XN", kase.getAssay().getName());
+    assertEquals("WGTS - 40XT/30XN", data.getAssaysById().get(kase.getAssayId()).getName());
 
     assertNotNull(kase.getReceipts());
     assertEquals(5, kase.getReceipts().size());
@@ -127,8 +127,9 @@ public class CaseLoaderTest {
     assertEquals(1, test.getLibraryPreparations().size());
     assertNotNull(test.getLibraryQualifications());
     assertEquals(2, test.getLibraryQualifications().size());
-    System.out.println(test.getLibraryQualifications().stream().map(s -> s.getRun().getName()).reduce("",
-        String::concat));
+    System.out
+        .println(test.getLibraryQualifications().stream().map(s -> s.getRun().getName()).reduce("",
+            String::concat));
     assertNotNull(test.getFullDepthSequencings());
     assertEquals(1, test.getFullDepthSequencings().size());
     Sample fullDepth = test.getFullDepthSequencings().get(0);

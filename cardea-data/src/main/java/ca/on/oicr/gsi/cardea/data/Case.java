@@ -21,8 +21,10 @@ import com.fasterxml.jackson.databind.annotation.JsonPOJOBuilder;
 @JsonDeserialize(builder = Case.Builder.class)
 public class Case {
 
-  private final Assay assay;
+  // private final Assay assay;
   private final long assayId;
+  private final String assayName;
+  private final String assayDescription;
   private final Donor donor;
   private final String id;
   private final LocalDate latestActivityDate;
@@ -39,12 +41,10 @@ public class Case {
     this.id = requireNonNull(builder.id);
     this.donor = requireNonNull(builder.donor);
     this.projects = unmodifiableSet(builder.projects);
-    this.assay = builder.assay;
-    if (this.assay != null) { // assay is left null within Cardea to reduce output size of data
-      this.assayId = this.assay.getId();
-    } else {
-      this.assayId = builder.assayId;
-    }
+    this.assayId = builder.assayId;
+    // fields needed for Dimsum sorting/filtering
+    this.assayName = builder.assayName;
+    this.assayDescription = builder.assayDescription;
     this.tissueOrigin = requireNonNull(builder.tissueOrigin);
     this.tissueType = requireNonNull(builder.tissueType);
     this.timepoint = builder.timepoint;
@@ -64,13 +64,16 @@ public class Case {
         .orElse(null);
   }
 
-  @JsonIgnore
-  public Assay getAssay() {
-    return assay;
-  }
-
   public long getAssayId() {
     return assayId;
+  }
+
+  public String getAssayName() {
+    return assayName;
+  }
+
+  public String getAssayDescription() {
+    return assayDescription;
   }
 
   public Donor getDonor() {
@@ -125,8 +128,10 @@ public class Case {
   @JsonPOJOBuilder(withPrefix = "")
   public static class Builder {
 
-    private Assay assay;
+    // private Assay assay;
     private long assayId;
+    private String assayName;
+    private String assayDescription;
     private Donor donor;
     private String id;
     private Set<Project> projects;
@@ -143,13 +148,18 @@ public class Case {
       return new Case(this);
     }
 
-    public Builder assay(Assay assay) {
-      this.assay = assay;
+    public Builder assayId(long assayId) {
+      this.assayId = assayId;
       return this;
     }
 
-    public Builder assayId(long assayId) {
-      this.assayId = assayId;
+    public Builder assayName(String assayName) {
+      this.assayName = assayName;
+      return this;
+    }
+
+    public Builder assayDescription(String assayDescription) {
+      this.assayDescription = assayDescription;
       return this;
     }
 

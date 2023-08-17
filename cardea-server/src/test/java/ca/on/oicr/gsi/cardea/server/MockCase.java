@@ -126,7 +126,6 @@ public class MockCase {
     Assay assay = mock(Assay.class);
     when(assay.getName()).thenReturn(assayName);
     when(assay.getDescription()).thenReturn(assayName);
-    when(kase.getAssay()).thenReturn(assay);
     when(kase.getProjects()).thenReturn(new HashSet<>());
     kase.getProjects().add(makeProject(projectName));
     when(kase.getReceipts()).thenReturn(new ArrayList<>());
