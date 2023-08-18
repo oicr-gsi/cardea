@@ -7,6 +7,13 @@ This file is updated automatically as described in [Unreleased Changes](changes/
 
 ---------------------------------------------------------------------------------------------------
 
+## [1.4.0] - 2023-08-18
+
+### Changed
+
+* Data types to work with Dimsum data parsing and loading
+
+
 ## [1.3.0] - 2023-08-08
 
 ### Added
