@@ -21,8 +21,9 @@ import com.fasterxml.jackson.databind.annotation.JsonPOJOBuilder;
 @JsonDeserialize(builder = Case.Builder.class)
 public class Case {
 
-  private final Assay assay;
   private final long assayId;
+  private final String assayName;
+  private final String assayDescription;
   private final Donor donor;
   private final String id;
   private final LocalDate latestActivityDate;
@@ -39,23 +40,26 @@ public class Case {
     this.id = requireNonNull(builder.id);
     this.donor = requireNonNull(builder.donor);
     this.projects = unmodifiableSet(builder.projects);
-    this.assay = builder.assay;
-    if (this.assay != null) { // assay is left null within Cardea to reduce output size of data
-      this.assayId = this.assay.getId();
-    } else {
-      this.assayId = builder.assayId;
-    }
+    this.assayId = builder.assayId;
+    // fields needed for Dimsum sorting/filtering
+    this.assayName = builder.assayName;
+    this.assayDescription = builder.assayDescription;
+
     this.tissueOrigin = requireNonNull(builder.tissueOrigin);
     this.tissueType = requireNonNull(builder.tissueType);
     this.timepoint = builder.timepoint;
     this.receipts = unmodifiableList(builder.receipts);
     this.tests = unmodifiableList(builder.tests);
     this.requisition = builder.requisition;
-    this.startDate = builder.receipts.stream()
-        .filter(sample -> sample.getRequisitionId() != null
-            && sample.getRequisitionId().longValue() == builder.requisition.getId())
-        .map(Sample::getCreatedDate)
-        .min(LocalDate::compareTo).orElse(null);
+    if (builder.startDate != null) {
+      this.startDate = builder.startDate;
+    } else {
+      this.startDate = builder.receipts.stream()
+          .filter(sample -> sample.getRequisitionId() != null
+              && sample.getRequisitionId().longValue() == builder.requisition.getId())
+          .map(Sample::getCreatedDate)
+          .min(LocalDate::compareTo).orElse(null);
+    }
     this.latestActivityDate = Stream
         .of(receipts.stream().map(Sample::getLatestActivityDate),
             tests.stream().map(Test::getLatestActivityDate),
@@ -64,13 +68,16 @@ public class Case {
         .orElse(null);
   }
 
-  @JsonIgnore
-  public Assay getAssay() {
-    return assay;
-  }
-
   public long getAssayId() {
     return assayId;
+  }
+
+  public String getAssayName() {
+    return assayName;
+  }
+
+  public String getAssayDescription() {
+    return assayDescription;
   }
 
   public Donor getDonor() {
@@ -125,8 +132,9 @@ public class Case {
   @JsonPOJOBuilder(withPrefix = "")
   public static class Builder {
 
-    private Assay assay;
     private long assayId;
+    private String assayName;
+    private String assayDescription;
     private Donor donor;
     private String id;
     private Set<Project> projects;
@@ -136,14 +144,11 @@ public class Case {
     private String timepoint;
     private String tissueOrigin;
     private String tissueType;
+    private LocalDate startDate;
+
 
     public Case build() {
       return new Case(this);
-    }
-
-    public Builder assay(Assay assay) {
-      this.assay = assay;
-      return this;
     }
 
     public Builder assayId(long assayId) {
@@ -151,8 +156,23 @@ public class Case {
       return this;
     }
 
+    public Builder assayName(String assayName) {
+      this.assayName = assayName;
+      return this;
+    }
+
+    public Builder assayDescription(String assayDescription) {
+      this.assayDescription = assayDescription;
+      return this;
+    }
+
     public Builder donor(Donor donor) {
       this.donor = donor;
+      return this;
+    }
+
+    public Builder startDate(LocalDate starDate) {
+      this.startDate = starDate;
       return this;
     }
 

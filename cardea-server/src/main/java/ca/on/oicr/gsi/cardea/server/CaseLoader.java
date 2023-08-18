@@ -61,7 +61,8 @@ public class CaseLoader {
 
   private ObjectMapper mapper = new ObjectMapper();
 
-  public CaseLoader(@Value("${datadirectory}") File dataDirectory,
+  public CaseLoader(
+      @Value("${datadirectory}") File dataDirectory,
       @Autowired MeterRegistry meterRegistry) {
     if (!dataDirectory.isDirectory() || !dataDirectory.canRead()) {
       throw new IllegalStateException(
@@ -145,7 +146,12 @@ public class CaseLoader {
         refreshTimer.record(System.currentTimeMillis() - startTimeMillis, TimeUnit.MILLISECONDS);
       }
 
-      CaseData caseData = new CaseData(cases, omittedSamples, assaysById, afterTimestamp);
+      CaseData caseData = new CaseData.Builder()
+          .assaysById(assaysById)
+          .cases(cases)
+          .omittedSamples(omittedSamples)
+          .timestamp(afterTimestamp)
+          .build();
 
       log.debug(String.format("Completed loading %d cases.", cases.size()));
 
@@ -205,11 +211,14 @@ public class CaseLoader {
       String donorId = parseString(json, "donor_id", true);
       Long requisitionId = parseLong(json, "requisition_id", true);
       Long assayId = parseLong(json, "assay_id", true);
+      Assay assay = assaysById.get(assayId);
       return new Case.Builder()
           .id(parseString(json, "id", true))
           .donor(donorsById.get(donorId))
           .projects(parseProjects(json, "project_names", projectsByName))
-          .assay(assaysById.get(assayId))
+          .assayId(assayId)
+          .assayName(assay.getName())
+          .assayDescription(assay.getDescription())
           .tissueOrigin(parseString(json, "tissue_origin", true))
           .tissueType(parseString(json, "tissue_type", true))
           .timepoint(parseString(json, "timepoint"))
@@ -325,12 +334,17 @@ public class CaseLoader {
         throw new DataParseException(String.format("Run ID %d not found", runId));
       }
       Long requisitionId = parseLong(json, "requisition_id", false);
+      Requisition requisition = requisitionsById.get(requisitionId);
+      String requisitionName = requisition.getName();
+      Long assayId = requisition.getAssayId();
       if (requisitionId != null && !requisitionsById.containsKey(requisitionId)) {
         throw new DataParseException(String.format("Requisition ID %d not found", requisitionId));
       }
       return new Sample.Builder().id(parseString(json, "sample_id", true))
           .name(parseString(json, "oicr_internal_name", true))
-          .requisition(requisitionId == null ? null : requisitionsById.get(requisitionId))
+          .assayId(assayId)
+          .requisitionId(requisitionId)
+          .requisitionName(requisitionName)
           .tissueOrigin(parseString(json, "tissue_origin", true))
           .tissueType(parseString(json, "tissue_type", true))
           .tissueMaterial(parseString(json, "tissue_material"))

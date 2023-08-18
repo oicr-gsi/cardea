@@ -123,10 +123,8 @@ public class MockCase {
     when(donor.getName()).thenReturn(donorName);
     when(donor.getExternalName()).thenReturn(donorName);
     when(kase.getDonor()).thenReturn(donor);
-    Assay assay = mock(Assay.class);
-    when(assay.getName()).thenReturn(assayName);
-    when(assay.getDescription()).thenReturn(assayName);
-    when(kase.getAssay()).thenReturn(assay);
+    when(kase.getAssayName()).thenReturn(assayName);
+    when(kase.getAssayDescription()).thenReturn(assayName);
     when(kase.getProjects()).thenReturn(new HashSet<>());
     kase.getProjects().add(makeProject(projectName));
     when(kase.getReceipts()).thenReturn(new ArrayList<>());

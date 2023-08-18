@@ -79,8 +79,10 @@ public class CaseService {
       statusesForRun.get(p.first()).add(p.second());
     });
 
-    return new CaseStatusesForRun(statusesForRun.get(CaseStatus.ACTIVE.getLabel()), statusesForRun.get(
-        CaseStatus.COMPLETED.getLabel()), statusesForRun.get(CaseStatus.STOPPED.getLabel()));
+    return new CaseStatusesForRun(statusesForRun.get(CaseStatus.ACTIVE.getLabel()),
+        statusesForRun.get(
+            CaseStatus.COMPLETED.getLabel()),
+        statusesForRun.get(CaseStatus.STOPPED.getLabel()));
   }
 
   public Duration getDataAge() {
@@ -99,7 +101,8 @@ public class CaseService {
     if (req.isStopped()) {
       return CaseStatus.STOPPED;
     }
-    var reqQcs = req.getFinalReports().stream().map(RequisitionQc::isQcPassed).collect(Collectors.toSet());
+    var reqQcs =
+        req.getFinalReports().stream().map(RequisitionQc::isQcPassed).collect(Collectors.toSet());
     if (reqQcs.isEmpty()) {
       return CaseStatus.ACTIVE;
     } else if (reqQcs.stream().anyMatch(status -> status.equals(true))) {
@@ -154,7 +157,8 @@ public class CaseService {
         .map(test -> {
           var lqs = test.getLibraryQualifications()
               .stream()
-              .filter(s -> s.getRun() != null) // only keep library qualifications that are run-libraries/IUSes
+              .filter(s -> s.getRun() != null) // only keep library qualifications that are
+                                               // run-libraries/IUSes
               .map(Sample::getId);
           var fdls = test.getFullDepthSequencings().stream().map(Sample::getId);
           return Stream.concat(lqs, fdls)
@@ -170,8 +174,8 @@ public class CaseService {
         .map(qc -> qc.getQcDate())
         .max(LocalDate::compareTo);
     return new ShesmuCase.Builder()
-        .assayName(kase.getAssay().getName())
-        .assayVersion(kase.getAssay().getVersion())
+        .assayName(caseData.getAssaysById().get(kase.getAssayId()).getName())
+        .assayVersion(caseData.getAssaysById().get(kase.getAssayId()).getVersion())
         .caseIdentifier(kase.getId())
         .caseStatus(getReqStatus(kase.getRequisition()))
         .completedDate(completedDate.orElse(null))
