@@ -148,7 +148,7 @@ public class CaseService {
 
   public Set<ShesmuCase> getShesmuCases() {
     return caseData.getCases().stream()
-        .map(kase -> convertCaseToShesmuCase(kase, caseData.getAssaysById()))
+        .map(kase -> convertCaseToShesmuCase(kase))
         .collect(Collectors.toSet());
   }
 
@@ -169,13 +169,13 @@ public class CaseService {
         .collect(Collectors.toSet());
   }
 
-  private ShesmuCase convertCaseToShesmuCase(Case kase, Map<Long, Assay> assaysById) {
+  private ShesmuCase convertCaseToShesmuCase(Case kase) {
     Optional<LocalDate> completedDate = kase.getRequisition().getFinalReports().stream()
         .map(qc -> qc.getQcDate())
         .max(LocalDate::compareTo);
     return new ShesmuCase.Builder()
-        .assayName(assaysById.get(kase.getAssayId()).getName())
-        .assayVersion(assaysById.get(kase.getAssayId()).getVersion())
+        .assayName(caseData.getAssaysById().get(kase.getAssayId()).getName())
+        .assayVersion(caseData.getAssaysById().get(kase.getAssayId()).getVersion())
         .caseIdentifier(kase.getId())
         .caseStatus(getReqStatus(kase.getRequisition()))
         .completedDate(completedDate.orElse(null))

@@ -336,18 +336,7 @@ public class CaseLoader {
       Long requisitionId = parseLong(json, "requisition_id", false);
       Requisition requisition = requisitionsById.get(requisitionId);
       String requisitionName = requisition.getName();
-      String parsedRequisitionName = parseString(json, "requisitionName", false);
-      if (parsedRequisitionName != null
-          && !requisitionName.equals(parsedRequisitionName)) {
-        throw new DataParseException(
-            String.format("Invalid requisition name: %s", requisitionName));
-      }
       Long assayId = requisition.getAssayId();
-      Long parsedAssayId = parseLong(json, "assayId", false);
-      if (parsedAssayId != null
-          && assayId != parsedAssayId) {
-        throw new DataParseException(String.format("Inalid assay ID: %d", assayId));
-      }
       if (requisitionId != null && !requisitionsById.containsKey(requisitionId)) {
         throw new DataParseException(String.format("Requisition ID %d not found", requisitionId));
       }

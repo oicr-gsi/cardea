@@ -21,7 +21,6 @@ import com.fasterxml.jackson.databind.annotation.JsonPOJOBuilder;
 @JsonDeserialize(builder = Case.Builder.class)
 public class Case {
 
-  // private final Assay assay;
   private final long assayId;
   private final String assayName;
   private final String assayDescription;
@@ -45,17 +44,22 @@ public class Case {
     // fields needed for Dimsum sorting/filtering
     this.assayName = builder.assayName;
     this.assayDescription = builder.assayDescription;
+
     this.tissueOrigin = requireNonNull(builder.tissueOrigin);
     this.tissueType = requireNonNull(builder.tissueType);
     this.timepoint = builder.timepoint;
     this.receipts = unmodifiableList(builder.receipts);
     this.tests = unmodifiableList(builder.tests);
     this.requisition = builder.requisition;
-    this.startDate = builder.receipts.stream()
-        .filter(sample -> sample.getRequisitionId() != null
-            && sample.getRequisitionId().longValue() == builder.requisition.getId())
-        .map(Sample::getCreatedDate)
-        .min(LocalDate::compareTo).orElse(builder.startDate);
+    if (builder.startDate != null) {
+      this.startDate = builder.startDate;
+    } else {
+      this.startDate = builder.receipts.stream()
+          .filter(sample -> sample.getRequisitionId() != null
+              && sample.getRequisitionId().longValue() == builder.requisition.getId())
+          .map(Sample::getCreatedDate)
+          .min(LocalDate::compareTo).orElse(null);
+    }
     this.latestActivityDate = Stream
         .of(receipts.stream().map(Sample::getLatestActivityDate),
             tests.stream().map(Test::getLatestActivityDate),
@@ -128,7 +132,6 @@ public class Case {
   @JsonPOJOBuilder(withPrefix = "")
   public static class Builder {
 
-    // private Assay assay;
     private long assayId;
     private String assayName;
     private String assayDescription;
