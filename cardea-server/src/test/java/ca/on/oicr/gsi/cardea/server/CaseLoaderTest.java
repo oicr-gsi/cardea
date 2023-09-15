@@ -223,7 +223,7 @@ public class CaseLoaderTest {
       assertNotNull(requisition);
       assertEquals(requisitionId, requisition.getId());
       assertEquals("REQ-1", requisition.getName());
-      List<RequisitionQc> qcs = requisition.getInformaticsReviews();
+      List<RequisitionQc> qcs = requisition.getAnalysisReviews();
       assertEquals(1, qcs.size());
       RequisitionQc qc = qcs.get(0);
       assertTrue(qc.isQcPassed());

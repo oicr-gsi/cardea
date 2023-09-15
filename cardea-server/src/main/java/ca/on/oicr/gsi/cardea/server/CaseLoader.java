@@ -290,9 +290,9 @@ public class CaseLoader {
           .stopped(parseBoolean(json, "stopped"))
           .stopReason(parseString(json, "stop_reason", false))
           .qcGroups(parseRequisitionQcGroups(json.get("qc_groups"), donorsById))
-          .informaticsReviews(parseRequisitionQcs(json, "informatics_reviews"))
-          .draftReports(parseRequisitionQcs(json, "draft_reports"))
-          .finalReports(parseRequisitionQcs(json, "final_reports")).build();
+          .analysisReviews(parseRequisitionQcs(json, "analysis_reviews"))
+          .releaseApprovals(parseRequisitionQcs(json, "release_approvals"))
+          .releases(parseRequisitionQcs(json, "releases")).build();
       return requisition;
     });
 
@@ -517,8 +517,11 @@ public class CaseLoader {
     }
     List<RequisitionQc> qcs = new ArrayList<>();
     for (JsonNode node : arr) {
-      qcs.add(new RequisitionQc.Builder().qcPassed(parseQcPassed(node, "qc_state"))
-          .qcUser(parseString(node, "qc_user")).qcDate(parseDate(node, "qc_date")).build());
+      qcs.add(new RequisitionQc.Builder()
+          .qcPassed(parseQcPassed(node, "qc_state"))
+          .qcUser(parseString(node, "qc_user"))
+          .qcDate(parseDate(node, "qc_date"))
+          .build());
     }
     return qcs;
   }

@@ -36,16 +36,16 @@
         "callability": 87.6189
       }
     ],
-    "informatics_reviews": [
+    "analysis_reviews": [
       {
-        "qcable_type": "informatics_interpretation",
+        "qcable_type": "analysis_review",
         "qc_state": "Ready",
         "qc_user": "Person",
         "qc_date": "2021-08-10"
       }
     ],
-    "draft_reports": [],
-    "final_reports": []
+    "release_approvals": [],
+    "releases": []
   },
   {
     "id": 999,
@@ -53,8 +53,8 @@
     "assay_id": null,
     "stopped": false,
     "qc_groups": [],
-    "informatics_reviews": [],
-    "draft_reports": [],
-    "final_reports": []
+    "analysis_reviews": [],
+    "release_approvals": [],
+    "releases": []
   }
 ]
