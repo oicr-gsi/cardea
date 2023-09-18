@@ -684,9 +684,9 @@
           ]
         }
       ],
-      "INFORMATICS": [
+      "ANALYSIS_REVIEW": [
         {
-          "name": "WG Informatics Review",
+          "name": "WG Analysis Review",
           "sort_priority": 1,
           "library_design": "WG",
           "metrics": [

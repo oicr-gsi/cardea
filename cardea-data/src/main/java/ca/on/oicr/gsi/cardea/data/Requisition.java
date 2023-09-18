@@ -19,10 +19,10 @@ import com.fasterxml.jackson.databind.annotation.JsonPOJOBuilder;
 public class Requisition {
 
   private final Long assayId;
-  private final List<RequisitionQc> draftReports;
-  private final List<RequisitionQc> finalReports;
+  private final List<RequisitionQc> releaseApprovals;
+  private final List<RequisitionQc> releases;
   private final long id;
-  private final List<RequisitionQc> informaticsReviews;
+  private final List<RequisitionQc> analysisReviews;
   private final LocalDate latestActivityDate;
   private final String name;
   private final List<RequisitionQcGroup> qcGroups;
@@ -36,14 +36,14 @@ public class Requisition {
     this.stopped = builder.stopped;
     this.stopReason = builder.stopReason;
     this.qcGroups = builder.qcGroups == null ? emptyList() : unmodifiableList(builder.qcGroups);
-    this.informaticsReviews = builder.informaticsReviews == null ? emptyList()
-        : unmodifiableList(builder.informaticsReviews);
-    this.draftReports =
-        builder.draftReports == null ? emptyList() : unmodifiableList(builder.draftReports);
-    this.finalReports =
-        builder.finalReports == null ? emptyList() : unmodifiableList(builder.finalReports);
+    this.analysisReviews = builder.analysisReviews == null ? emptyList()
+        : unmodifiableList(builder.analysisReviews);
+    this.releaseApprovals =
+        builder.releaseApprovals == null ? emptyList() : unmodifiableList(builder.releaseApprovals);
+    this.releases =
+        builder.releases == null ? emptyList() : unmodifiableList(builder.releases);
     this.latestActivityDate =
-        Stream.of(informaticsReviews.stream(), draftReports.stream(), finalReports.stream())
+        Stream.of(analysisReviews.stream(), releaseApprovals.stream(), releases.stream())
             .flatMap(Function.identity()).map(RequisitionQc::getQcDate).max(LocalDate::compareTo)
             .orElse(null);
   }
@@ -64,20 +64,20 @@ public class Requisition {
     return assayId;
   }
 
-  public List<RequisitionQc> getDraftReports() {
-    return draftReports;
+  public List<RequisitionQc> getReleaseApprovals() {
+    return releaseApprovals;
   }
 
-  public List<RequisitionQc> getFinalReports() {
-    return finalReports;
+  public List<RequisitionQc> getReleases() {
+    return releases;
   }
 
   public long getId() {
     return id;
   }
 
-  public List<RequisitionQc> getInformaticsReviews() {
-    return informaticsReviews;
+  public List<RequisitionQc> getAnalysisReviews() {
+    return analysisReviews;
   }
 
   public LocalDate getLatestActivityDate() {
@@ -109,10 +109,10 @@ public class Requisition {
   public static class Builder {
 
     private Long assayId;
-    private List<RequisitionQc> draftReports;
-    private List<RequisitionQc> finalReports;
+    private List<RequisitionQc> releaseApprovals;
+    private List<RequisitionQc> releases;
     private long id;
-    private List<RequisitionQc> informaticsReviews;
+    private List<RequisitionQc> analysisReviews;
     private String name;
     private List<RequisitionQcGroup> qcGroups;
     private String stopReason;
@@ -127,13 +127,13 @@ public class Requisition {
       return new Requisition(this);
     }
 
-    public Builder draftReports(List<RequisitionQc> draftReports) {
-      this.draftReports = draftReports;
+    public Builder releaseApprovals(List<RequisitionQc> releaseApprovals) {
+      this.releaseApprovals = releaseApprovals;
       return this;
     }
 
-    public Builder finalReports(List<RequisitionQc> finalReports) {
-      this.finalReports = finalReports;
+    public Builder releases(List<RequisitionQc> releases) {
+      this.releases = releases;
       return this;
     }
 
@@ -142,8 +142,8 @@ public class Requisition {
       return this;
     }
 
-    public Builder informaticsReviews(List<RequisitionQc> informaticsReviews) {
-      this.informaticsReviews = informaticsReviews;
+    public Builder analysisReviews(List<RequisitionQc> analysisReviews) {
+      this.analysisReviews = analysisReviews;
       return this;
     }
 

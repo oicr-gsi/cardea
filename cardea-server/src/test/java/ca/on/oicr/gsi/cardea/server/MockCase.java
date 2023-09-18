@@ -31,9 +31,9 @@ public class MockCase {
     when(requisition.getId()).thenReturn(Long.valueOf(caseNumber));
     when(requisition.isStopped()).thenReturn(caseNumber == 23);
     when(requisition.getName()).thenReturn(name);
-    when(requisition.getInformaticsReviews()).thenReturn(new ArrayList<>());
-    when(requisition.getDraftReports()).thenReturn(new ArrayList<>());
-    when(requisition.getFinalReports()).thenReturn(new ArrayList<>());
+    when(requisition.getAnalysisReviews()).thenReturn(new ArrayList<>());
+    when(requisition.getReleaseApprovals()).thenReturn(new ArrayList<>());
+    when(requisition.getReleases()).thenReturn(new ArrayList<>());
     when(kase.getRequisition()).thenReturn(requisition);
     return requisition;
   }
@@ -349,7 +349,7 @@ public class MockCase {
 
   private static Case makeCase4() {
     final int caseNumber = 4;
-    // Case is pending informatics review
+    // Case is pending analysis review
     Case kase = makeCase("PRO3_0001", "Single Test", "PRO3", "REQ04", caseNumber);
     addTest(kase, caseNumber, 1, "Test", true, true, true, true);
     return kase;
@@ -361,7 +361,7 @@ public class MockCase {
     Case kase = makeCase("PRO4_0001", "Single Test", "PRO4", "REQ04", caseNumber);
     addTest(kase, caseNumber, 1, "Test", true, true, true, true);
     Requisition requisition = kase.getRequisition();
-    addRequisitionQc(requisition.getInformaticsReviews(), true);
+    addRequisitionQc(requisition.getAnalysisReviews(), true);
     return kase;
   }
 
@@ -372,8 +372,8 @@ public class MockCase {
     addTest(kase, caseNumber, 1, "Test", true, true, true, true);
     addTest(kase, caseNumber, 2, "Test", true, true, true, true);
     Requisition requisition = kase.getRequisition();
-    addRequisitionQc(requisition.getInformaticsReviews(), true);
-    addRequisitionQc(requisition.getDraftReports(), true);
+    addRequisitionQc(requisition.getAnalysisReviews(), true);
+    addRequisitionQc(requisition.getReleaseApprovals(), true);
     return kase;
   }
 

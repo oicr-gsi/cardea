@@ -50,7 +50,8 @@ public class CaseServiceTest {
           .createdDate(LocalDate.now()).build();
     } else {
       newSample = new Sample.Builder().id(name).name(name).donor(mock(Donor.class)).project("PROJ")
-          .tissueOrigin("To").tissueType("T").run(new Run.Builder().name(runName).lanes(new ArrayList<>()).build())
+          .tissueOrigin("To").tissueType("T")
+          .run(new Run.Builder().name(runName).lanes(new ArrayList<>()).build())
           .createdDate(LocalDate.now()).build();
     }
 
@@ -87,7 +88,7 @@ public class CaseServiceTest {
         .name(String.format("REQ_%d", requisitionNumber))
         .assayId(2L)
         .stopped(requisitionNumber % 2 == 1 ? true : false)
-        .finalReports(requisitionNumber % 2 == 1 ? null
+        .releases(requisitionNumber % 2 == 1 ? null
             : Arrays.asList(new RequisitionQc.Builder().qcPassed(true).qcUser("test").qcDate(
                 LocalDate.now()).build()))
         .build();

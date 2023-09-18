@@ -102,7 +102,7 @@ public class CaseService {
       return CaseStatus.STOPPED;
     }
     var reqQcs =
-        req.getFinalReports().stream().map(RequisitionQc::isQcPassed).collect(Collectors.toSet());
+        req.getReleases().stream().map(RequisitionQc::isQcPassed).collect(Collectors.toSet());
     if (reqQcs.isEmpty()) {
       return CaseStatus.ACTIVE;
     } else if (reqQcs.stream().anyMatch(status -> status.equals(true))) {
@@ -170,7 +170,7 @@ public class CaseService {
   }
 
   private ShesmuCase convertCaseToShesmuCase(Case kase) {
-    Optional<LocalDate> completedDate = kase.getRequisition().getFinalReports().stream()
+    Optional<LocalDate> completedDate = kase.getRequisition().getReleases().stream()
         .map(qc -> qc.getQcDate())
         .max(LocalDate::compareTo);
     return new ShesmuCase.Builder()
