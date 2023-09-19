@@ -7,6 +7,16 @@ This file is updated automatically as described in [Unreleased Changes](changes/
 
 ---------------------------------------------------------------------------------------------------
 
+## [1.5.0] - 2023-09-19
+
+### Changed
+
+* Renamed steps:
+  * Informatics Review -> Analysis Review
+  * Draft Report -> Release Approval
+  * Final Report -> Release
+
+
 ## [1.4.0] - 2023-08-18
 
 ### Changed
