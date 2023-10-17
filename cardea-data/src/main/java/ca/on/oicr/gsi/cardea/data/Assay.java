@@ -19,6 +19,7 @@ public class Assay {
   private final Map<MetricCategory, List<MetricSubcategory>> metricCategories;
   private final String name;
   private final String version;
+  private final AssayTargets targets;
 
   public Assay(Builder builder) {
     this.id = requireNonNull(builder.id);
@@ -30,6 +31,7 @@ public class Assay {
             .collect(Collectors.toMap(entry -> entry.getKey(),
                 entry -> Collections.unmodifiableList(entry.getValue())));
     this.metricCategories = Collections.unmodifiableMap(tempMap);
+    this.targets = requireNonNull(builder.targets);
   }
 
   public String getDescription() {
@@ -52,6 +54,10 @@ public class Assay {
     return version;
   }
 
+  public AssayTargets getTargets() {
+    return targets;
+  }
+
   @JsonPOJOBuilder(withPrefix = "")
   public static class Builder {
 
@@ -60,6 +66,7 @@ public class Assay {
     private Map<MetricCategory, List<MetricSubcategory>> metricCategories;
     private String name;
     private String version;
+    private AssayTargets targets;
 
     public Assay build() {
       return new Assay(this);
@@ -87,6 +94,11 @@ public class Assay {
 
     public Builder version(String version) {
       this.version = version;
+      return this;
+    }
+
+    public Builder targets(AssayTargets targets) {
+      this.targets = targets;
       return this;
     }
 

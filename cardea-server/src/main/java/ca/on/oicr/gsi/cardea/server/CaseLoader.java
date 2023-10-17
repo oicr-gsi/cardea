@@ -1,6 +1,7 @@
 package ca.on.oicr.gsi.cardea.server;
 
 import ca.on.oicr.gsi.cardea.data.Assay;
+import ca.on.oicr.gsi.cardea.data.AssayTargets;
 import ca.on.oicr.gsi.cardea.data.Case;
 import ca.on.oicr.gsi.cardea.data.CaseData;
 import ca.on.oicr.gsi.cardea.data.Donor;
@@ -199,6 +200,7 @@ public class CaseLoader {
         .description(parseString(json, "description", false))
         .version(parseString(json, "version", true))
         .metricCategories(parseMetricCategories(json.get("metric_categories")))
+        .targets(parseAssayTargets(json.get("targets")))
         .build());
     return assays.stream().collect(Collectors.toMap(Assay::getId, Function.identity()));
   }
@@ -648,6 +650,22 @@ public class CaseLoader {
           .build());
     }
     return metrics;
+  }
+
+  private AssayTargets parseAssayTargets(JsonNode json) throws DataParseException {
+    AssayTargets.Builder builder = new AssayTargets.Builder();
+    if (json != null && json.isObject()) {
+      builder.caseDays(parseInteger(json, "case_days", false))
+          .receiptDays(parseInteger(json, "receipt_days", false))
+          .extractionDays(parseInteger(json, "extraction_days", false))
+          .libraryPreparationDays(parseInteger(json, "library_preparation_days", false))
+          .libraryQualificationDays(parseInteger(json, "library_qualification_days", false))
+          .fullDepthSequencingDays(parseInteger(json, "full_depth_sequencing_days", false))
+          .analysisReviewDays(parseInteger(json, "analysis_review_days", false))
+          .releaseApprovalDays(parseInteger(json, "release_approval_days", false))
+          .releaseDays(parseInteger(json, "release_days", false));
+    }
+    return builder.build();
   }
 
   private Set<Project> parseProjects(JsonNode json, String fieldName,

@@ -5,6 +5,7 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
 import ca.on.oicr.gsi.cardea.data.Assay;
+import ca.on.oicr.gsi.cardea.data.AssayTargets;
 import ca.on.oicr.gsi.cardea.data.Case;
 import ca.on.oicr.gsi.cardea.data.CaseData;
 import ca.on.oicr.gsi.cardea.data.Donor;
@@ -166,6 +167,17 @@ public class CaseLoaderTest {
           .orElse(null);
       assertNotNull(metric);
       assertEquals(new BigDecimal("0.7"), metric.getMinimum());
+      AssayTargets targets = assay.getTargets();
+      assertNotNull(targets);
+      assertEquals(Integer.valueOf(45), targets.getCaseDays());
+      assertEquals(Integer.valueOf(2), targets.getReceiptDays());
+      assertEquals(Integer.valueOf(3), targets.getExtractionDays());
+      assertEquals(Integer.valueOf(3), targets.getLibraryPreparationDays());
+      assertEquals(Integer.valueOf(4), targets.getLibraryQualificationDays());
+      assertEquals(Integer.valueOf(7), targets.getFullDepthSequencingDays());
+      assertEquals(Integer.valueOf(2), targets.getAnalysisReviewDays());
+      assertEquals(Integer.valueOf(3), targets.getReleaseApprovalDays());
+      assertEquals(Integer.valueOf(3), targets.getReleaseDays());
     }
   }
 

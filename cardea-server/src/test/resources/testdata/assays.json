@@ -933,6 +933,17 @@
           ]
         }
       ]
+    },
+    "targets": {
+      "case_days": 45,
+      "receipt_days": 2,
+      "extraction_days": 3,
+      "library_preparation_days": 3,
+      "library_qualification_days": 4,
+      "full_depth_sequencing_days": 7,
+      "analysis_review_days": 2,
+      "release_approval_days": 3,
+      "release_days": 3
     }
   }
 ]
