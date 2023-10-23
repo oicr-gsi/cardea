@@ -49,16 +49,8 @@ public class Case {
     this.timepoint = builder.timepoint;
     this.receipts = unmodifiableList(builder.receipts);
     this.tests = unmodifiableList(builder.tests);
-    this.requisition = builder.requisition;
-    if (builder.startDate != null) {
-      this.startDate = builder.startDate;
-    } else {
-      this.startDate = builder.receipts.stream()
-          .filter(sample -> sample.getRequisitionId() != null
-              && sample.getRequisitionId().longValue() == builder.requisition.getId())
-          .map(Sample::getCreatedDate)
-          .min(LocalDate::compareTo).orElse(null);
-    }
+    this.requisition = requireNonNull(builder.requisition);
+    this.startDate = requireNonNull(builder.startDate);
     this.latestActivityDate = Stream
         .of(receipts.stream().map(Sample::getLatestActivityDate),
             tests.stream().map(Test::getLatestActivityDate),

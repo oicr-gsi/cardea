@@ -227,6 +227,7 @@ public class CaseLoader {
           .receipts(parseIdsAndGet(json, "receipt_ids", JsonNode::asText, samplesById))
           .tests(parseTests(json, "assay_tests", samplesById))
           .requisition(requisitionsById.get(requisitionId))
+          .startDate(parseDate(json, "start_date"))
           .build();
     });
   }
