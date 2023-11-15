@@ -28,6 +28,8 @@ public class Requisition {
   private final List<RequisitionQcGroup> qcGroups;
   private final String stopReason;
   private final boolean stopped;
+  private final boolean paused;
+  private final String pauseReason;
 
   private Requisition(Builder builder) {
     this.id = requireNonNull(builder.id);
@@ -35,6 +37,8 @@ public class Requisition {
     this.assayId = builder.assayId;
     this.stopped = builder.stopped;
     this.stopReason = builder.stopReason;
+    this.paused = builder.paused;
+    this.pauseReason = builder.pauseReason;
     this.qcGroups = builder.qcGroups == null ? emptyList() : unmodifiableList(builder.qcGroups);
     this.analysisReviews = builder.analysisReviews == null ? emptyList()
         : unmodifiableList(builder.analysisReviews);
@@ -92,17 +96,25 @@ public class Requisition {
     return qcGroups;
   }
 
+  public boolean isStopped() {
+    return stopped;
+  }
+
   public String getStopReason() {
     return stopReason;
+  }
+
+  public boolean isPaused() {
+    return paused;
+  }
+
+  public String getPauseReason() {
+    return pauseReason;
   }
 
   @Override
   public int hashCode() {
     return Objects.hash(id);
-  }
-
-  public boolean isStopped() {
-    return stopped;
   }
 
   @JsonPOJOBuilder(withPrefix = "")
@@ -117,6 +129,8 @@ public class Requisition {
     private List<RequisitionQcGroup> qcGroups;
     private String stopReason;
     private boolean stopped;
+    private boolean paused;
+    private String pauseReason;
 
     public Builder assayId(Long assayId) {
       this.assayId = assayId;
@@ -164,6 +178,16 @@ public class Requisition {
 
     public Builder stopped(boolean stopped) {
       this.stopped = stopped;
+      return this;
+    }
+
+    public Builder paused(boolean paused) {
+      this.paused = paused;
+      return this;
+    }
+
+    public Builder pauseReason(String pauseReason) {
+      this.pauseReason = pauseReason;
       return this;
     }
   }

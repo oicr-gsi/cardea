@@ -4,6 +4,9 @@
     "name": "REQ-1",
     "assay_id": 2,
     "stopped": false,
+    "stop_reason": null,
+    "paused": false,
+    "pause_reason": null,
     "qc_groups": [
       {
         "donor_id": "SAM413576",
@@ -52,6 +55,9 @@
     "name": "REQ-X",
     "assay_id": null,
     "stopped": false,
+    "stop_reason": null,
+    "paused": false,
+    "pause_reason": null,
     "qc_groups": [],
     "analysis_reviews": [],
     "release_approvals": [],
