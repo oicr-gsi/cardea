@@ -228,6 +228,12 @@ public class CaseLoader {
           .tests(parseTests(json, "assay_tests", samplesById))
           .requisition(requisitionsById.get(requisitionId))
           .startDate(parseDate(json, "start_date"))
+          .receiptDaysSpent(parseInteger(json, "receipt_days_spent", true))
+          .analysisReviewDaysSpent(parseInteger(json, "analysis_review_days_spent", true))
+          .releaseApprovalDaysSpent(parseInteger(json, "release_approval_days_spent", true))
+          .releaseDaysSpent(parseInteger(json, "release_days_spent", true))
+          .caseDaysSpent(parseInteger(json, "case_days_spent", true))
+          .pauseDays(parseInteger(json, "pause_days", true))
           .build();
     });
   }
@@ -292,6 +298,8 @@ public class CaseLoader {
           .assayId(parseLong(json, "assay_id", false))
           .stopped(parseBoolean(json, "stopped"))
           .stopReason(parseString(json, "stop_reason", false))
+          .paused(parseBoolean(json, "paused"))
+          .pauseReason(parseString(json, "pause_reason", false))
           .qcGroups(parseRequisitionQcGroups(json.get("qc_groups"), donorsById))
           .analysisReviews(parseRequisitionQcs(json, "analysis_reviews"))
           .releaseApprovals(parseRequisitionQcs(json, "release_approvals"))
@@ -707,6 +715,13 @@ public class CaseLoader {
               parseIdsAndGet(testNode, "library_qualification_ids", JsonNode::asText, samplesById))
           .fullDepthSequencings(
               parseIdsAndGet(testNode, "full_depth_sequencing_ids", JsonNode::asText, samplesById))
+          .extractionDaysSpent(parseInteger(testNode, "extraction_days_spent", true))
+          .libraryPreparationDaysSpent(
+              parseInteger(testNode, "library_preparation_days_spent", true))
+          .libraryQualificationDaysSpent(
+              parseInteger(testNode, "library_qualification_days_spent", true))
+          .fullDepthSequencingDaysSpent(
+              parseInteger(testNode, "full_depth_sequencing_days_spent", true))
           .build());
     }
     return tests;

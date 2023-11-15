@@ -34,6 +34,12 @@ public class Case {
   private final String timepoint;
   private final String tissueOrigin;
   private final String tissueType;
+  private final int receiptDaysSpent;
+  private final int analysisReviewDaysSpent;
+  private final int releaseApprovalDaysSpent;
+  private final int releaseDaysSpent;
+  private final int caseDaysSpent;
+  private final int pauseDays;
 
   private Case(Builder builder) {
     this.id = requireNonNull(builder.id);
@@ -57,6 +63,12 @@ public class Case {
             Stream.of(requisition.getLatestActivityDate()))
         .flatMap(Function.identity()).filter(Objects::nonNull).max(LocalDate::compareTo)
         .orElse(null);
+    this.receiptDaysSpent = builder.receiptDaysSpent;
+    this.analysisReviewDaysSpent = builder.analysisReviewDaysSpent;
+    this.releaseApprovalDaysSpent = builder.releaseApprovalDaysSpent;
+    this.releaseDaysSpent = builder.releaseDaysSpent;
+    this.caseDaysSpent = builder.caseDaysSpent;
+    this.pauseDays = builder.pauseDays;
   }
 
   public long getAssayId() {
@@ -115,7 +127,30 @@ public class Case {
     return tissueType;
   }
 
-  // method used by Dimsum
+  public int getReceiptDaysSpent() {
+    return receiptDaysSpent;
+  }
+
+  public int getAnalysisReviewDaysSpent() {
+    return analysisReviewDaysSpent;
+  }
+
+  public int getReleaseApprovalDaysSpent() {
+    return releaseApprovalDaysSpent;
+  }
+
+  public int getReleaseDaysSpent() {
+    return releaseDaysSpent;
+  }
+
+  public int getCaseDaysSpent() {
+    return caseDaysSpent;
+  }
+
+  public int getPauseDays() {
+    return pauseDays;
+  }
+
   public boolean isStopped() {
     return requisition.isStopped();
   }
@@ -136,7 +171,12 @@ public class Case {
     private String tissueOrigin;
     private String tissueType;
     private LocalDate startDate;
-
+    private int receiptDaysSpent;
+    private int analysisReviewDaysSpent;
+    private int releaseApprovalDaysSpent;
+    private int releaseDaysSpent;
+    private int caseDaysSpent;
+    private int pauseDays;
 
     public Case build() {
       return new Case(this);
@@ -204,6 +244,36 @@ public class Case {
 
     public Builder tissueType(String tissueType) {
       this.tissueType = tissueType;
+      return this;
+    }
+
+    public Builder receiptDaysSpent(int days) {
+      this.receiptDaysSpent = days;
+      return this;
+    }
+
+    public Builder analysisReviewDaysSpent(int days) {
+      this.analysisReviewDaysSpent = days;
+      return this;
+    }
+
+    public Builder releaseApprovalDaysSpent(int days) {
+      this.releaseApprovalDaysSpent = days;
+      return this;
+    }
+
+    public Builder releaseDaysSpent(int days) {
+      this.releaseDaysSpent = days;
+      return this;
+    }
+
+    public Builder caseDaysSpent(int days) {
+      this.caseDaysSpent = days;
+      return this;
+    }
+
+    public Builder pauseDays(int days) {
+      this.pauseDays = days;
       return this;
     }
   }

@@ -31,6 +31,10 @@ public class Test {
   private final String tissueOrigin;
   private final String tissueType;
   private final String libraryDesignCode;
+  private final int extractionDaysSpent;
+  private final int libraryPreparationDaysSpent;
+  private final int libraryQualificationDaysSpent;
+  private final int fullDepthSequencingDaysSpent;
 
   private Test(Builder builder) {
     this.name = requireNonNull(builder.name);
@@ -55,6 +59,10 @@ public class Test {
             fullDepthSequencings.stream())
         .flatMap(Function.identity()).map(Sample::getLatestActivityDate).max(LocalDate::compareTo)
         .orElse(null);
+    this.extractionDaysSpent = builder.extractionDaysSpent;
+    this.libraryPreparationDaysSpent = builder.libraryPreparationDaysSpent;
+    this.libraryQualificationDaysSpent = builder.libraryQualificationDaysSpent;
+    this.fullDepthSequencingDaysSpent = builder.fullDepthSequencingDaysSpent;
   }
 
   public List<Sample> getExtractions() {
@@ -113,6 +121,22 @@ public class Test {
     return libraryPreparationSkipped;
   }
 
+  public int getExtractionDaysSpent() {
+    return extractionDaysSpent;
+  }
+
+  public int getLibraryPreparationDaysSpent() {
+    return libraryPreparationDaysSpent;
+  }
+
+  public int getLibraryQualificationDaysSpent() {
+    return libraryQualificationDaysSpent;
+  }
+
+  public int getFullDepthSequencingDaysSpent() {
+    return fullDepthSequencingDaysSpent;
+  }
+
   @JsonPOJOBuilder(withPrefix = "")
   public static class Builder {
 
@@ -129,6 +153,10 @@ public class Test {
     private String timepoint;
     private String tissueOrigin;
     private String tissueType;
+    private int extractionDaysSpent;
+    private int libraryPreparationDaysSpent;
+    private int libraryQualificationDaysSpent;
+    private int fullDepthSequencingDaysSpent;
 
     public Test build() {
       return new Test(this);
@@ -196,6 +224,26 @@ public class Test {
 
     public Builder tissueType(String tissueType) {
       this.tissueType = tissueType;
+      return this;
+    }
+
+    public Builder extractionDaysSpent(int days) {
+      this.extractionDaysSpent = days;
+      return this;
+    }
+
+    public Builder libraryPreparationDaysSpent(int days) {
+      this.libraryPreparationDaysSpent = days;
+      return this;
+    }
+
+    public Builder libraryQualificationDaysSpent(int days) {
+      this.libraryQualificationDaysSpent = days;
+      return this;
+    }
+
+    public Builder fullDepthSequencingDaysSpent(int days) {
+      this.fullDepthSequencingDaysSpent = days;
       return this;
     }
   }
