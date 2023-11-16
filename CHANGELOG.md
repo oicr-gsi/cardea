@@ -7,6 +7,19 @@ This file is updated automatically as described in [Unreleased Changes](changes/
 
 ---------------------------------------------------------------------------------------------------
 
+## [1.6.0] - 2023-11-16
+
+### Added
+
+* Days spent per QC step at case and test levels
+* Requisition pause status and reason
+* Assay turn-around time targets
+
+### Changed
+
+* Case start date provided by QC-Gate-ETL (based on latest sample receipt) will be used
+
+
 ## [1.5.0] - 2023-09-19
 
 ### Changed
