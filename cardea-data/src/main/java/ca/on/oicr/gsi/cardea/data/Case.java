@@ -31,6 +31,7 @@ public class Case {
   private final Requisition requisition;
   private final LocalDate startDate;
   private final List<Test> tests;
+  private final List<Deliverable> deliverables;
   private final String timepoint;
   private final String tissueOrigin;
   private final String tissueType;
@@ -55,6 +56,8 @@ public class Case {
     this.timepoint = builder.timepoint;
     this.receipts = unmodifiableList(builder.receipts);
     this.tests = unmodifiableList(builder.tests);
+    this.deliverables =
+        builder.deliverables == null ? null : unmodifiableList(builder.deliverables);
     this.requisition = requireNonNull(builder.requisition);
     this.startDate = requireNonNull(builder.startDate);
     this.latestActivityDate = Stream
@@ -115,6 +118,10 @@ public class Case {
     return tests;
   }
 
+  public List<Deliverable> getDeliverables() {
+    return deliverables;
+  }
+
   public String getTimepoint() {
     return timepoint;
   }
@@ -167,6 +174,7 @@ public class Case {
     private List<Sample> receipts;
     private Requisition requisition;
     private List<Test> tests;
+    private List<Deliverable> deliverables;
     private String timepoint;
     private String tissueOrigin;
     private String tissueType;
@@ -224,6 +232,11 @@ public class Case {
 
     public Builder requisition(Requisition requisition) {
       this.requisition = requisition;
+      return this;
+    }
+
+    public Builder deliverables(List<Deliverable> deliverables) {
+      this.deliverables = deliverables;
       return this;
     }
 

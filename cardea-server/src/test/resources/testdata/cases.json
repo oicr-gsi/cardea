@@ -70,6 +70,20 @@
         "full_depth_sequencing_days_spent": 0
       }
     ],
+    "deliverables": [
+      {
+        "deliverable_type": "CLINICAL_REPORT",
+        "analysis_review_qc_state": "Ready",
+        "analysis_review_qc_user": "Person",
+        "analysis_review_qc_date": "2021-08-10",
+        "release_approval_qc_state": null,
+        "release_approval_qc_user": null,
+        "release_approval_qc_date": null,
+        "release_qc_state": null,
+        "release_qc_user": null,
+        "release_qc_date": null
+      }
+    ],
     "requisition_id": 512,
     "stopped": false,
     "start_date": "2021-07-19",
