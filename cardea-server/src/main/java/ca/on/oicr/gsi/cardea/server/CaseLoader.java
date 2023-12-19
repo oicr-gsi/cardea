@@ -348,17 +348,18 @@ public class CaseLoader {
         throw new DataParseException(String.format("Run ID %d not found", runId));
       }
       Long requisitionId = parseLong(json, "requisition_id", false);
-      Requisition requisition = requisitionsById.get(requisitionId);
-      String requisitionName = requisition.getName();
-      Long assayId = requisition.getAssayId();
-      if (requisitionId != null && !requisitionsById.containsKey(requisitionId)) {
-        throw new DataParseException(String.format("Requisition ID %d not found", requisitionId));
+      Requisition requisition = null;
+      if (requisitionId != null) {
+        requisition = requisitionsById.get(requisitionId);
+        if (requisition == null) {
+          throw new DataParseException(String.format("Requisition ID %d not found", requisitionId));
+        }
       }
       return new Sample.Builder().id(parseString(json, "sample_id", true))
           .name(parseString(json, "oicr_internal_name", true))
-          .assayId(assayId)
+          .assayId(requisition == null ? null : requisition.getAssayId())
           .requisitionId(requisitionId)
-          .requisitionName(requisitionName)
+          .requisitionName(requisition == null ? null : requisition.getName())
           .tissueOrigin(parseString(json, "tissue_origin", true))
           .tissueType(parseString(json, "tissue_type", true))
           .tissueMaterial(parseString(json, "tissue_material"))
