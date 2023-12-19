@@ -4,6 +4,8 @@ import ca.on.oicr.gsi.cardea.data.Assay;
 import ca.on.oicr.gsi.cardea.data.AssayTargets;
 import ca.on.oicr.gsi.cardea.data.Case;
 import ca.on.oicr.gsi.cardea.data.CaseData;
+import ca.on.oicr.gsi.cardea.data.Deliverable;
+import ca.on.oicr.gsi.cardea.data.DeliverableType;
 import ca.on.oicr.gsi.cardea.data.Donor;
 import ca.on.oicr.gsi.cardea.data.Lane;
 import ca.on.oicr.gsi.cardea.data.Metric;
@@ -226,6 +228,7 @@ public class CaseLoader {
           .timepoint(parseString(json, "timepoint"))
           .receipts(parseIdsAndGet(json, "receipt_ids", JsonNode::asText, samplesById))
           .tests(parseTests(json, "assay_tests", samplesById))
+          .deliverables(parseDeliverables(json.get("deliverables")))
           .requisition(requisitionsById.get(requisitionId))
           .startDate(parseDate(json, "start_date"))
           .receiptDaysSpent(parseInteger(json, "receipt_days_spent", true))
@@ -324,7 +327,7 @@ public class CaseLoader {
           .percentOverQ30(parseDecimal(json, "percent_over_q30", false))
           .clustersPf(parseLong(json, "clusters_pf", false))
           .lanes(parseLanes(json.get("lanes")))
-          .qcPassed(parseQcPassed(json, "qc_state"))
+          .qcPassed(parseQcPassed(json, "qc_state", true))
           .qcUser(parseString(json, "qc_user"))
           .qcDate(parseDate(json, "qc_date"))
           .dataReviewPassed(parseDataReviewPassed(json, "data_review_state"))
@@ -390,7 +393,7 @@ public class CaseLoader {
           .lambdaClusters(parseInteger(json, "lambda_clusters", false))
           .puc19Methylation(parseDecimal(json, "puc19_methylation", false))
           .puc19Clusters(parseInteger(json, "puc19_clusters", false))
-          .qcPassed(parseQcPassed(json, "qc_state"))
+          .qcPassed(parseQcPassed(json, "qc_state", true))
           .qcReason(parseString(json, "qc_reason"))
           .qcNote(parseString(json, "qc_note"))
           .qcUser(parseString(json, "qc_user"))
@@ -485,8 +488,12 @@ public class CaseLoader {
     return node == null ? null : node.asLong();
   }
 
-  private static Boolean parseQcPassed(JsonNode json, String fieldName) throws DataParseException {
-    String qcState = parseString(json, fieldName, true);
+  private static Boolean parseQcPassed(JsonNode json, String fieldName, boolean required)
+      throws DataParseException {
+    String qcState = parseString(json, fieldName, required);
+    if (qcState == null) {
+      return null;
+    }
     switch (qcState) {
       case "Ready":
         return Boolean.TRUE;
@@ -529,7 +536,7 @@ public class CaseLoader {
     List<RequisitionQc> qcs = new ArrayList<>();
     for (JsonNode node : arr) {
       qcs.add(new RequisitionQc.Builder()
-          .qcPassed(parseQcPassed(node, "qc_state"))
+          .qcPassed(parseQcPassed(node, "qc_state", true))
           .qcUser(parseString(node, "qc_user"))
           .qcDate(parseDate(node, "qc_date"))
           .build());
@@ -725,6 +732,28 @@ public class CaseLoader {
           .build());
     }
     return tests;
+  }
+
+  private List<Deliverable> parseDeliverables(JsonNode deliverablesNode) throws DataParseException {
+    if (deliverablesNode == null) {
+      return null;
+    }
+    List<Deliverable> deliverables = new ArrayList<>();
+    for (JsonNode node : deliverablesNode) {
+      deliverables.add(new Deliverable.Builder()
+          .deliverableType(DeliverableType.valueOf(parseString(node, "deliverable_type")))
+          .analysisReviewQcDate(parseDate(node, "analysis_review_qc_date"))
+          .analysisReviewQcPassed(parseQcPassed(node, "analysis_review_qc_state", false))
+          .analysisReviewQcUser(parseString(node, "analysis_review_qc_user"))
+          .releaseApprovalQcDate(parseDate(node, "release_approval_qc_date"))
+          .releaseApprovalQcPassed(parseQcPassed(node, "release_approval_qc_state", false))
+          .releaseApprovalQcUser(parseString(node, "release_approval_qc_user"))
+          .releaseQcDate(parseDate(node, "release_qc_date"))
+          .releaseQcPassed(parseQcPassed(node, "release_qc_state", false))
+          .releaseQcUser(parseString(node, "release_qc_user"))
+          .build());
+    }
+    return deliverables;
   }
 
   @FunctionalInterface

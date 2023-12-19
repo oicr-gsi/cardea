@@ -8,6 +8,8 @@ import ca.on.oicr.gsi.cardea.data.Assay;
 import ca.on.oicr.gsi.cardea.data.AssayTargets;
 import ca.on.oicr.gsi.cardea.data.Case;
 import ca.on.oicr.gsi.cardea.data.CaseData;
+import ca.on.oicr.gsi.cardea.data.Deliverable;
+import ca.on.oicr.gsi.cardea.data.DeliverableType;
 import ca.on.oicr.gsi.cardea.data.Donor;
 import ca.on.oicr.gsi.cardea.data.Metric;
 import ca.on.oicr.gsi.cardea.data.MetricCategory;
@@ -40,7 +42,6 @@ public class CaseLoaderTest {
   private static final String testProjectName = "PROJ";
   private static final String testSampleId = "SAM413577";
   private static File dataDirectory;
-  private List<Case> cases = MockCase.getCases();
   private CaseLoader sut;
 
   @BeforeAll
@@ -137,6 +138,14 @@ public class CaseLoaderTest {
     assertEquals("5476_1_LDI73620", fullDepth.getId());
     assertEquals("PROJ_1289_Ly_R_PE_567_WG", fullDepth.getName());
     assertEquals(Boolean.TRUE, fullDepth.getQcPassed());
+
+    assertNotNull(kase.getDeliverables());
+    assertEquals(1, kase.getDeliverables().size());
+    Deliverable deliverable = kase.getDeliverables().get(0);
+    assertEquals(DeliverableType.CLINICAL_REPORT, deliverable.getDeliverableType());
+    assertEquals("Person", deliverable.getAnalysisReviewQcUser());
+    assertEquals(LocalDate.of(2021, 8, 10), deliverable.getAnalysisReviewQcDate());
+    assertTrue(deliverable.getAnalysisReviewQcPassed());
   }
 
   @Test
