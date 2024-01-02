@@ -3,8 +3,10 @@ package ca.on.oicr.gsi.cardea.data;
 import static java.util.Objects.requireNonNull;
 
 import java.time.LocalDate;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonPOJOBuilder;
 
+@JsonDeserialize(builder = Deliverable.Builder.class)
 public class Deliverable {
 
   private final DeliverableType deliverableType;
