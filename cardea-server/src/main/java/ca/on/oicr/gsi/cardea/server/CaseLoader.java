@@ -716,6 +716,7 @@ public class CaseLoader {
           .targetedSequencing(parseString(testNode, "targeted_sequencing"))
           .extractionSkipped(parseBoolean(testNode, "extraction_skipped"))
           .libraryPreparationSkipped(parseBoolean(testNode, "library_preparation_skipped"))
+          .libraryQualificationSkipped(parseBoolean(testNode, "library_qualification_skipped"))
           .extractions(parseIdsAndGet(testNode, "extraction_ids", JsonNode::asText, samplesById))
           .libraryPreparations(
               parseIdsAndGet(testNode, "library_preparation_ids", JsonNode::asText, samplesById))

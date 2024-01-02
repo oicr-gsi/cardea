@@ -24,6 +24,7 @@ public class Test {
   private final LocalDate latestActivityDate;
   private final boolean libraryPreparationSkipped;
   private final List<Sample> libraryPreparations;
+  private final boolean libraryQualificationSkipped;
   private final List<Sample> libraryQualifications;
   private final String name;
   private final String targetedSequencing;
@@ -46,6 +47,7 @@ public class Test {
     this.targetedSequencing = builder.targetedSequencing;
     this.extractionSkipped = builder.extractionSkipped;
     this.libraryPreparationSkipped = builder.libraryPreparationSkipped;
+    this.libraryQualificationSkipped = builder.libraryQualificationSkipped;
     this.extractions =
         builder.extractions == null ? emptyList() : unmodifiableList(builder.extractions);
     this.libraryPreparations = builder.libraryPreparations == null ? emptyList()
@@ -121,6 +123,10 @@ public class Test {
     return libraryPreparationSkipped;
   }
 
+  public boolean isLibraryQualificationSkipped() {
+    return libraryQualificationSkipped;
+  }
+
   public int getExtractionDaysSpent() {
     return extractionDaysSpent;
   }
@@ -147,6 +153,7 @@ public class Test {
     private String libraryDesignCode;
     private boolean libraryPreparationSkipped;
     private List<Sample> libraryPreparations;
+    private boolean libraryQualificationSkipped;
     private List<Sample> libraryQualifications;
     private String name;
     private String targetedSequencing;
@@ -194,6 +201,11 @@ public class Test {
 
     public Builder libraryPreparations(List<Sample> libraryPreparations) {
       this.libraryPreparations = libraryPreparations;
+      return this;
+    }
+
+    public Builder libraryQualificationSkipped(boolean libraryQualificationSkipped) {
+      this.libraryQualificationSkipped = libraryQualificationSkipped;
       return this;
     }
 
