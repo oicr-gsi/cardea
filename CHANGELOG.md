@@ -7,6 +7,18 @@ This file is updated automatically as described in [Unreleased Changes](changes/
 
 ---------------------------------------------------------------------------------------------------
 
+## [1.7.0] - 2024-01-03
+
+### Added
+
+* Case deliverables
+* Assay test field to specify if library qualification is skipped
+
+### Fixed
+
+* Loading samples that have no requisition
+
+
 ## [1.6.0] - 2023-11-16
 
 ### Added
