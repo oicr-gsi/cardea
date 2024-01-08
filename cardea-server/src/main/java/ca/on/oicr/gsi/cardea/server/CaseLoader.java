@@ -747,12 +747,15 @@ public class CaseLoader {
           .analysisReviewQcDate(parseDate(node, "analysis_review_qc_date"))
           .analysisReviewQcPassed(parseQcPassed(node, "analysis_review_qc_state", false))
           .analysisReviewQcUser(parseString(node, "analysis_review_qc_user"))
+          .analysisReviewQcNote(parseString(node, "analysis_review_qc_note"))
           .releaseApprovalQcDate(parseDate(node, "release_approval_qc_date"))
           .releaseApprovalQcPassed(parseQcPassed(node, "release_approval_qc_state", false))
           .releaseApprovalQcUser(parseString(node, "release_approval_qc_user"))
+          .releaseApprovalQcNote(parseString(node, "release_approval_qc_note"))
           .releaseQcDate(parseDate(node, "release_qc_date"))
           .releaseQcPassed(parseQcPassed(node, "release_qc_state", false))
           .releaseQcUser(parseString(node, "release_qc_user"))
+          .releaseQcNote(parseString(node, "release_qc_note"))
           .build());
     }
     return deliverables;

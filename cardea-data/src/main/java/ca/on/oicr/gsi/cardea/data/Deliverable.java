@@ -13,24 +13,30 @@ public class Deliverable {
   private final LocalDate analysisReviewQcDate;
   private final Boolean analysisReviewQcPassed;
   private final String analysisReviewQcUser;
+  private final String analysisReviewQcNote;
   private final LocalDate releaseApprovalQcDate;
   private final Boolean releaseApprovalQcPassed;
   private final String releaseApprovalQcUser;
+  private final String releaseApprovalQcNote;
   private final LocalDate releaseQcDate;
   private final Boolean releaseQcPassed;
   private final String releaseQcUser;
+  private final String releaseQcNote;
 
   private Deliverable(Builder builder) {
     this.deliverableType = requireNonNull(builder.deliverableType);
     this.analysisReviewQcDate = builder.analysisReviewQcDate;
     this.analysisReviewQcPassed = builder.analysisReviewQcPassed;
     this.analysisReviewQcUser = builder.analysisReviewQcUser;
+    this.analysisReviewQcNote = builder.analysisReviewQcNote;
     this.releaseApprovalQcDate = builder.releaseApprovalQcDate;
     this.releaseApprovalQcPassed = builder.releaseApprovalQcPassed;
     this.releaseApprovalQcUser = builder.releaseApprovalQcUser;
+    this.releaseApprovalQcNote = builder.releaseApprovalQcNote;
     this.releaseQcDate = builder.releaseQcDate;
     this.releaseQcPassed = builder.releaseQcPassed;
     this.releaseQcUser = builder.releaseQcUser;
+    this.releaseQcNote = builder.releaseQcNote;
   }
 
   public DeliverableType getDeliverableType() {
@@ -49,6 +55,10 @@ public class Deliverable {
     return analysisReviewQcUser;
   }
 
+  public String getAnalysisReviewQcNote() {
+    return analysisReviewQcNote;
+  }
+
   public LocalDate getReleaseApprovalQcDate() {
     return releaseApprovalQcDate;
   }
@@ -59,6 +69,10 @@ public class Deliverable {
 
   public String getReleaseApprovalQcUser() {
     return releaseApprovalQcUser;
+  }
+
+  public String getReleaseApprovalQcNote() {
+    return releaseApprovalQcNote;
   }
 
   public LocalDate getReleaseQcDate() {
@@ -73,6 +87,10 @@ public class Deliverable {
     return releaseQcUser;
   }
 
+  public String getReleaseQcNote() {
+    return releaseQcNote;
+  }
+
   @JsonPOJOBuilder(withPrefix = "")
   public static class Builder {
 
@@ -80,12 +98,15 @@ public class Deliverable {
     private LocalDate analysisReviewQcDate;
     private Boolean analysisReviewQcPassed;
     private String analysisReviewQcUser;
+    private String analysisReviewQcNote;
     private LocalDate releaseApprovalQcDate;
     private Boolean releaseApprovalQcPassed;
     private String releaseApprovalQcUser;
+    private String releaseApprovalQcNote;
     private LocalDate releaseQcDate;
     private Boolean releaseQcPassed;
     private String releaseQcUser;
+    private String releaseQcNote;
 
     public Builder deliverableType(DeliverableType deliverableType) {
       this.deliverableType = deliverableType;
@@ -107,6 +128,11 @@ public class Deliverable {
       return this;
     }
 
+    public Builder analysisReviewQcNote(String analysisReviewQcNote) {
+      this.analysisReviewQcNote = analysisReviewQcNote;
+      return this;
+    }
+
     public Builder releaseApprovalQcDate(LocalDate releaseApprovalQcDate) {
       this.releaseApprovalQcDate = releaseApprovalQcDate;
       return this;
@@ -122,6 +148,11 @@ public class Deliverable {
       return this;
     }
 
+    public Builder releaseApprovalQcNote(String releaseApprovalQcNote) {
+      this.releaseApprovalQcNote = releaseApprovalQcNote;
+      return this;
+    }
+
     public Builder releaseQcDate(LocalDate releaseQcDate) {
       this.releaseQcDate = releaseQcDate;
       return this;
@@ -134,6 +165,11 @@ public class Deliverable {
 
     public Builder releaseQcUser(String releaseQcUser) {
       this.releaseQcUser = releaseQcUser;
+      return this;
+    }
+
+    public Builder releaseQcNote(String releaseQcNote) {
+      this.releaseQcNote = releaseQcNote;
       return this;
     }
 
