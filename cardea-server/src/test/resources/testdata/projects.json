@@ -1,6 +1,9 @@
 [
   {
     "name": "PROJ",
-    "pipeline": "Research"
+    "pipeline": "Research",
+    "deliverables": {
+      "DATA_RELEASE": ["Full Pipeline", "cBioPortal Submission"]
+    }
   }
 ]

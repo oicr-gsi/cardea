@@ -9,20 +9,18 @@ import com.fasterxml.jackson.databind.annotation.JsonPOJOBuilder;
 /**
  * Immutable RequisitionQcGroup
  */
-@JsonDeserialize(builder = RequisitionQcGroup.Builder.class)
-public class RequisitionQcGroup {
+@JsonDeserialize(builder = AnalysisQcGroup.Builder.class)
+public class AnalysisQcGroup {
 
   private final BigDecimal callability;
   private final BigDecimal collapsedCoverage;
-  private final Donor donor;
   private final String groupId;
   private final String libraryDesignCode;
   private final BigDecimal purity;
   private final String tissueOrigin;
   private final String tissueType;
 
-  private RequisitionQcGroup(Builder builder) {
-    this.donor = requireNonNull(builder.donor);
+  private AnalysisQcGroup(Builder builder) {
     this.tissueOrigin = requireNonNull(builder.tissueOrigin);
     this.tissueType = requireNonNull(builder.tissueType);
     this.libraryDesignCode = requireNonNull(builder.libraryDesignCode);
@@ -38,10 +36,6 @@ public class RequisitionQcGroup {
 
   public BigDecimal getCollapsedCoverage() {
     return collapsedCoverage;
-  }
-
-  public Donor getDonor() {
-    return donor;
   }
 
   public String getGroupId() {
@@ -69,15 +63,14 @@ public class RequisitionQcGroup {
 
     private BigDecimal callability;
     private BigDecimal collapsedCoverage;
-    private Donor donor;
     private String groupId;
     private String libraryDesignCode;
     private BigDecimal purity;
     private String tissueOrigin;
     private String tissueType;
 
-    public RequisitionQcGroup build() {
-      return new RequisitionQcGroup(this);
+    public AnalysisQcGroup build() {
+      return new AnalysisQcGroup(this);
     }
 
     public Builder callability(BigDecimal callability) {
@@ -87,11 +80,6 @@ public class RequisitionQcGroup {
 
     public Builder collapsedCoverage(BigDecimal collapsedCoverage) {
       this.collapsedCoverage = collapsedCoverage;
-      return this;
-    }
-
-    public Builder donor(Donor donor) {
-      this.donor = donor;
       return this;
     }
 

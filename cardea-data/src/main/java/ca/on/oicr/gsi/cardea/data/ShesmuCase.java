@@ -1,7 +1,5 @@
 package ca.on.oicr.gsi.cardea.data;
 
-import ca.on.oicr.gsi.cardea.data.CaseStatus;
-
 import static java.util.Collections.unmodifiableSet;
 import static java.util.Objects.requireNonNull;
 

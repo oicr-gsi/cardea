@@ -73,6 +73,35 @@
         "full_depth_sequencing_days_spent": 0
       }
     ],
+    "qc_groups": [
+      {
+        "tissue_origin": "Ly",
+        "tissue_type": "R",
+        "library_design": "WG",
+        "group_id": null,
+        "purity": null,
+        "collapsed_coverage": null,
+        "callability": null
+      },
+      {
+        "tissue_origin": "Lv",
+        "tissue_type": "M",
+        "library_design": "WT",
+        "group_id": null,
+        "purity": 65.0,
+        "collapsed_coverage": null,
+        "callability": null
+      },
+      {
+        "tissue_origin": "Lv",
+        "tissue_type": "M",
+        "library_design": "WG",
+        "group_id": null,
+        "purity": 65.0,
+        "collapsed_coverage": null,
+        "callability": 87.6189
+      }
+    ],
     "deliverables": [
       {
         "deliverable_type": "CLINICAL_REPORT",
@@ -84,10 +113,15 @@
         "release_approval_qc_user": null,
         "release_approval_qc_date": null,
         "release_approval_qc_note": null,
-        "release_qc_state": null,
-        "release_qc_user": null,
-        "release_qc_date": null,
-        "release_qc_note": null
+        "releases": [
+          {
+            "deliverable": "Clinical Report",
+            "qc_state": null,
+            "qc_user": null,
+            "qc_date": null,
+            "qc_note": null
+          }
+        ]
       }
     ],
     "requisition_id": 512,

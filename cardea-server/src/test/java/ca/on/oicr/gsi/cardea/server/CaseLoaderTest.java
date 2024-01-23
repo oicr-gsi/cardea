@@ -3,12 +3,12 @@ package ca.on.oicr.gsi.cardea.server;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
-
+import ca.on.oicr.gsi.CaseRelease;
 import ca.on.oicr.gsi.cardea.data.Assay;
 import ca.on.oicr.gsi.cardea.data.AssayTargets;
 import ca.on.oicr.gsi.cardea.data.Case;
 import ca.on.oicr.gsi.cardea.data.CaseData;
-import ca.on.oicr.gsi.cardea.data.Deliverable;
+import ca.on.oicr.gsi.cardea.data.CaseDeliverable;
 import ca.on.oicr.gsi.cardea.data.DeliverableType;
 import ca.on.oicr.gsi.cardea.data.Donor;
 import ca.on.oicr.gsi.cardea.data.Metric;
@@ -17,8 +17,7 @@ import ca.on.oicr.gsi.cardea.data.MetricSubcategory;
 import ca.on.oicr.gsi.cardea.data.OmittedSample;
 import ca.on.oicr.gsi.cardea.data.Project;
 import ca.on.oicr.gsi.cardea.data.Requisition;
-import ca.on.oicr.gsi.cardea.data.RequisitionQc;
-import ca.on.oicr.gsi.cardea.data.RequisitionQcGroup;
+import ca.on.oicr.gsi.cardea.data.AnalysisQcGroup;
 import ca.on.oicr.gsi.cardea.data.Run;
 import ca.on.oicr.gsi.cardea.data.Sample;
 import org.junit.jupiter.api.BeforeAll;
@@ -74,6 +73,13 @@ public class CaseLoaderTest {
     assertNotNull(project);
     assertEquals(testProjectName, project.getName());
     assertEquals("Research", project.getPipeline());
+    assertNotNull(project.getDeliverables());
+    assertEquals(1, project.getDeliverables().size());
+    List<String> deliverables = project.getDeliverables().get(DeliverableType.DATA_RELEASE);
+    assertNotNull(deliverables);
+    assertEquals(2, deliverables.size());
+    assertTrue(deliverables.contains("Full Pipeline"));
+    assertTrue(deliverables.contains("cBioPortal Submission"));
   }
 
   private void assertSample(Sample sample) {
@@ -141,11 +147,23 @@ public class CaseLoaderTest {
 
     assertNotNull(kase.getDeliverables());
     assertEquals(1, kase.getDeliverables().size());
-    Deliverable deliverable = kase.getDeliverables().get(0);
+    CaseDeliverable deliverable = kase.getDeliverables().get(0);
     assertEquals(DeliverableType.CLINICAL_REPORT, deliverable.getDeliverableType());
     assertEquals("Person", deliverable.getAnalysisReviewQcUser());
     assertEquals(LocalDate.of(2021, 8, 10), deliverable.getAnalysisReviewQcDate());
     assertTrue(deliverable.getAnalysisReviewQcPassed());
+    List<CaseRelease> releases = deliverable.getReleases();
+    assertNotNull(releases);
+    assertEquals(1, releases.size());
+    assertEquals("Clinical Report", releases.get(0).getDeliverable());
+
+    assertNotNull(kase.getQcGroups());
+    assertEquals(3, kase.getQcGroups().size());
+    AnalysisQcGroup qcGroup = kase.getQcGroups().stream()
+        .filter(x -> "M".equals(x.getTissueType()) && "WG".equals(x.getLibraryDesignCode()))
+        .findAny().orElse(null);
+    assertNotNull(qcGroup);
+    assertEquals(new BigDecimal("87.6189"), qcGroup.getCallability());
   }
 
   @Test
@@ -244,17 +262,6 @@ public class CaseLoaderTest {
       assertNotNull(requisition);
       assertEquals(requisitionId, requisition.getId());
       assertEquals("REQ-1", requisition.getName());
-      List<RequisitionQc> qcs = requisition.getAnalysisReviews();
-      assertEquals(1, qcs.size());
-      RequisitionQc qc = qcs.get(0);
-      assertTrue(qc.isQcPassed());
-      assertNotNull(requisition.getQcGroups());
-      assertEquals(3, requisition.getQcGroups().size());
-      RequisitionQcGroup qcGroup = requisition.getQcGroups().stream()
-          .filter(x -> "M".equals(x.getTissueType()) && "WG".equals(x.getLibraryDesignCode()))
-          .findAny().orElse(null);
-      assertNotNull(qcGroup);
-      assertEquals(new BigDecimal("87.6189"), qcGroup.getCallability());
     }
   }
 

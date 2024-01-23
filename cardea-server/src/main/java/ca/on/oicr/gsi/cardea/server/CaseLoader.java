@@ -1,10 +1,11 @@
 package ca.on.oicr.gsi.cardea.server;
 
+import ca.on.oicr.gsi.CaseRelease;
 import ca.on.oicr.gsi.cardea.data.Assay;
 import ca.on.oicr.gsi.cardea.data.AssayTargets;
 import ca.on.oicr.gsi.cardea.data.Case;
 import ca.on.oicr.gsi.cardea.data.CaseData;
-import ca.on.oicr.gsi.cardea.data.Deliverable;
+import ca.on.oicr.gsi.cardea.data.CaseDeliverable;
 import ca.on.oicr.gsi.cardea.data.DeliverableType;
 import ca.on.oicr.gsi.cardea.data.Donor;
 import ca.on.oicr.gsi.cardea.data.Lane;
@@ -14,8 +15,7 @@ import ca.on.oicr.gsi.cardea.data.MetricSubcategory;
 import ca.on.oicr.gsi.cardea.data.OmittedSample;
 import ca.on.oicr.gsi.cardea.data.Project;
 import ca.on.oicr.gsi.cardea.data.Requisition;
-import ca.on.oicr.gsi.cardea.data.RequisitionQc;
-import ca.on.oicr.gsi.cardea.data.RequisitionQcGroup;
+import ca.on.oicr.gsi.cardea.data.AnalysisQcGroup;
 import ca.on.oicr.gsi.cardea.data.Run;
 import ca.on.oicr.gsi.cardea.data.Sample;
 import ca.on.oicr.gsi.cardea.data.Test;
@@ -228,7 +228,8 @@ public class CaseLoader {
           .timepoint(parseString(json, "timepoint"))
           .receipts(parseIdsAndGet(json, "receipt_ids", JsonNode::asText, samplesById))
           .tests(parseTests(json, "assay_tests", samplesById))
-          .deliverables(parseDeliverables(json.get("deliverables")))
+          .qcGroups(parseAnalysisQcGroups(json.get("qc_groups"), donorsById))
+          .deliverables(parseCaseDeliverables(json.get("deliverables")))
           .requisition(requisitionsById.get(requisitionId))
           .startDate(parseDate(json, "start_date"))
           .receiptDaysSpent(parseInteger(json, "receipt_days_spent", true))
@@ -287,7 +288,9 @@ public class CaseLoader {
       throws DataParseException, IOException {
     List<Project> projects = loadFromJsonArrayFile(fileReader,
         json -> new Project.Builder().name(parseString(json, "name", true))
-            .pipeline(parseString(json, "pipeline", true)).build());
+            .pipeline(parseString(json, "pipeline", true))
+            .deliverables(parseProjectDeliverables(json.get("deliverables")))
+            .build());
 
     return projects.stream().collect(Collectors.toMap(Project::getName, Function.identity()));
   }
@@ -303,10 +306,7 @@ public class CaseLoader {
           .stopReason(parseString(json, "stop_reason", false))
           .paused(parseBoolean(json, "paused"))
           .pauseReason(parseString(json, "pause_reason", false))
-          .qcGroups(parseRequisitionQcGroups(json.get("qc_groups"), donorsById))
-          .analysisReviews(parseRequisitionQcs(json, "analysis_reviews"))
-          .releaseApprovals(parseRequisitionQcs(json, "release_approvals"))
-          .releases(parseRequisitionQcs(json, "releases")).build();
+          .build();
       return requisition;
     });
 
@@ -507,15 +507,14 @@ public class CaseLoader {
     }
   }
 
-  private static List<RequisitionQcGroup> parseRequisitionQcGroups(JsonNode json,
+  private static List<AnalysisQcGroup> parseAnalysisQcGroups(JsonNode json,
       Map<String, Donor> donorsById) throws DataParseException {
     if (json == null || !json.isArray()) {
       throw new DataParseException("Invalid requisition qc_groups");
     }
-    List<RequisitionQcGroup> qcGroups = new ArrayList<>();
+    List<AnalysisQcGroup> qcGroups = new ArrayList<>();
     for (JsonNode node : json) {
-      qcGroups.add(new RequisitionQcGroup.Builder()
-          .donor(donorsById.get(parseString(node, "donor_id", true)))
+      qcGroups.add(new AnalysisQcGroup.Builder()
           .tissueOrigin(parseString(node, "tissue_origin", true))
           .tissueType(parseString(node, "tissue_type", true))
           .libraryDesignCode(parseString(node, "library_design", true))
@@ -526,23 +525,6 @@ public class CaseLoader {
           .build());
     }
     return qcGroups;
-  }
-
-  private static List<RequisitionQc> parseRequisitionQcs(JsonNode json, String fieldName)
-      throws DataParseException {
-    JsonNode arr = json.get(fieldName);
-    if (arr == null || !arr.isArray()) {
-      throw new DataParseException(String.format("%s is not an array", fieldName));
-    }
-    List<RequisitionQc> qcs = new ArrayList<>();
-    for (JsonNode node : arr) {
-      qcs.add(new RequisitionQc.Builder()
-          .qcPassed(parseQcPassed(node, "qc_state", true))
-          .qcUser(parseString(node, "qc_user"))
-          .qcDate(parseDate(node, "qc_date"))
-          .build());
-    }
-    return qcs;
   }
 
   private static LocalDate parseSampleCreatedDate(JsonNode json) throws DataParseException {
@@ -736,13 +718,14 @@ public class CaseLoader {
     return tests;
   }
 
-  private List<Deliverable> parseDeliverables(JsonNode deliverablesNode) throws DataParseException {
+  private List<CaseDeliverable> parseCaseDeliverables(JsonNode deliverablesNode)
+      throws DataParseException {
     if (deliverablesNode == null) {
       return null;
     }
-    List<Deliverable> deliverables = new ArrayList<>();
+    List<CaseDeliverable> deliverables = new ArrayList<>();
     for (JsonNode node : deliverablesNode) {
-      deliverables.add(new Deliverable.Builder()
+      deliverables.add(new CaseDeliverable.Builder()
           .deliverableType(DeliverableType.valueOf(parseString(node, "deliverable_type")))
           .analysisReviewQcDate(parseDate(node, "analysis_review_qc_date"))
           .analysisReviewQcPassed(parseQcPassed(node, "analysis_review_qc_state", false))
@@ -752,13 +735,52 @@ public class CaseLoader {
           .releaseApprovalQcPassed(parseQcPassed(node, "release_approval_qc_state", false))
           .releaseApprovalQcUser(parseString(node, "release_approval_qc_user"))
           .releaseApprovalQcNote(parseString(node, "release_approval_qc_note"))
-          .releaseQcDate(parseDate(node, "release_qc_date"))
-          .releaseQcPassed(parseQcPassed(node, "release_qc_state", false))
-          .releaseQcUser(parseString(node, "release_qc_user"))
-          .releaseQcNote(parseString(node, "release_qc_note"))
+          .releases(parseReleases(node.get("releases")))
           .build());
     }
     return deliverables;
+  }
+
+  private List<CaseRelease> parseReleases(JsonNode json) throws DataParseException {
+    if (json == null) {
+      return null;
+    } else if (!json.isArray()) {
+      throw new DataParseException("Invalid case releases");
+    }
+    List<CaseRelease> list = new ArrayList<>();
+    for (JsonNode node : json) {
+      list.add(new CaseRelease.Builder()
+          .deliverable(parseString(node, "deliverable", true))
+          .qcDate(parseDate(node, "release_qc_date"))
+          .qcPassed(parseQcPassed(node, "release_qc_state", false))
+          .qcUser(parseString(node, "release_qc_user"))
+          .qcNote(parseString(node, "release_qc_note"))
+          .build());
+    }
+    return list;
+  }
+
+  private Map<DeliverableType, List<String>> parseProjectDeliverables(JsonNode json)
+      throws DataParseException {
+    if (json == null || !json.isObject()) {
+      throw new DataParseException("Invalid project deliverable types");
+    }
+    Map<DeliverableType, List<String>> map = new HashMap<>();
+    Iterator<Entry<String, JsonNode>> iterator = json.fields();
+    while (iterator.hasNext()) {
+      Entry<String, JsonNode> entry = iterator.next();
+      DeliverableType deliverableType = DeliverableType.valueOf(entry.getKey());
+      JsonNode listJson = entry.getValue();
+      if (listJson == null || !listJson.isArray()) {
+        throw new DataParseException("Invalid project deliverables");
+      }
+      List<String> deliverables = new ArrayList<>();
+      for (JsonNode node : listJson) {
+        deliverables.add(node.asText());
+      }
+      map.put(deliverableType, deliverables);
+    }
+    return map;
   }
 
   @FunctionalInterface
