@@ -9,7 +9,6 @@ import java.util.Objects;
 import java.util.stream.Stream;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonPOJOBuilder;
-import ca.on.oicr.gsi.CaseRelease;
 
 @JsonDeserialize(builder = CaseDeliverable.Builder.class)
 public class CaseDeliverable {

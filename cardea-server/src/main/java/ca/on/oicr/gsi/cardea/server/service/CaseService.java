@@ -4,6 +4,7 @@ import ca.on.oicr.gsi.cardea.data.Assay;
 import ca.on.oicr.gsi.cardea.data.Case;
 import ca.on.oicr.gsi.cardea.data.CaseData;
 import ca.on.oicr.gsi.cardea.data.CaseDeliverable;
+import ca.on.oicr.gsi.cardea.data.CaseRelease;
 import ca.on.oicr.gsi.cardea.data.CaseStatus;
 import ca.on.oicr.gsi.cardea.data.CaseStatusesForRun;
 import ca.on.oicr.gsi.cardea.data.CasesForRequisition;
@@ -11,7 +12,6 @@ import ca.on.oicr.gsi.cardea.data.Run;
 import ca.on.oicr.gsi.cardea.data.Sample;
 import ca.on.oicr.gsi.cardea.data.ShesmuCase;
 import ca.on.oicr.gsi.cardea.server.CaseLoader;
-import ca.on.oicr.gsi.CaseRelease;
 import ca.on.oicr.gsi.Pair;
 
 import java.time.Duration;
