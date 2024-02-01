@@ -751,10 +751,10 @@ public class CaseLoader {
     for (JsonNode node : json) {
       list.add(new CaseRelease.Builder()
           .deliverable(parseString(node, "deliverable", true))
-          .qcDate(parseDate(node, "release_qc_date"))
-          .qcPassed(parseQcPassed(node, "release_qc_state", false))
-          .qcUser(parseString(node, "release_qc_user"))
-          .qcNote(parseString(node, "release_qc_note"))
+          .qcDate(parseDate(node, "qc_date"))
+          .qcPassed(parseQcPassed(node, "qc_state", false))
+          .qcUser(parseString(node, "qc_user"))
+          .qcNote(parseString(node, "qc_note"))
           .build());
     }
     return list;
