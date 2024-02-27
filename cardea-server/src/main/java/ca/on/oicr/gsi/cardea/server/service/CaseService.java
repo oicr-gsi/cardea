@@ -98,8 +98,9 @@ public class CaseService {
   private CaseStatus getCaseStatus(Case kase) {
     if (kase.isStopped()) {
       return CaseStatus.STOPPED;
-    } else if (kase.getDeliverables().stream().anyMatch(
-        deliverable -> deliverable.getReleases().stream().anyMatch(CaseRelease::getQcPassed))) {
+    } else if (!kase.getDeliverables().isEmpty() && kase.getDeliverables().stream()
+        .allMatch(deliverable -> deliverable.getReleases().stream()
+            .allMatch(release -> Boolean.TRUE.equals(release.getQcPassed())))) {
       return CaseStatus.COMPLETED;
     } else {
       return CaseStatus.ACTIVE;
