@@ -2,14 +2,14 @@ package ca.on.oicr.gsi.cardea.server;
 
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
-
-import ca.on.oicr.gsi.cardea.data.Assay;
 import ca.on.oicr.gsi.cardea.data.Case;
+import ca.on.oicr.gsi.cardea.data.CaseDeliverable;
+import ca.on.oicr.gsi.cardea.data.CaseRelease;
+import ca.on.oicr.gsi.cardea.data.DeliverableType;
 import ca.on.oicr.gsi.cardea.data.Donor;
 import ca.on.oicr.gsi.cardea.data.MetricCategory;
 import ca.on.oicr.gsi.cardea.data.Project;
 import ca.on.oicr.gsi.cardea.data.Requisition;
-import ca.on.oicr.gsi.cardea.data.RequisitionQc;
 import ca.on.oicr.gsi.cardea.data.Run;
 import ca.on.oicr.gsi.cardea.data.Sample;
 import java.util.ArrayList;
@@ -31,19 +31,8 @@ public class MockCase {
     when(requisition.getId()).thenReturn(Long.valueOf(caseNumber));
     when(requisition.isStopped()).thenReturn(caseNumber == 23);
     when(requisition.getName()).thenReturn(name);
-    when(requisition.getAnalysisReviews()).thenReturn(new ArrayList<>());
-    when(requisition.getReleaseApprovals()).thenReturn(new ArrayList<>());
-    when(requisition.getReleases()).thenReturn(new ArrayList<>());
     when(kase.getRequisition()).thenReturn(requisition);
     return requisition;
-  }
-
-  private static void addRequisitionQc(List<RequisitionQc> qcs, boolean qcPassed) {
-    RequisitionQc qc = mock(RequisitionQc.class);
-    when(qc.isQcPassed()).thenReturn(qcPassed);
-    when(qc.getQcUser()).thenReturn("User");
-    when(qc.getQcDate()).thenReturn(LocalDate.now());
-    qcs.add(qc);
   }
 
   private static Sample addRunLibrary(List<Sample> gateItems, String id, Boolean qcPassed,
@@ -132,6 +121,15 @@ public class MockCase {
     addSample(kase.getReceipts(), receiptSampleId, true, "Good");
     when(kase.getTests()).thenReturn(new ArrayList<>());
     addRequisition(kase, caseNumber, requisitionName);
+    when(kase.getDeliverables()).thenReturn(new ArrayList<>());
+    CaseDeliverable deliverable = mock(CaseDeliverable.class);
+    when(deliverable.getDeliverableType()).thenReturn(DeliverableType.DATA_RELEASE);
+    when(deliverable.getReleases()).thenReturn(new ArrayList<>());
+    CaseRelease release = mock(CaseRelease.class);
+    when(release.getDeliverable()).thenReturn("Full Pipeline");
+    deliverable.getReleases().add(release);
+    kase.getDeliverables().add(deliverable);
+
     return kase;
   }
 
@@ -357,23 +355,29 @@ public class MockCase {
 
   private static Case makeCase5() {
     final int caseNumber = 5;
-    // Case is pending draft report
+    // Case is pending release approval
     Case kase = makeCase("PRO4_0001", "Single Test", "PRO4", "REQ04", caseNumber);
     addTest(kase, caseNumber, 1, "Test", true, true, true, true);
-    Requisition requisition = kase.getRequisition();
-    addRequisitionQc(requisition.getAnalysisReviews(), true);
+    CaseDeliverable deliverable = kase.getDeliverables().get(0);
+    when(deliverable.getAnalysisReviewQcPassed()).thenReturn(Boolean.TRUE);
+    when(deliverable.getAnalysisReviewQcUser()).thenReturn("User");
+    when(deliverable.getAnalysisReviewQcDate()).thenReturn(LocalDate.now());
     return kase;
   }
 
   private static Case makeCase6() {
     final int caseNumber = 6;
-    // Case is pending final report
+    // Case is pending release
     Case kase = makeCase("PRO5_0001", "Single Test", "PRO5", "REQ04", caseNumber);
     addTest(kase, caseNumber, 1, "Test", true, true, true, true);
     addTest(kase, caseNumber, 2, "Test", true, true, true, true);
-    Requisition requisition = kase.getRequisition();
-    addRequisitionQc(requisition.getAnalysisReviews(), true);
-    addRequisitionQc(requisition.getReleaseApprovals(), true);
+    CaseDeliverable deliverable = kase.getDeliverables().get(0);
+    when(deliverable.getAnalysisReviewQcPassed()).thenReturn(Boolean.TRUE);
+    when(deliverable.getAnalysisReviewQcUser()).thenReturn("User");
+    when(deliverable.getAnalysisReviewQcDate()).thenReturn(LocalDate.now());
+    when(deliverable.getReleaseApprovalQcPassed()).thenReturn(Boolean.TRUE);
+    when(deliverable.getReleaseApprovalQcUser()).thenReturn("User");
+    when(deliverable.getReleaseApprovalQcDate()).thenReturn(LocalDate.now());
     return kase;
   }
 

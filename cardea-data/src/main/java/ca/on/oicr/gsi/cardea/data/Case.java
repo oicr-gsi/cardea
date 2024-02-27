@@ -1,5 +1,6 @@
 package ca.on.oicr.gsi.cardea.data;
 
+import static java.util.Collections.emptyList;
 import static java.util.Collections.unmodifiableList;
 import static java.util.Collections.unmodifiableSet;
 import static java.util.Objects.requireNonNull;
@@ -31,7 +32,8 @@ public class Case {
   private final Requisition requisition;
   private final LocalDate startDate;
   private final List<Test> tests;
-  private final List<Deliverable> deliverables;
+  private final List<AnalysisQcGroup> qcGroups;
+  private final List<CaseDeliverable> deliverables;
   private final String timepoint;
   private final String tissueOrigin;
   private final String tissueType;
@@ -56,15 +58,19 @@ public class Case {
     this.timepoint = builder.timepoint;
     this.receipts = unmodifiableList(builder.receipts);
     this.tests = unmodifiableList(builder.tests);
+    this.qcGroups = builder.qcGroups == null ? emptyList() : unmodifiableList(builder.qcGroups);
     this.deliverables =
-        builder.deliverables == null ? null : unmodifiableList(builder.deliverables);
+        builder.deliverables == null ? emptyList() : unmodifiableList(builder.deliverables);
     this.requisition = requireNonNull(builder.requisition);
     this.startDate = requireNonNull(builder.startDate);
+
     this.latestActivityDate = Stream
-        .of(receipts.stream().map(Sample::getLatestActivityDate),
-            tests.stream().map(Test::getLatestActivityDate),
-            Stream.of(requisition.getLatestActivityDate()))
-        .flatMap(Function.identity()).filter(Objects::nonNull).max(LocalDate::compareTo)
+        .concat(Stream.of(receipts.stream().map(Sample::getLatestActivityDate),
+            tests.stream().map(Test::getLatestActivityDate))
+            .flatMap(Function.identity()),
+            deliverables == null ? Stream.empty()
+                : deliverables.stream().map(CaseDeliverable::getLatestActivityDate))
+        .filter(Objects::nonNull).max(LocalDate::compareTo)
         .orElse(null);
     this.receiptDaysSpent = builder.receiptDaysSpent;
     this.analysisReviewDaysSpent = builder.analysisReviewDaysSpent;
@@ -118,7 +124,11 @@ public class Case {
     return tests;
   }
 
-  public List<Deliverable> getDeliverables() {
+  public List<AnalysisQcGroup> getQcGroups() {
+    return qcGroups;
+  }
+
+  public List<CaseDeliverable> getDeliverables() {
     return deliverables;
   }
 
@@ -174,7 +184,8 @@ public class Case {
     private List<Sample> receipts;
     private Requisition requisition;
     private List<Test> tests;
-    private List<Deliverable> deliverables;
+    private List<AnalysisQcGroup> qcGroups;
+    private List<CaseDeliverable> deliverables;
     private String timepoint;
     private String tissueOrigin;
     private String tissueType;
@@ -235,7 +246,12 @@ public class Case {
       return this;
     }
 
-    public Builder deliverables(List<Deliverable> deliverables) {
+    public Builder qcGroups(List<AnalysisQcGroup> qcGroups) {
+      this.qcGroups = qcGroups;
+      return this;
+    }
+
+    public Builder deliverables(List<CaseDeliverable> deliverables) {
       this.deliverables = deliverables;
       return this;
     }

@@ -3,11 +3,15 @@ package ca.on.oicr.gsi.cardea.data;
 import static java.util.Objects.requireNonNull;
 
 import java.time.LocalDate;
+import java.util.Collections;
+import java.util.List;
+import java.util.Objects;
+import java.util.stream.Stream;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonPOJOBuilder;
 
-@JsonDeserialize(builder = Deliverable.Builder.class)
-public class Deliverable {
+@JsonDeserialize(builder = CaseDeliverable.Builder.class)
+public class CaseDeliverable {
 
   private final DeliverableType deliverableType;
   private final LocalDate analysisReviewQcDate;
@@ -18,12 +22,10 @@ public class Deliverable {
   private final Boolean releaseApprovalQcPassed;
   private final String releaseApprovalQcUser;
   private final String releaseApprovalQcNote;
-  private final LocalDate releaseQcDate;
-  private final Boolean releaseQcPassed;
-  private final String releaseQcUser;
-  private final String releaseQcNote;
+  private final List<CaseRelease> releases;
+  private final LocalDate latestActivityDate;
 
-  private Deliverable(Builder builder) {
+  private CaseDeliverable(Builder builder) {
     this.deliverableType = requireNonNull(builder.deliverableType);
     this.analysisReviewQcDate = builder.analysisReviewQcDate;
     this.analysisReviewQcPassed = builder.analysisReviewQcPassed;
@@ -33,10 +35,14 @@ public class Deliverable {
     this.releaseApprovalQcPassed = builder.releaseApprovalQcPassed;
     this.releaseApprovalQcUser = builder.releaseApprovalQcUser;
     this.releaseApprovalQcNote = builder.releaseApprovalQcNote;
-    this.releaseQcDate = builder.releaseQcDate;
-    this.releaseQcPassed = builder.releaseQcPassed;
-    this.releaseQcUser = builder.releaseQcUser;
-    this.releaseQcNote = builder.releaseQcNote;
+    this.releases = builder.releases == null ? Collections.emptyList()
+        : Collections.unmodifiableList(builder.releases);
+    this.latestActivityDate = Stream
+        .concat(releases == null ? Stream.empty() : releases.stream().map(CaseRelease::getQcDate),
+            Stream.of(analysisReviewQcDate, releaseApprovalQcDate))
+        .filter(Objects::nonNull)
+        .max(LocalDate::compareTo)
+        .orElse(null);
   }
 
   public DeliverableType getDeliverableType() {
@@ -75,21 +81,14 @@ public class Deliverable {
     return releaseApprovalQcNote;
   }
 
-  public LocalDate getReleaseQcDate() {
-    return releaseQcDate;
+  public List<CaseRelease> getReleases() {
+    return releases;
   }
 
-  public Boolean getReleaseQcPassed() {
-    return releaseQcPassed;
+  public LocalDate getLatestActivityDate() {
+    return latestActivityDate;
   }
 
-  public String getReleaseQcUser() {
-    return releaseQcUser;
-  }
-
-  public String getReleaseQcNote() {
-    return releaseQcNote;
-  }
 
   @JsonPOJOBuilder(withPrefix = "")
   public static class Builder {
@@ -103,10 +102,7 @@ public class Deliverable {
     private Boolean releaseApprovalQcPassed;
     private String releaseApprovalQcUser;
     private String releaseApprovalQcNote;
-    private LocalDate releaseQcDate;
-    private Boolean releaseQcPassed;
-    private String releaseQcUser;
-    private String releaseQcNote;
+    private List<CaseRelease> releases;
 
     public Builder deliverableType(DeliverableType deliverableType) {
       this.deliverableType = deliverableType;
@@ -153,28 +149,13 @@ public class Deliverable {
       return this;
     }
 
-    public Builder releaseQcDate(LocalDate releaseQcDate) {
-      this.releaseQcDate = releaseQcDate;
+    public Builder releases(List<CaseRelease> releases) {
+      this.releases = releases;
       return this;
     }
 
-    public Builder releaseQcPassed(Boolean releaseQcPassed) {
-      this.releaseQcPassed = releaseQcPassed;
-      return this;
-    }
-
-    public Builder releaseQcUser(String releaseQcUser) {
-      this.releaseQcUser = releaseQcUser;
-      return this;
-    }
-
-    public Builder releaseQcNote(String releaseQcNote) {
-      this.releaseQcNote = releaseQcNote;
-      return this;
-    }
-
-    public Deliverable build() {
-      return new Deliverable(this);
+    public CaseDeliverable build() {
+      return new CaseDeliverable(this);
     }
 
   }

@@ -6,49 +6,7 @@
     "stopped": false,
     "stop_reason": null,
     "paused": false,
-    "pause_reason": null,
-    "qc_groups": [
-      {
-        "donor_id": "SAM413576",
-        "tissue_origin": "Ly",
-        "tissue_type": "R",
-        "library_design": "WG",
-        "group_id": null,
-        "purity": null,
-        "collapsed_coverage": null,
-        "callability": null
-      },
-      {
-        "donor_id": "SAM413576",
-        "tissue_origin": "Lv",
-        "tissue_type": "M",
-        "library_design": "WT",
-        "group_id": null,
-        "purity": 65.0,
-        "collapsed_coverage": null,
-        "callability": null
-      },
-      {
-        "donor_id": "SAM413576",
-        "tissue_origin": "Lv",
-        "tissue_type": "M",
-        "library_design": "WG",
-        "group_id": null,
-        "purity": 65.0,
-        "collapsed_coverage": null,
-        "callability": 87.6189
-      }
-    ],
-    "analysis_reviews": [
-      {
-        "qcable_type": "analysis_review",
-        "qc_state": "Ready",
-        "qc_user": "Person",
-        "qc_date": "2021-08-10"
-      }
-    ],
-    "release_approvals": [],
-    "releases": []
+    "pause_reason": null
   },
   {
     "id": 999,
@@ -57,10 +15,6 @@
     "stopped": false,
     "stop_reason": null,
     "paused": false,
-    "pause_reason": null,
-    "qc_groups": [],
-    "analysis_reviews": [],
-    "release_approvals": [],
-    "releases": []
+    "pause_reason": null
   }
 ]

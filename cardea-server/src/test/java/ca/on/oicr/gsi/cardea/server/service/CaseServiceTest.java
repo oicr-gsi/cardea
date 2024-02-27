@@ -2,20 +2,19 @@ package ca.on.oicr.gsi.cardea.server.service;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
 import ca.on.oicr.gsi.cardea.data.CaseStatusesForRun;
-import ca.on.oicr.gsi.cardea.data.RequisitionQc;
 import ca.on.oicr.gsi.cardea.data.Run;
 import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collection;
 import org.junit.jupiter.api.BeforeEach;
 import ca.on.oicr.gsi.cardea.data.Case;
 import ca.on.oicr.gsi.cardea.data.CaseData;
+import ca.on.oicr.gsi.cardea.data.CaseDeliverable;
+import ca.on.oicr.gsi.cardea.data.CaseRelease;
 import ca.on.oicr.gsi.cardea.data.Donor;
 import ca.on.oicr.gsi.cardea.data.Requisition;
 import ca.on.oicr.gsi.cardea.data.Sample;
@@ -37,6 +36,19 @@ public class CaseServiceTest {
     addTest(kase, caseNumber, "A");
     addTest(kase, caseNumber, "B");
     when(kase.getRequisition()).thenReturn(makeRequisition(requisitionNumber));
+    when(kase.isStopped()).thenReturn(requisitionNumber % 2 == 1 ? true : false);
+    when(kase.getDeliverables()).thenReturn(new ArrayList<>());
+    CaseDeliverable deliverable = mock(CaseDeliverable.class);
+    when(deliverable.getReleases()).thenReturn(new ArrayList<>());
+    CaseRelease release = mock(CaseRelease.class);
+    when(release.getDeliverable()).thenReturn("Full Pipeline");
+    if (requisitionNumber % 1 != 1) {
+      when(release.getQcPassed()).thenReturn(true);
+      when(release.getQcUser()).thenReturn("User");
+      when(release.getQcDate()).thenReturn(LocalDate.now());
+    }
+    deliverable.getReleases().add(release);
+    kase.getDeliverables().add(deliverable);
     data.getCases().add(kase);
   }
 
@@ -88,9 +100,6 @@ public class CaseServiceTest {
         .name(String.format("REQ_%d", requisitionNumber))
         .assayId(2L)
         .stopped(requisitionNumber % 2 == 1 ? true : false)
-        .releases(requisitionNumber % 2 == 1 ? null
-            : Arrays.asList(new RequisitionQc.Builder().qcPassed(true).qcUser("test").qcDate(
-                LocalDate.now()).build()))
         .build();
   }
 

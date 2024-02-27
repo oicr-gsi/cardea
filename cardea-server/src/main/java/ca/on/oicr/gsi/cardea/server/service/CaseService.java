@@ -3,16 +3,15 @@ package ca.on.oicr.gsi.cardea.server.service;
 import ca.on.oicr.gsi.cardea.data.Assay;
 import ca.on.oicr.gsi.cardea.data.Case;
 import ca.on.oicr.gsi.cardea.data.CaseData;
+import ca.on.oicr.gsi.cardea.data.CaseDeliverable;
+import ca.on.oicr.gsi.cardea.data.CaseRelease;
 import ca.on.oicr.gsi.cardea.data.CaseStatus;
 import ca.on.oicr.gsi.cardea.data.CaseStatusesForRun;
 import ca.on.oicr.gsi.cardea.data.CasesForRequisition;
-import ca.on.oicr.gsi.cardea.data.Requisition;
-import ca.on.oicr.gsi.cardea.data.RequisitionQc;
 import ca.on.oicr.gsi.cardea.data.Run;
 import ca.on.oicr.gsi.cardea.data.Sample;
 import ca.on.oicr.gsi.cardea.data.ShesmuCase;
 import ca.on.oicr.gsi.cardea.server.CaseLoader;
-
 import ca.on.oicr.gsi.Pair;
 
 import java.time.Duration;
@@ -23,7 +22,6 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
-import java.util.Optional;
 import java.util.Set;
 import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
@@ -69,7 +67,7 @@ public class CaseService {
         .collect(Collectors.toSet());
 
     List<Pair<String, String>> statusForCaseList = casesMatchingRunName.stream()
-        .map(k -> new Pair<String, String>(getReqStatus(k.getRequisition()).getLabel(), k.getId()))
+        .map(k -> new Pair<String, String>(getCaseStatus(k).getLabel(), k.getId()))
         .collect(Collectors.toList());
     Map<String, Set<String>> statusesForRun = new HashMap<String, Set<String>>();
     statusForCaseList.forEach((p) -> {
@@ -97,15 +95,11 @@ public class CaseService {
     return refreshFailures;
   }
 
-  private CaseStatus getReqStatus(Requisition req) {
-    if (req.isStopped()) {
+  private CaseStatus getCaseStatus(Case kase) {
+    if (kase.isStopped()) {
       return CaseStatus.STOPPED;
-    }
-    var reqQcs =
-        req.getReleases().stream().map(RequisitionQc::isQcPassed).collect(Collectors.toSet());
-    if (reqQcs.isEmpty()) {
-      return CaseStatus.ACTIVE;
-    } else if (reqQcs.stream().anyMatch(status -> status.equals(true))) {
+    } else if (kase.getDeliverables().stream().anyMatch(
+        deliverable -> deliverable.getReleases().stream().anyMatch(CaseRelease::getQcPassed))) {
       return CaseStatus.COMPLETED;
     } else {
       return CaseStatus.ACTIVE;
@@ -169,16 +163,34 @@ public class CaseService {
         .collect(Collectors.toSet());
   }
 
+  private LocalDate getCompletedDate(Case kase) {
+    if (kase.getDeliverables().isEmpty()) {
+      return null;
+    }
+    LocalDate completedDate = null;
+    for (CaseDeliverable deliverable : kase.getDeliverables()) {
+      if (deliverable.getReleases().isEmpty()) {
+        return null;
+      }
+      for (CaseRelease release : deliverable.getReleases()) {
+        if (Boolean.TRUE.equals(release.getQcPassed())) {
+          return null;
+        }
+        if (completedDate == null || completedDate.isBefore(release.getQcDate())) {
+          completedDate = release.getQcDate();
+        }
+      }
+    }
+    return completedDate;
+  }
+
   private ShesmuCase convertCaseToShesmuCase(Case kase) {
-    Optional<LocalDate> completedDate = kase.getRequisition().getReleases().stream()
-        .map(qc -> qc.getQcDate())
-        .max(LocalDate::compareTo);
     return new ShesmuCase.Builder()
         .assayName(caseData.getAssaysById().get(kase.getAssayId()).getName())
         .assayVersion(caseData.getAssaysById().get(kase.getAssayId()).getVersion())
         .caseIdentifier(kase.getId())
-        .caseStatus(getReqStatus(kase.getRequisition()))
-        .completedDate(completedDate.orElse(null))
+        .caseStatus(getCaseStatus(kase))
+        .completedDate(getCompletedDate(kase))
         .limsIds(getLimsIusIdsForShesmu(kase))
         .requisitionId(kase.getRequisition().getId())
         .requisitionName(kase.getRequisition().getName())
