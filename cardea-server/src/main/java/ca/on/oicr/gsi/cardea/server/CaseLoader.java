@@ -3,9 +3,12 @@ package ca.on.oicr.gsi.cardea.server;
 import ca.on.oicr.gsi.cardea.data.Assay;
 import ca.on.oicr.gsi.cardea.data.AssayTargets;
 import ca.on.oicr.gsi.cardea.data.Case;
+import ca.on.oicr.gsi.cardea.data.CaseImpl;
+import ca.on.oicr.gsi.cardea.data.CaseRelease;
 import ca.on.oicr.gsi.cardea.data.CaseData;
 import ca.on.oicr.gsi.cardea.data.CaseDeliverable;
-import ca.on.oicr.gsi.cardea.data.CaseRelease;
+import ca.on.oicr.gsi.cardea.data.CaseDeliverableImpl;
+import ca.on.oicr.gsi.cardea.data.CaseReleaseImpl;
 import ca.on.oicr.gsi.cardea.data.DeliverableType;
 import ca.on.oicr.gsi.cardea.data.Donor;
 import ca.on.oicr.gsi.cardea.data.Lane;
@@ -216,7 +219,7 @@ public class CaseLoader {
       Long requisitionId = parseLong(json, "requisition_id", true);
       Long assayId = parseLong(json, "assay_id", true);
       Assay assay = assaysById.get(assayId);
-      return new Case.Builder()
+      return new CaseImpl.Builder()
           .id(parseString(json, "id", true))
           .donor(donorsById.get(donorId))
           .projects(parseProjects(json, "project_names", projectsByName))
@@ -725,7 +728,7 @@ public class CaseLoader {
     }
     List<CaseDeliverable> deliverables = new ArrayList<>();
     for (JsonNode node : deliverablesNode) {
-      deliverables.add(new CaseDeliverable.Builder()
+      deliverables.add(new CaseDeliverableImpl.Builder()
           .deliverableType(DeliverableType.valueOf(parseString(node, "deliverable_type")))
           .analysisReviewQcDate(parseDate(node, "analysis_review_qc_date"))
           .analysisReviewQcPassed(parseQcPassed(node, "analysis_review_qc_state", false))
@@ -749,7 +752,7 @@ public class CaseLoader {
     }
     List<CaseRelease> list = new ArrayList<>();
     for (JsonNode node : json) {
-      list.add(new CaseRelease.Builder()
+      list.add(new CaseReleaseImpl.Builder()
           .deliverable(parseString(node, "deliverable", true))
           .qcDate(parseDate(node, "qc_date"))
           .qcPassed(parseQcPassed(node, "qc_state", false))

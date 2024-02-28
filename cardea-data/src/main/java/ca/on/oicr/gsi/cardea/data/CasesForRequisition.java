@@ -8,8 +8,7 @@ import static java.util.Objects.requireNonNull;
 /**
  * Immutable DjerbaCases
  * 
- * A set of Cases that all have the same requisition (and therefore the same
- * assay)
+ * A set of Cases that all have the same requisition (and therefore the same assay)
  */
 public class CasesForRequisition {
 

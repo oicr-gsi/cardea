@@ -76,9 +76,8 @@ public class MockCase {
   }
 
   private static ca.on.oicr.gsi.cardea.data.Test addTest(Case kase, int caseNumber, int testNumber,
-      String name,
-      boolean extractionComplete, boolean libraryPrepComplete, boolean libraryQualificationComplete,
-      boolean fullDepthComplete) {
+      String name, boolean extractionComplete, boolean libraryPrepComplete,
+      boolean libraryQualificationComplete, boolean fullDepthComplete) {
     ca.on.oicr.gsi.cardea.data.Test test = addTest(kase, caseNumber, testNumber, name);
     if (extractionComplete) {
       String extractionId = makeSampleId(caseNumber, testNumber, MetricCategory.EXTRACTION, 1);
