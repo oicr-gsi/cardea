@@ -7,6 +7,21 @@ This file is updated automatically as described in [Unreleased Changes](changes/
 
 ---------------------------------------------------------------------------------------------------
 
+## [1.8.0] - 2024-02-28
+
+### Added
+
+* QC notes to deliverables
+
+### Changed
+
+* Case deliverables now contain all QC information for analysis review, release approval, and release
+
+### Removed
+
+* Requisition QCs
+
+
 ## [1.7.0] - 2024-01-03
 
 ### Added

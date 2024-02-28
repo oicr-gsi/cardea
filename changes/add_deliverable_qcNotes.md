@@ -1,1 +1,0 @@
-QC notes to deliverables
