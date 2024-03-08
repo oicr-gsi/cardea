@@ -61,6 +61,9 @@ public class Sample {
   private final String tissueOrigin;
   private final String tissueType;
   private final BigDecimal volume;
+  private final BigDecimal relativeCpgInRegions;
+  private final BigDecimal methylationBeta;
+  private final Integer peReads;
 
   private Sample(Builder builder) {
     this.id = requireNonNull(builder.id);
@@ -101,6 +104,9 @@ public class Sample {
     this.lambdaClusters = builder.lambdaClusters;
     this.puc19Methylation = builder.puc19Methylation;
     this.puc19Clusters = builder.puc19Clusters;
+    this.relativeCpgInRegions = builder.relativeCpgInRegions;
+    this.methylationBeta = builder.methylationBeta;
+    this.peReads = builder.peReads;
     this.qcPassed = builder.qcPassed;
     this.qcReason = builder.qcReason;
     this.qcNote = builder.qcNote;
@@ -316,6 +322,18 @@ public class Sample {
     return rRnaContamination;
   }
 
+  public BigDecimal getRelativeCpgInRegions() {
+    return relativeCpgInRegions;
+  }
+
+  public BigDecimal getMethylationBeta() {
+    return methylationBeta;
+  }
+
+  public Integer getPeReads() {
+    return peReads;
+  }
+
   @Override
   public int hashCode() {
     return Objects.hash(id, run, sequencingLane);
@@ -370,6 +388,9 @@ public class Sample {
     private String tissueOrigin;
     private String tissueType;
     private BigDecimal volume;
+    private BigDecimal relativeCpgInRegions;
+    private BigDecimal methylationBeta;
+    private Integer peReads;
 
     public Sample build() {
       return new Sample(this);
@@ -603,6 +624,21 @@ public class Sample {
 
     public Builder volume(BigDecimal volume) {
       this.volume = volume;
+      return this;
+    }
+
+    public Builder relativeCpgInRegions(BigDecimal relativeCpgInRegions) {
+      this.relativeCpgInRegions = relativeCpgInRegions;
+      return this;
+    }
+
+    public Builder methylationBeta(BigDecimal methylationBeta) {
+      this.methylationBeta = methylationBeta;
+      return this;
+    }
+
+    public Builder peReads(Integer peReads) {
+      this.peReads = peReads;
       return this;
     }
 
