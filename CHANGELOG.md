@@ -7,6 +7,13 @@ This file is updated automatically as described in [Unreleased Changes](changes/
 
 ---------------------------------------------------------------------------------------------------
 
+## [1.9.0] - 2024-03-11
+
+### Added
+
+* New metrics for cfMeDIPs assays
+
+
 ## [1.8.0] - 2024-02-28
 
 ### Added
