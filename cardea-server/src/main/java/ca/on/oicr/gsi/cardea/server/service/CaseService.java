@@ -174,7 +174,7 @@ public class CaseService {
         return null;
       }
       for (CaseRelease release : deliverable.getReleases()) {
-        if (Boolean.TRUE.equals(release.getQcPassed())) {
+        if (!Boolean.TRUE.equals(release.getQcPassed())) {
           return null;
         }
         if (completedDate == null || completedDate.isBefore(release.getQcDate())) {
