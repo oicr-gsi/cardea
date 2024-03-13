@@ -7,6 +7,13 @@ This file is updated automatically as described in [Unreleased Changes](changes/
 
 ---------------------------------------------------------------------------------------------------
 
+## [1.9.1] - 2024-03-13
+
+### Fixed
+
+* Missing (null) `completedDate`s in `shesmu-cases` endpoint
+
+
 ## [1.9.0] - 2024-03-11
 
 ### Added
