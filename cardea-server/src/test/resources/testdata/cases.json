@@ -121,7 +121,11 @@
             "qc_date": null,
             "qc_note": null
           }
-        ]
+        ],
+        "analysis_review_days_spent": 0,
+        "release_approval_days_spent": 0,
+        "release_days_spent": 0,
+        "deliverable_days_spent": 0
       }
     ],
     "requisition_id": 512,

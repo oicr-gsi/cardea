@@ -24,6 +24,10 @@ public class CaseDeliverableImpl implements CaseDeliverable {
   private final String releaseApprovalQcNote;
   private final List<CaseRelease> releases;
   private final LocalDate latestActivityDate;
+  private final int analysisReviewDaysSpent;
+  private final int releaseApprovalDaysSpent;
+  private final int releaseDaysSpent;
+  private final int deliverableDaysSpent;
 
   private CaseDeliverableImpl(Builder builder) {
     this.deliverableType = requireNonNull(builder.deliverableType);
@@ -37,6 +41,10 @@ public class CaseDeliverableImpl implements CaseDeliverable {
     this.releaseApprovalQcNote = builder.releaseApprovalQcNote;
     this.releases = builder.releases == null ? Collections.emptyList()
         : Collections.unmodifiableList(builder.releases);
+    this.analysisReviewDaysSpent = builder.analysisReviewDaysSpent;
+    this.releaseApprovalDaysSpent = builder.releaseApprovalDaysSpent;
+    this.releaseDaysSpent = builder.releaseDaysSpent;
+    this.deliverableDaysSpent = builder.deliverableDaysSpent;
     this.latestActivityDate = Stream
         .concat(
             releases == null ? Stream.empty() : releases.stream().map(CaseRelease::getQcDate),
@@ -97,10 +105,29 @@ public class CaseDeliverableImpl implements CaseDeliverable {
   }
 
   @Override
+  public int getAnalysisReviewDaysSpent() {
+    return analysisReviewDaysSpent;
+  }
+
+  @Override
+  public int getReleaseApprovalDaysSpent() {
+    return releaseApprovalDaysSpent;
+  }
+
+  @Override
+  public int getReleaseDaysSpent() {
+    return releaseDaysSpent;
+  }
+
+  @Override
+  public int getDeliverableDaysSpent() {
+    return deliverableDaysSpent;
+  }
+
+  @Override
   public LocalDate getLatestActivityDate() {
     return latestActivityDate;
   }
-
 
   @JsonPOJOBuilder(withPrefix = "")
   public static class Builder {
@@ -115,6 +142,10 @@ public class CaseDeliverableImpl implements CaseDeliverable {
     private String releaseApprovalQcUser;
     private String releaseApprovalQcNote;
     private List<CaseRelease> releases;
+    private int analysisReviewDaysSpent;
+    private int releaseApprovalDaysSpent;
+    private int releaseDaysSpent;
+    private int deliverableDaysSpent;
 
     public Builder deliverableType(DeliverableType deliverableType) {
       this.deliverableType = deliverableType;
@@ -163,6 +194,26 @@ public class CaseDeliverableImpl implements CaseDeliverable {
 
     public Builder releases(List<CaseRelease> releases) {
       this.releases = releases;
+      return this;
+    }
+
+    public Builder analysisReviewDaysSpent(int analysisReviewDaysSpent) {
+      this.analysisReviewDaysSpent = analysisReviewDaysSpent;
+      return this;
+    }
+
+    public Builder releaseApprovalDaysSpent(int releaseApprovalDaysSpent) {
+      this.releaseApprovalDaysSpent = releaseApprovalDaysSpent;
+      return this;
+    }
+
+    public Builder releaseDaysSpent(int releaseDaysSpent) {
+      this.releaseDaysSpent = releaseDaysSpent;
+      return this;
+    }
+
+    public Builder deliverableDaysSpent(int deliverableDaysSpent) {
+      this.deliverableDaysSpent = deliverableDaysSpent;
       return this;
     }
 

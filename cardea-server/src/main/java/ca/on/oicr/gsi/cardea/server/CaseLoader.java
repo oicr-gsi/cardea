@@ -742,6 +742,10 @@ public class CaseLoader {
           .releaseApprovalQcUser(parseString(node, "release_approval_qc_user"))
           .releaseApprovalQcNote(parseString(node, "release_approval_qc_note"))
           .releases(parseReleases(node.get("releases")))
+          .analysisReviewDaysSpent(parseInteger(node, "analysis_review_days_spent", true))
+          .releaseApprovalDaysSpent(parseInteger(node, "release_approval_days_spent", true))
+          .releaseDaysSpent(parseInteger(node, "release_days_spent", true))
+          .deliverableDaysSpent(parseInteger(node, "deliverable_days_spent", true))
           .build());
     }
     return deliverables;
