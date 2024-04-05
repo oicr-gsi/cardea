@@ -29,4 +29,12 @@ public interface CaseDeliverable {
 
   LocalDate getLatestActivityDate();
 
+  int getAnalysisReviewDaysSpent();
+
+  int getReleaseApprovalDaysSpent();
+
+  int getReleaseDaysSpent();
+
+  int getDeliverableDaysSpent();
+
 }
