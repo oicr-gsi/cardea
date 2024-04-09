@@ -292,6 +292,7 @@ public class CaseLoader {
     List<Project> projects = loadFromJsonArrayFile(fileReader,
         json -> new Project.Builder().name(parseString(json, "name", true))
             .pipeline(parseString(json, "pipeline", true))
+            .analysisReviewSkipped(parseBoolean(json, "analysis_review_skipped"))
             .deliverables(parseProjectDeliverables(json.get("deliverables")))
             .build());
 
