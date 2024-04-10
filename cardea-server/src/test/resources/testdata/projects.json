@@ -2,6 +2,7 @@
   {
     "name": "PROJ",
     "pipeline": "Research",
+    "analysis_review_skipped": false,
     "deliverables": {
       "DATA_RELEASE": ["Full Pipeline", "cBioPortal Submission"]
     }

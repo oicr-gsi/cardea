@@ -16,11 +16,13 @@ public class Project {
 
   private final String name;
   private final String pipeline;
+  private final boolean analysisReviewSkipped;
   private final Map<DeliverableType, List<String>> deliverables;
 
   private Project(Builder builder) {
     this.name = requireNonNull(builder.name);
     this.pipeline = requireNonNull(builder.pipeline);
+    this.analysisReviewSkipped = builder.analysisReviewSkipped;
     Map<DeliverableType, List<String>> tempDeliverables = builder.deliverables.entrySet().stream()
         .collect(Collectors.toMap(entry -> entry.getKey(),
             entry -> Collections.unmodifiableList(entry.getValue())));
@@ -35,6 +37,10 @@ public class Project {
     return pipeline;
   }
 
+  public boolean isAnalysisReviewSkipped() {
+    return analysisReviewSkipped;
+  }
+
   public Map<DeliverableType, List<String>> getDeliverables() {
     return deliverables;
   }
@@ -44,6 +50,7 @@ public class Project {
 
     private String name;
     private String pipeline;
+    private boolean analysisReviewSkipped;
     private Map<DeliverableType, List<String>> deliverables;
 
     public Project build() {
@@ -57,6 +64,11 @@ public class Project {
 
     public Builder pipeline(String pipeline) {
       this.pipeline = pipeline;
+      return this;
+    }
+
+    public Builder analysisReviewSkipped(boolean analysisReviewSkipped) {
+      this.analysisReviewSkipped = analysisReviewSkipped;
       return this;
     }
 
