@@ -7,6 +7,14 @@ This file is updated automatically as described in [Unreleased Changes](changes/
 
 ---------------------------------------------------------------------------------------------------
 
+## [1.10.0] - 2024-04-10
+
+### Added
+
+* Deliverable-type-level turn-around time fields
+* Project analysisReviewSkipped field
+
+
 ## [1.9.1] - 2024-03-13
 
 ### Fixed
