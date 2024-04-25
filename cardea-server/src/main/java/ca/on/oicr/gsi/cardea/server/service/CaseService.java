@@ -1,13 +1,11 @@
 package ca.on.oicr.gsi.cardea.server.service;
 
-import ca.on.oicr.gsi.cardea.data.Assay;
 import ca.on.oicr.gsi.cardea.data.Case;
 import ca.on.oicr.gsi.cardea.data.CaseData;
 import ca.on.oicr.gsi.cardea.data.CaseDeliverable;
 import ca.on.oicr.gsi.cardea.data.CaseRelease;
 import ca.on.oicr.gsi.cardea.data.CaseStatus;
 import ca.on.oicr.gsi.cardea.data.CaseStatusesForRun;
-import ca.on.oicr.gsi.cardea.data.CasesForRequisition;
 import ca.on.oicr.gsi.cardea.data.Run;
 import ca.on.oicr.gsi.cardea.data.Sample;
 import ca.on.oicr.gsi.cardea.data.ShesmuCase;
@@ -121,24 +119,12 @@ public class CaseService {
         .collect(Collectors.toSet());
   }
 
-  public CasesForRequisition getCasesForRequisition(String requisitionName) {
+  public Set<Case> getCasesForRequisition(String requisitionName) {
     Set<Case> cases = caseData.getCases().stream()
         .filter(kase -> requisitionName.equals(kase.getRequisition().getName()))
         .collect(Collectors.toSet());
-    if (cases.isEmpty()) {
-      return null;
-    }
-    Long assayId = cases.stream()
-        .map(kase -> kase.getRequisition().getAssayId())
-        .findFirst().get();
 
-    Assay assay = caseData.getAssaysById().get(assayId);
-
-    return new CasesForRequisition.Builder()
-        .assayName(assay.getName())
-        .assayVersion(assay.getVersion())
-        .cases(cases)
-        .build();
+    return cases.isEmpty() ? null : cases;
   }
 
   public Set<ShesmuCase> getShesmuCases() {
