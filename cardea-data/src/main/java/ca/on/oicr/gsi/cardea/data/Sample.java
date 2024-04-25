@@ -3,7 +3,9 @@ package ca.on.oicr.gsi.cardea.data;
 import static java.util.Objects.requireNonNull;
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.util.Collections;
 import java.util.Objects;
+import java.util.Set;
 import java.util.stream.Stream;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonPOJOBuilder;
@@ -14,7 +16,7 @@ import com.fasterxml.jackson.databind.annotation.JsonPOJOBuilder;
 @JsonDeserialize(builder = Sample.Builder.class)
 public class Sample {
 
-  private final Long assayId;
+  private final Set<Long> assayIds;
   private final Integer clustersPerSample; // AKA "Pass Filter Clusters" for full-depth (call ready)
   private final Integer preliminaryClustersPerSample;
   private final BigDecimal concentration;
@@ -68,10 +70,10 @@ public class Sample {
   private Sample(Builder builder) {
     this.id = requireNonNull(builder.id);
     this.name = requireNonNull(builder.name);
-
     this.requisitionId = builder.requisitionId;
     this.requisitionName = builder.requisitionName;
-    this.assayId = builder.assayId;
+    this.assayIds = builder.assayIds == null ? Collections.emptySet()
+        : Collections.unmodifiableSet(builder.assayIds);
     this.tissueOrigin = requireNonNull(builder.tissueOrigin);
     this.tissueType = requireNonNull(builder.tissueType);
     this.tissueMaterial = builder.tissueMaterial;
@@ -134,8 +136,8 @@ public class Sample {
         && Objects.equals(sequencingLane, other.sequencingLane);
   }
 
-  public Long getAssayId() {
-    return assayId;
+  public Set<Long> getAssayIds() {
+    return assayIds;
   }
 
   public Integer getClustersPerSample() {
@@ -342,7 +344,6 @@ public class Sample {
   @JsonPOJOBuilder(withPrefix = "")
   public static class Builder {
 
-    private Long assayId;
     private Integer clustersPerSample;
     private Integer preliminaryClustersPerSample;
     private BigDecimal concentration;
@@ -379,6 +380,7 @@ public class Sample {
     private BigDecimal rawCoverage;
     private Long requisitionId;
     private String requisitionName;
+    private Set<Long> assayIds;
     private Run run;
     private String secondaryId;
     private String sequencingLane;
@@ -394,11 +396,6 @@ public class Sample {
 
     public Sample build() {
       return new Sample(this);
-    }
-
-    public Builder assayId(Long assayId) {
-      this.assayId = assayId;
-      return this;
     }
 
     public Builder clustersPerSample(Integer clustersPerSample) {
@@ -572,6 +569,15 @@ public class Sample {
       return this;
     }
 
+    public Builder requisition(Requisition requisition) {
+      if (requisition == null) {
+        return this;
+      }
+      return this.requisitionId(requisition.getId())
+          .requisitionName(requisition.getName())
+          .assayIds(requisition.getAssayIds());
+    }
+
     public Builder requisitionId(Long requisitionId) {
       this.requisitionId = requisitionId;
       return this;
@@ -579,6 +585,11 @@ public class Sample {
 
     public Builder requisitionName(String requisitionName) {
       this.requisitionName = requisitionName;
+      return this;
+    }
+
+    public Builder assayIds(Set<Long> assayIds) {
+      this.assayIds = assayIds;
       return this;
     }
 

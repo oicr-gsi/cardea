@@ -273,13 +273,17 @@ public class CaseLoader {
       throws DataParseException, IOException {
     return loadFromJsonArrayFile(fileReader, json -> {
       Long requisitionId = parseLong(json, "requisition_id", false);
-      if (requisitionId != null && !requisitionsById.containsKey(requisitionId)) {
-        throw new DataParseException(String.format("Requisition ID %d not found", requisitionId));
+      Requisition requisition = null;
+      if (requisitionId != null) {
+        requisition = requisitionsById.get(requisitionId);
+        if (requisition == null) {
+          throw new DataParseException(String.format("Requisition ID %d not found", requisitionId));
+        }
       }
       return new OmittedSample.Builder()
           .id(parseString(json, "sample_id", true))
           .name(parseString(json, "oicr_internal_name", true))
-          .requisition(requisitionId == null ? null : requisitionsById.get(requisitionId))
+          .requisition(requisition)
           .project(parseString(json, "project_name", true))
           .donor(donorsById.get(parseString(json, "donor_id")))
           .createdDate(parseSampleCreatedDate(json))
@@ -305,7 +309,7 @@ public class CaseLoader {
       Requisition requisition = new Requisition.Builder()
           .id(parseLong(json, "id", true))
           .name(parseString(json, "name", true))
-          .assayId(parseLong(json, "assay_id", false))
+          .assayIds(parseLongSet(json.get("assay_ids")))
           .stopped(parseBoolean(json, "stopped"))
           .stopReason(parseString(json, "stop_reason", false))
           .paused(parseBoolean(json, "paused"))
@@ -361,9 +365,7 @@ public class CaseLoader {
       }
       return new Sample.Builder().id(parseString(json, "sample_id", true))
           .name(parseString(json, "oicr_internal_name", true))
-          .assayId(requisition == null ? null : requisition.getAssayId())
-          .requisitionId(requisitionId)
-          .requisitionName(requisition == null ? null : requisition.getName())
+          .requisition(requisition)
           .tissueOrigin(parseString(json, "tissue_origin", true))
           .tissueType(parseString(json, "tissue_type", true))
           .tissueMaterial(parseString(json, "tissue_material"))
@@ -494,6 +496,17 @@ public class CaseLoader {
       throws DataParseException {
     JsonNode node = getNode(json, fieldName, required);
     return node == null ? null : node.asLong();
+  }
+
+  private static Set<Long> parseLongSet(JsonNode json) {
+    if (json == null) {
+      return null;
+    }
+    Set<Long> results = new HashSet<>();
+    for (JsonNode node : json) {
+      results.add(node.asLong());
+    }
+    return results;
   }
 
   private static Boolean parseQcPassed(JsonNode json, String fieldName, boolean required)
