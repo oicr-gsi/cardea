@@ -3,6 +3,8 @@ package ca.on.oicr.gsi.cardea.data;
 import static java.util.Objects.requireNonNull;
 
 import java.time.LocalDate;
+import java.util.Collections;
+import java.util.Set;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonPOJOBuilder;
 
@@ -12,7 +14,7 @@ import com.fasterxml.jackson.databind.annotation.JsonPOJOBuilder;
 @JsonDeserialize(builder = OmittedSample.Builder.class)
 public class OmittedSample {
 
-  private final Long assayId;
+  private final Set<Long> assayIds;
   private final LocalDate createdDate;
   private final Donor donor;
   private final String id;
@@ -24,16 +26,17 @@ public class OmittedSample {
   private OmittedSample(Builder builder) {
     this.id = requireNonNull(builder.id);
     this.name = requireNonNull(builder.name);
-    this.requisitionId = builder.requisition == null ? null : builder.requisition.getId();
-    this.requisitionName = builder.requisition == null ? null : builder.requisition.getName();
-    this.assayId = builder.requisition == null ? null : builder.requisition.getAssayId();
+    this.requisitionId = builder.requisitionId;
+    this.requisitionName = builder.requisitionName;
+    this.assayIds = builder.assayIds == null ? Collections.emptySet()
+        : Collections.unmodifiableSet(builder.assayIds);
     this.project = requireNonNull(builder.project);
     this.donor = requireNonNull(builder.donor);
     this.createdDate = requireNonNull(builder.createdDate);
   }
 
-  public Long getAssayId() {
-    return assayId;
+  public Set<Long> getAssayIds() {
+    return assayIds;
   }
 
   public LocalDate getCreatedDate() {
@@ -72,7 +75,9 @@ public class OmittedSample {
     private String id;
     private String name;
     private String project;
-    private Requisition requisition;
+    private Long requisitionId;
+    private String requisitionName;
+    private Set<Long> assayIds;
 
     public OmittedSample build() {
       return new OmittedSample(this);
@@ -104,7 +109,26 @@ public class OmittedSample {
     }
 
     public Builder requisition(Requisition requisition) {
-      this.requisition = requisition;
+      if (requisition == null) {
+        return this;
+      }
+      return this.requisitionId(requisition.getId())
+          .requisitionName(requisition.getName())
+          .assayIds(requisition.getAssayIds());
+    }
+
+    public Builder requisitionId(Long requisitionId) {
+      this.requisitionId = requisitionId;
+      return this;
+    }
+
+    public Builder requisitionName(String requisitionName) {
+      this.requisitionName = requisitionName;
+      return this;
+    }
+
+    public Builder assayIds(Set<Long> assayIds) {
+      this.assayIds = assayIds;
       return this;
     }
 

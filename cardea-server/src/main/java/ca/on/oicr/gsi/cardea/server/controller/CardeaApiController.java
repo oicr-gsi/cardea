@@ -1,9 +1,9 @@
 package ca.on.oicr.gsi.cardea.server.controller;
 
 import ca.on.oicr.gsi.cardea.server.service.CaseService;
+import ca.on.oicr.gsi.cardea.data.Case;
 import ca.on.oicr.gsi.cardea.data.CaseData;
 import ca.on.oicr.gsi.cardea.data.CaseStatusesForRun;
-import ca.on.oicr.gsi.cardea.data.CasesForRequisition;
 import ca.on.oicr.gsi.cardea.data.ShesmuCase;
 
 import java.time.ZonedDateTime;
@@ -43,13 +43,14 @@ public class CardeaApiController {
   }
 
   @GetMapping("/requisition-cases/{requisitionName}")
-  public CasesForRequisition getCasesForRequisition(@PathVariable String requisitionName) {
+  public Set<Case> getCasesForRequisition(@PathVariable String requisitionName) {
     if (requisitionName == null || requisitionName.isBlank()) {
       throw new BadRequestException("missing requisition name in URL");
     }
-    CasesForRequisition casesForRequisition = caseService.getCasesForRequisition(requisitionName);
+    Set<Case> casesForRequisition = caseService.getCasesForRequisition(requisitionName);
     if (casesForRequisition == null) {
-      throw new NotFoundException(String.format("could not find requisition with name '%s'", requisitionName));
+      throw new NotFoundException(
+          String.format("could not find requisition with name '%s'", requisitionName));
     }
     return casesForRequisition;
   }

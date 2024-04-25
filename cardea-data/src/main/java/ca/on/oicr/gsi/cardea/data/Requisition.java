@@ -1,8 +1,9 @@
 package ca.on.oicr.gsi.cardea.data;
 
 import static java.util.Objects.requireNonNull;
-
+import java.util.Collections;
 import java.util.Objects;
+import java.util.Set;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonPOJOBuilder;
 
@@ -12,7 +13,7 @@ import com.fasterxml.jackson.databind.annotation.JsonPOJOBuilder;
 @JsonDeserialize(builder = Requisition.Builder.class)
 public class Requisition {
 
-  private final Long assayId;
+  private final Set<Long> assayIds;
   private final long id;
   private final String name;
   private final String stopReason;
@@ -23,7 +24,8 @@ public class Requisition {
   private Requisition(Builder builder) {
     this.id = requireNonNull(builder.id);
     this.name = requireNonNull(builder.name);
-    this.assayId = builder.assayId;
+    this.assayIds = builder.assayIds == null ? Collections.emptySet()
+        : Collections.unmodifiableSet(builder.assayIds);
     this.stopped = builder.stopped;
     this.stopReason = builder.stopReason;
     this.paused = builder.paused;
@@ -42,8 +44,8 @@ public class Requisition {
     return Objects.equals(id, other.id);
   }
 
-  public Long getAssayId() {
-    return assayId;
+  public Set<Long> getAssayIds() {
+    return assayIds;
   }
 
   public long getId() {
@@ -78,7 +80,7 @@ public class Requisition {
   @JsonPOJOBuilder(withPrefix = "")
   public static class Builder {
 
-    private Long assayId;
+    private Set<Long> assayIds;
     private long id;
     private String name;
     private String stopReason;
@@ -86,8 +88,8 @@ public class Requisition {
     private boolean paused;
     private String pauseReason;
 
-    public Builder assayId(Long assayId) {
-      this.assayId = assayId;
+    public Builder assayIds(Set<Long> assayIds) {
+      this.assayIds = assayIds;
       return this;
     }
 

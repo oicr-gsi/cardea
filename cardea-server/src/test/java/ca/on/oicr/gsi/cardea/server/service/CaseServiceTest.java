@@ -10,6 +10,7 @@ import ca.on.oicr.gsi.cardea.data.Run;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import org.junit.jupiter.api.BeforeEach;
 import ca.on.oicr.gsi.cardea.data.Case;
 import ca.on.oicr.gsi.cardea.data.CaseData;
@@ -98,7 +99,7 @@ public class CaseServiceTest {
     return new Requisition.Builder()
         .id(requisitionNumber)
         .name(String.format("REQ_%d", requisitionNumber))
-        .assayId(2L)
+        .assayIds(Collections.singleton(2L))
         .stopped(requisitionNumber % 2 == 1 ? true : false)
         .build();
   }
