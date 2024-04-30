@@ -366,6 +366,7 @@ public class CaseLoader {
       return new Sample.Builder().id(parseString(json, "sample_id", true))
           .name(parseString(json, "oicr_internal_name", true))
           .requisition(requisition)
+          .assayIds(parseLongSet(json.get("assay_ids")))
           .tissueOrigin(parseString(json, "tissue_origin", true))
           .tissueType(parseString(json, "tissue_type", true))
           .tissueMaterial(parseString(json, "tissue_material"))

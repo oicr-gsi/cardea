@@ -574,8 +574,7 @@ public class Sample {
         return this;
       }
       return this.requisitionId(requisition.getId())
-          .requisitionName(requisition.getName())
-          .assayIds(requisition.getAssayIds());
+          .requisitionName(requisition.getName());
     }
 
     public Builder requisitionId(Long requisitionId) {
