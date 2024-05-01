@@ -45,13 +45,18 @@ public class CaseDeliverableImpl implements CaseDeliverable {
     this.releaseApprovalDaysSpent = builder.releaseApprovalDaysSpent;
     this.releaseDaysSpent = builder.releaseDaysSpent;
     this.deliverableDaysSpent = builder.deliverableDaysSpent;
-    this.latestActivityDate = Stream
-        .concat(
-            releases == null ? Stream.empty() : releases.stream().map(CaseRelease::getQcDate),
-            Stream.of(analysisReviewQcDate, releaseApprovalQcDate))
-        .filter(Objects::nonNull)
-        .max(LocalDate::compareTo)
-        .orElse(null);
+
+    if (builder.latestActivityDate != null) {
+      this.latestActivityDate = builder.latestActivityDate;
+    } else {
+      this.latestActivityDate = Stream
+          .concat(
+              releases == null ? Stream.empty() : releases.stream().map(CaseRelease::getQcDate),
+              Stream.of(analysisReviewQcDate, releaseApprovalQcDate))
+          .filter(Objects::nonNull)
+          .max(LocalDate::compareTo)
+          .orElse(null);
+    }
   }
 
   @Override
@@ -146,6 +151,7 @@ public class CaseDeliverableImpl implements CaseDeliverable {
     private int releaseApprovalDaysSpent;
     private int releaseDaysSpent;
     private int deliverableDaysSpent;
+    private LocalDate latestActivityDate;
 
     public Builder deliverableType(DeliverableType deliverableType) {
       this.deliverableType = deliverableType;
@@ -214,6 +220,11 @@ public class CaseDeliverableImpl implements CaseDeliverable {
 
     public Builder deliverableDaysSpent(int deliverableDaysSpent) {
       this.deliverableDaysSpent = deliverableDaysSpent;
+      return this;
+    }
+
+    public Builder latestActivityDate(LocalDate latestActivityDate) {
+      this.latestActivityDate = latestActivityDate;
       return this;
     }
 

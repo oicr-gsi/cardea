@@ -177,7 +177,7 @@ public class CaseService {
         .assayVersion(caseData.getAssaysById().get(kase.getAssayId()).getVersion())
         .caseIdentifier(kase.getId())
         .caseStatus(getCaseStatus(kase))
-        .completedDate(getCompletedDate(kase))
+        .completedDateLocal(getCompletedDate(kase))
         .limsIds(getLimsIusIdsForShesmu(kase))
         .requisitionId(kase.getRequisition().getId())
         .requisitionName(kase.getRequisition().getName())
