@@ -21,7 +21,7 @@ public class Assay {
   private final String version;
   private final AssayTargets targets;
 
-  public Assay(Builder builder) {
+  private Assay(Builder builder) {
     this.id = requireNonNull(builder.id);
     this.name = requireNonNull(builder.name);
     this.description = builder.description;

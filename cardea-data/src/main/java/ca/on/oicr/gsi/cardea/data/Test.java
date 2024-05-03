@@ -56,11 +56,17 @@ public class Test {
         : unmodifiableList(builder.libraryQualifications);
     this.fullDepthSequencings = builder.fullDepthSequencings == null ? emptyList()
         : unmodifiableList(builder.fullDepthSequencings);
-    this.latestActivityDate = Stream
-        .of(extractions.stream(), libraryPreparations.stream(), libraryQualifications.stream(),
-            fullDepthSequencings.stream())
-        .flatMap(Function.identity()).map(Sample::getLatestActivityDate).max(LocalDate::compareTo)
-        .orElse(null);
+
+    if (builder.latestActivityDate != null) {
+      this.latestActivityDate = builder.latestActivityDate;
+    } else {
+      this.latestActivityDate = Stream
+          .of(extractions.stream(), libraryPreparations.stream(), libraryQualifications.stream(),
+              fullDepthSequencings.stream())
+          .flatMap(Function.identity()).map(Sample::getLatestActivityDate).max(LocalDate::compareTo)
+          .orElse(null);
+    }
+
     this.extractionDaysSpent = builder.extractionDaysSpent;
     this.libraryPreparationDaysSpent = builder.libraryPreparationDaysSpent;
     this.libraryQualificationDaysSpent = builder.libraryQualificationDaysSpent;
@@ -164,6 +170,7 @@ public class Test {
     private int libraryPreparationDaysSpent;
     private int libraryQualificationDaysSpent;
     private int fullDepthSequencingDaysSpent;
+    private LocalDate latestActivityDate;
 
     public Test build() {
       return new Test(this);
@@ -256,6 +263,11 @@ public class Test {
 
     public Builder fullDepthSequencingDaysSpent(int days) {
       this.fullDepthSequencingDaysSpent = days;
+      return this;
+    }
+
+    public Builder latestActivityDate(LocalDate latestActivityDate) {
+      this.latestActivityDate = latestActivityDate;
       return this;
     }
   }

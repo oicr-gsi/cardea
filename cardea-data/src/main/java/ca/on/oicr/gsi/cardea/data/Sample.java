@@ -118,8 +118,12 @@ public class Sample {
     this.dataReviewUser = builder.dataReviewUser;
     this.dataReviewDate = builder.dataReviewDate;
     this.sequencingLane = builder.sequencingLane;
-    this.latestActivityDate = Stream.of(createdDate, qcDate, dataReviewDate)
-        .filter(Objects::nonNull).max(LocalDate::compareTo).orElseThrow();
+    if (builder.latestActivityDate != null) {
+      this.latestActivityDate = builder.latestActivityDate;
+    } else {
+      this.latestActivityDate = Stream.of(createdDate, qcDate, dataReviewDate)
+          .filter(Objects::nonNull).max(LocalDate::compareTo).orElseThrow();
+    }
   }
 
   @Override
@@ -393,6 +397,7 @@ public class Sample {
     private BigDecimal relativeCpgInRegions;
     private BigDecimal methylationBeta;
     private Integer peReads;
+    private LocalDate latestActivityDate;
 
     public Sample build() {
       return new Sample(this);
@@ -649,6 +654,11 @@ public class Sample {
 
     public Builder peReads(Integer peReads) {
       this.peReads = peReads;
+      return this;
+    }
+
+    public Builder latestActivityDate(LocalDate latestActivityDate) {
+      this.latestActivityDate = latestActivityDate;
       return this;
     }
 

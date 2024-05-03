@@ -23,7 +23,8 @@
         <artifactId>maven-surefire-plugin</artifactId>
         <configuration>
           <!-- explicitly control property locations, so local config is never included -->
-          <argLine>-Dspring.config.location=classpath:/application.yml,classpath:/application-noauth.yml,classpath:/application-test.properties</argLine>
+          <argLine>
+            -Dspring.config.location=classpath:/application.yml,classpath:/application-noauth.yml,classpath:/application-test.properties</argLine>
         </configuration>
         <groupId>org.apache.maven.plugins</groupId>
       </plugin>
@@ -42,8 +43,18 @@
     <dependency>
       <artifactId>javax.annotation-api</artifactId>
       <groupId>javax.annotation</groupId>
-<!--      <scope>provided</scope>-->
       <version>1.3.2</version>
+    </dependency>
+
+    <dependency>
+      <artifactId>spring-boot-starter-json</artifactId>
+      <groupId>org.springframework.boot</groupId>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <artifactId>spring-boot-starter-test</artifactId>
+      <groupId>org.springframework.boot</groupId>
+      <scope>test</scope>
     </dependency>
   </dependencies>
 

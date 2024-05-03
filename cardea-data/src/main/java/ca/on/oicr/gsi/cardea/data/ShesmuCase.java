@@ -11,16 +11,19 @@ import java.time.ZonedDateTime;
 
 import java.util.Optional;
 import java.util.Set;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.databind.annotation.JsonPOJOBuilder;
 
 /**
  * Immutable ShesmuCase
  */
+@JsonDeserialize(builder = ShesmuCase.Builder.class)
 public class ShesmuCase {
 
   private final String assayName;
   private final String assayVersion;
   private final String caseIdentifier;
-  private final String caseStatus;
+  private final CaseStatus caseStatus;
   private final Optional<Instant> completedDate;
   private final Set<String> limsIds;
   private final long requisitionId;
@@ -30,7 +33,7 @@ public class ShesmuCase {
     this.assayName = requireNonNull(builder.assayName);
     this.assayVersion = requireNonNull(builder.assayVersion);
     this.caseIdentifier = requireNonNull(builder.caseIdentifier);
-    this.caseStatus = requireNonNull(builder.caseStatus.getLabel());
+    this.caseStatus = requireNonNull(builder.caseStatus);
     this.completedDate = builder.completedDate;
     this.limsIds = unmodifiableSet(requireNonNull(builder.limsIds));
     this.requisitionId = requireNonNull(builder.requisitionId);
@@ -49,7 +52,7 @@ public class ShesmuCase {
     return caseIdentifier;
   }
 
-  public String getCaseStatus() {
+  public CaseStatus getCaseStatus() {
     return caseStatus;
   }
 
@@ -69,6 +72,7 @@ public class ShesmuCase {
     return requisitionName;
   }
 
+  @JsonPOJOBuilder(withPrefix = "")
   public static class Builder {
 
     private String assayName;
@@ -104,7 +108,12 @@ public class ShesmuCase {
       return this;
     }
 
-    public Builder completedDate(LocalDate completedDate) {
+    public Builder completedDate(Instant completedDate) {
+      this.completedDate = completedDate == null ? Optional.empty() : Optional.of(completedDate);
+      return this;
+    }
+
+    public Builder completedDateLocal(LocalDate completedDate) {
       this.completedDate = convertCompletedDate(completedDate);
       return this;
     }
