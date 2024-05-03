@@ -64,14 +64,18 @@ public class CaseImpl implements Case {
     this.requisition = requireNonNull(builder.requisition);
     this.startDate = requireNonNull(builder.startDate);
 
-    this.latestActivityDate = Stream
-        .concat(Stream.of(receipts.stream().map(Sample::getLatestActivityDate),
-            tests.stream().map(Test::getLatestActivityDate))
-            .flatMap(Function.identity()),
-            deliverables == null ? Stream.empty()
-                : deliverables.stream().map(CaseDeliverable::getLatestActivityDate))
-        .filter(Objects::nonNull).max(LocalDate::compareTo)
-        .orElse(null);
+    if (builder.latestActivityDate != null) {
+      this.latestActivityDate = builder.latestActivityDate;
+    } else {
+      this.latestActivityDate = Stream
+          .concat(Stream.of(receipts.stream().map(Sample::getLatestActivityDate),
+              tests.stream().map(Test::getLatestActivityDate))
+              .flatMap(Function.identity()),
+              deliverables == null ? Stream.empty()
+                  : deliverables.stream().map(CaseDeliverable::getLatestActivityDate))
+          .filter(Objects::nonNull).max(LocalDate::compareTo)
+          .orElse(null);
+    }
     this.receiptDaysSpent = builder.receiptDaysSpent;
     this.analysisReviewDaysSpent = builder.analysisReviewDaysSpent;
     this.releaseApprovalDaysSpent = builder.releaseApprovalDaysSpent;
@@ -219,6 +223,7 @@ public class CaseImpl implements Case {
     private int releaseDaysSpent;
     private int caseDaysSpent;
     private int pauseDays;
+    private LocalDate latestActivityDate;
 
     public Case build() {
       return new CaseImpl(this);
@@ -326,6 +331,11 @@ public class CaseImpl implements Case {
 
     public Builder pauseDays(int days) {
       this.pauseDays = days;
+      return this;
+    }
+
+    public Builder latestActivityDate(LocalDate latestActivityDate) {
+      this.latestActivityDate = latestActivityDate;
       return this;
     }
   }
