@@ -7,6 +7,19 @@ This file is updated automatically as described in [Unreleased Changes](changes/
 
 ---------------------------------------------------------------------------------------------------
 
+## [1.11.0] - 2024-05-08
+
+### Changed
+
+* The `requisition-cases` endpoint now returns a set of cases, which may have different assays
+* A requisition may now have multiple assays; the single assayId fields on requisitions and samples
+  have been changed to sets
+
+### Fixed
+
+* Missing requisition and assay information for omitted samples
+
+
 ## [1.10.0] - 2024-04-10
 
 ### Added

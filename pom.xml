@@ -3,7 +3,7 @@
 
   <artifactId>cardea</artifactId>
   <groupId>ca.on.oicr.gsi.cardea</groupId>
-  <version>1.10.1-SNAPSHOT</version> 
+  <version>1.11.0</version> 
   <modelVersion>4.0.0</modelVersion>
 
   <name>Cardea Case API</name>
