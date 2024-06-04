@@ -331,6 +331,7 @@ public class CaseLoader {
           .sequencingParameters(parseString(json, "sequencing_parameters"))
           .readLength(parseInteger(json, "read_length", false))
           .readLength2(parseInteger(json, "read_length_2", false))
+          .startDate(parseDate(json, "start_date"))
           .completionDate(parseDate(json, "completion_date"))
           .percentOverQ30(parseDecimal(json, "percent_over_q30", false))
           .clustersPf(parseLong(json, "clusters_pf", false))
@@ -732,8 +733,20 @@ public class CaseLoader {
               parseInteger(testNode, "library_preparation_days_spent", true))
           .libraryQualificationDaysSpent(
               parseInteger(testNode, "library_qualification_days_spent", true))
+          .libraryQualificationLoadingDaysSpent(
+              parseInteger(testNode, "library_qualification_loading_days_spent", true))
+          .libraryQualificationSequencingDaysSpent(
+              parseInteger(testNode, "library_qualification_sequencing_days_spent", true))
+          .libraryQualificationQcDaysSpent(
+              parseInteger(testNode, "library_qualification_qc_days_spent", true))
           .fullDepthSequencingDaysSpent(
               parseInteger(testNode, "full_depth_sequencing_days_spent", true))
+          .fullDepthSequencingLoadingDaysSpent(
+              parseInteger(testNode, "full_depth_sequencing_loading_days_spent", true))
+          .fullDepthSequencingSequencingDaysSpent(
+              parseInteger(testNode, "full_depth_sequencing_sequencing_days_spent", true))
+          .fullDepthSequencingQcDaysSpent(
+              parseInteger(testNode, "full_depth_sequencing_qc_days_spent", true))
           .build());
     }
     return tests;

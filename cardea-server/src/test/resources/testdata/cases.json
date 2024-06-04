@@ -29,10 +29,16 @@
         "library_preparation_ids": ["LIB75802"],
         "library_qualification_ids": ["5459_1_LDI73620", "5467_1_LDI73620"],
         "full_depth_sequencing_ids": ["5476_1_LDI73620"],
-        "extraction_days_spent": 0,
-        "library_preparation_days_spent": 0,
-        "library_qualification_days_spent": 0,
-        "full_depth_sequencing_days_spent": 0
+        "extraction_days_spent": 1,
+        "library_preparation_days_spent": 2,
+        "library_qualification_days_spent": 6,
+        "library_qualification_loading_days_spent": 1,
+        "library_qualification_sequencing_days_spent": 2,
+        "library_qualification_qc_days_spent": 3,
+        "full_depth_sequencing_days_spent": 9,
+        "full_depth_sequencing_loading_days_spent": 2,
+        "full_depth_sequencing_sequencing_days_spent": 3,
+        "full_depth_sequencing_qc_days_spent": 4
       },
       {
         "name": "Tumour WT",
@@ -51,7 +57,13 @@
         "extraction_days_spent": 0,
         "library_preparation_days_spent": 0,
         "library_qualification_days_spent": 0,
-        "full_depth_sequencing_days_spent": 0
+        "library_qualification_loading_days_spent": 0,
+        "library_qualification_sequencing_days_spent": 0,
+        "library_qualification_qc_days_spent": 0,
+        "full_depth_sequencing_days_spent": 0,
+        "full_depth_sequencing_loading_days_spent": 0,
+        "full_depth_sequencing_sequencing_days_spent": 0,
+        "full_depth_sequencing_qc_days_spent": 0
       },
       {
         "name": "Tumour WG",
@@ -70,7 +82,13 @@
         "extraction_days_spent": 0,
         "library_preparation_days_spent": 0,
         "library_qualification_days_spent": 0,
-        "full_depth_sequencing_days_spent": 0
+        "library_qualification_loading_days_spent": 0,
+        "library_qualification_sequencing_days_spent": 0,
+        "library_qualification_qc_days_spent": 0,
+        "full_depth_sequencing_days_spent": 0,
+        "full_depth_sequencing_loading_days_spent": 0,
+        "full_depth_sequencing_sequencing_days_spent": 0,
+        "full_depth_sequencing_qc_days_spent": 0
       }
     ],
     "qc_groups": [

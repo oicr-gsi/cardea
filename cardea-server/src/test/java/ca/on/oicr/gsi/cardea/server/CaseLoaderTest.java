@@ -11,6 +11,7 @@ import ca.on.oicr.gsi.cardea.data.CaseDeliverable;
 import ca.on.oicr.gsi.cardea.data.CaseRelease;
 import ca.on.oicr.gsi.cardea.data.DeliverableType;
 import ca.on.oicr.gsi.cardea.data.Donor;
+import ca.on.oicr.gsi.cardea.data.Lane;
 import ca.on.oicr.gsi.cardea.data.Metric;
 import ca.on.oicr.gsi.cardea.data.MetricCategory;
 import ca.on.oicr.gsi.cardea.data.MetricSubcategory;
@@ -40,6 +41,7 @@ public class CaseLoaderTest {
   private static final String testDonorId = "SAM413576";
   private static final String testProjectName = "PROJ";
   private static final String testSampleId = "SAM413577";
+  private static final long testRunId = 5476L;
   private static File dataDirectory;
   private CaseLoader sut;
 
@@ -51,13 +53,13 @@ public class CaseLoaderTest {
     dataDirectory = caseFile.getParentFile();
   }
 
-  private void assertDonor(Donor donor) {
+  private static void assertDonor(Donor donor) {
     assertNotNull(donor);
     assertEquals(testDonorId, donor.getId());
     assertEquals("PROJ_1289", donor.getName());
   }
 
-  private void assertOmittedSample(OmittedSample sample) {
+  private static void assertOmittedSample(OmittedSample sample) {
     assertNotNull(sample);
     assertEquals("SAM123457", sample.getId());
     assertEquals("NOCASE_0001_01", sample.getName());
@@ -69,7 +71,7 @@ public class CaseLoaderTest {
     assertEquals(LocalDate.of(2022, 12, 13), sample.getCreatedDate());
   }
 
-  private void assertProject(Project project) {
+  private static void assertProject(Project project) {
     assertNotNull(project);
     assertEquals(testProjectName, project.getName());
     assertEquals("Research", project.getPipeline());
@@ -82,12 +84,37 @@ public class CaseLoaderTest {
     assertTrue(deliverables.contains("cBioPortal Submission"));
   }
 
-  private void assertSample(Sample sample) {
+  private static void assertSample(Sample sample) {
     assertNotNull(sample);
     assertEquals(testSampleId, sample.getId());
     assertEquals("PROJ_1289_Ly_R_nn_1-1", sample.getName());
     assertEquals(Boolean.TRUE, sample.getQcPassed());
     assertEquals(LocalDate.of(2021, 7, 19), sample.getQcDate());
+  }
+
+  private static void assertRun(Run run) {
+    assertNotNull(run);
+    assertEquals(testRunId, run.getId());
+    assertEquals("210810_A00469_0195_BH2YF2DMXY", run.getName());
+    assertEquals("S2", run.getContainerModel());
+    assertFalse(run.hasJoinedLanes());
+    assertEquals("2×151", run.getSequencingParameters());
+    assertEquals(151, run.getReadLength());
+    assertEquals(151, run.getReadLength2());
+    assertEquals(LocalDate.of(2021, 8, 11), run.getStartDate());
+    assertEquals(LocalDate.of(2021, 8, 12), run.getCompletionDate());
+    assertTrue(run.getQcPassed());
+    assertEquals("Technician One", run.getQcUser());
+    assertEquals(LocalDate.of(2021, 8, 12), run.getQcDate());
+    assertEquals(new BigDecimal("89.1"), run.getPercentOverQ30());
+    assertEquals(2, run.getLanes().size());
+    Lane lane1 = run.getLanes().get(0);
+    assertEquals(1, lane1.getLaneNumber());
+    assertEquals(90, lane1.getPercentOverQ30Read1());
+    assertEquals(88, lane1.getPercentOverQ30Read2());
+    assertEquals(2163613696L, lane1.getClustersPf());
+    assertEquals(new BigDecimal("0.66"), lane1.getPercentPfixRead1());
+    assertEquals(new BigDecimal("0.65"), lane1.getPercentPfixRead2());
   }
 
   @BeforeEach
@@ -135,15 +162,23 @@ public class CaseLoaderTest {
     assertEquals(1, test.getLibraryPreparations().size());
     assertNotNull(test.getLibraryQualifications());
     assertEquals(2, test.getLibraryQualifications().size());
-    System.out
-        .println(test.getLibraryQualifications().stream().map(s -> s.getRun().getName()).reduce("",
-            String::concat));
     assertNotNull(test.getFullDepthSequencings());
     assertEquals(1, test.getFullDepthSequencings().size());
     Sample fullDepth = test.getFullDepthSequencings().get(0);
     assertEquals("5476_1_LDI73620", fullDepth.getId());
     assertEquals("PROJ_1289_Ly_R_PE_567_WG", fullDepth.getName());
     assertEquals(Boolean.TRUE, fullDepth.getQcPassed());
+    assertEquals(1, test.getExtractionDaysSpent());
+    assertEquals(2, test.getLibraryPreparationDaysSpent());
+    assertEquals(6, test.getLibraryQualificationDaysSpent());
+    assertEquals(1, test.getLibraryQualificationLoadingDaysSpent());
+    assertEquals(2, test.getLibraryQualificationSequencingDaysSpent());
+    assertEquals(3, test.getLibraryQualificationQcDaysSpent());
+    assertEquals(9, test.getFullDepthSequencingDaysSpent());
+    assertEquals(2, test.getFullDepthSequencingLoadingDaysSpent());
+    assertEquals(3, test.getFullDepthSequencingSequencingDaysSpent());
+    assertEquals(4, test.getFullDepthSequencingQcDaysSpent());
+    assertRun(fullDepth.getRun());
 
     assertNotNull(kase.getDeliverables());
     assertEquals(1, kase.getDeliverables().size());
@@ -288,6 +323,15 @@ public class CaseLoaderTest {
           sut.loadSamples(reader, donorsById, runsById, requisitionsById);
       assertEquals(20, samplesById.size());
       assertSample(samplesById.get(testSampleId));
+    }
+  }
+
+  @Test
+  public void testLoadRuns() throws Exception {
+    try (FileReader reader = sut.getRunReader()) {
+      Map<Long, Run> runsById = sut.loadRuns(reader);
+      assertEquals(6, runsById.size());
+      assertRun(runsById.get(testRunId));
     }
   }
 
