@@ -35,7 +35,13 @@ public class Test {
   private final int extractionDaysSpent;
   private final int libraryPreparationDaysSpent;
   private final int libraryQualificationDaysSpent;
+  private final int libraryQualificationLoadingDaysSpent;
+  private final int libraryQualificationSequencingDaysSpent;
+  private final int libraryQualificationQcDaysSpent;
   private final int fullDepthSequencingDaysSpent;
+  private final int fullDepthSequencingLoadingDaysSpent;
+  private final int fullDepthSequencingSequencingDaysSpent;
+  private final int fullDepthSequencingQcDaysSpent;
 
   private Test(Builder builder) {
     this.name = requireNonNull(builder.name);
@@ -70,7 +76,13 @@ public class Test {
     this.extractionDaysSpent = builder.extractionDaysSpent;
     this.libraryPreparationDaysSpent = builder.libraryPreparationDaysSpent;
     this.libraryQualificationDaysSpent = builder.libraryQualificationDaysSpent;
+    this.libraryQualificationLoadingDaysSpent = builder.libraryQualificationLoadingDaysSpent;
+    this.libraryQualificationSequencingDaysSpent = builder.libraryQualificationSequencingDaysSpent;
+    this.libraryQualificationQcDaysSpent = builder.libraryQualificationQcDaysSpent;
     this.fullDepthSequencingDaysSpent = builder.fullDepthSequencingDaysSpent;
+    this.fullDepthSequencingLoadingDaysSpent = builder.fullDepthSequencingLoadingDaysSpent;
+    this.fullDepthSequencingSequencingDaysSpent = builder.fullDepthSequencingSequencingDaysSpent;
+    this.fullDepthSequencingQcDaysSpent = builder.fullDepthSequencingQcDaysSpent;
   }
 
   public List<Sample> getExtractions() {
@@ -145,8 +157,32 @@ public class Test {
     return libraryQualificationDaysSpent;
   }
 
+  public int getLibraryQualificationLoadingDaysSpent() {
+    return libraryQualificationLoadingDaysSpent;
+  }
+
+  public int getLibraryQualificationSequencingDaysSpent() {
+    return libraryQualificationSequencingDaysSpent;
+  }
+
+  public int getLibraryQualificationQcDaysSpent() {
+    return libraryQualificationQcDaysSpent;
+  }
+
   public int getFullDepthSequencingDaysSpent() {
     return fullDepthSequencingDaysSpent;
+  }
+
+  public int getFullDepthSequencingLoadingDaysSpent() {
+    return fullDepthSequencingLoadingDaysSpent;
+  }
+
+  public int getFullDepthSequencingSequencingDaysSpent() {
+    return fullDepthSequencingSequencingDaysSpent;
+  }
+
+  public int getFullDepthSequencingQcDaysSpent() {
+    return fullDepthSequencingQcDaysSpent;
   }
 
   @JsonPOJOBuilder(withPrefix = "")
@@ -169,7 +205,13 @@ public class Test {
     private int extractionDaysSpent;
     private int libraryPreparationDaysSpent;
     private int libraryQualificationDaysSpent;
+    private int libraryQualificationLoadingDaysSpent;
+    private int libraryQualificationSequencingDaysSpent;
+    private int libraryQualificationQcDaysSpent;
     private int fullDepthSequencingDaysSpent;
+    private int fullDepthSequencingLoadingDaysSpent;
+    private int fullDepthSequencingSequencingDaysSpent;
+    private int fullDepthSequencingQcDaysSpent;
     private LocalDate latestActivityDate;
 
     public Test build() {
@@ -261,8 +303,38 @@ public class Test {
       return this;
     }
 
+    public Builder libraryQualificationLoadingDaysSpent(int days) {
+      this.libraryQualificationLoadingDaysSpent = days;
+      return this;
+    }
+
+    public Builder libraryQualificationSequencingDaysSpent(int days) {
+      this.libraryQualificationSequencingDaysSpent = days;
+      return this;
+    }
+
+    public Builder libraryQualificationQcDaysSpent(int days) {
+      this.libraryQualificationQcDaysSpent = days;
+      return this;
+    }
+
     public Builder fullDepthSequencingDaysSpent(int days) {
       this.fullDepthSequencingDaysSpent = days;
+      return this;
+    }
+
+    public Builder fullDepthSequencingLoadingDaysSpent(int days) {
+      this.fullDepthSequencingLoadingDaysSpent = days;
+      return this;
+    }
+
+    public Builder fullDepthSequencingSequencingDaysSpent(int days) {
+      this.fullDepthSequencingSequencingDaysSpent = days;
+      return this;
+    }
+
+    public Builder fullDepthSequencingQcDaysSpent(int days) {
+      this.fullDepthSequencingQcDaysSpent = days;
       return this;
     }
 

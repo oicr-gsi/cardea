@@ -16,6 +16,7 @@ import com.fasterxml.jackson.databind.annotation.JsonPOJOBuilder;
 public class Run {
 
   private final Long clustersPf;
+  private final LocalDate startDate;
   private final LocalDate completionDate;
   private final String containerModel;
   private final LocalDate dataReviewDate;
@@ -44,6 +45,7 @@ public class Run {
     this.sequencingParameters = builder.sequencingParameters;
     this.readLength = builder.readLength;
     this.readLength2 = builder.readLength2;
+    this.startDate = builder.startDate;
     this.completionDate = builder.completionDate;
     this.percentOverQ30 = builder.percentOverQ30;
     this.clustersPf = builder.clustersPf;
@@ -70,6 +72,10 @@ public class Run {
 
   public Long getClustersPf() {
     return clustersPf;
+  }
+
+  public LocalDate getStartDate() {
+    return startDate;
   }
 
   public LocalDate getCompletionDate() {
@@ -145,6 +151,7 @@ public class Run {
   public static class Builder {
 
     private Long clustersPf;
+    private LocalDate startDate;
     private LocalDate completionDate;
     private String containerModel;
     private LocalDate dataReviewDate;
@@ -168,6 +175,11 @@ public class Run {
 
     public Builder clustersPf(Long clustersPf) {
       this.clustersPf = clustersPf;
+      return this;
+    }
+
+    public Builder startDate(LocalDate startDate) {
+      this.startDate = startDate;
       return this;
     }
 

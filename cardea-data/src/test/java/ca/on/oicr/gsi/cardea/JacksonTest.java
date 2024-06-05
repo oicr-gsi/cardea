@@ -340,6 +340,7 @@ public class JacksonTest {
 
   private static void assertRunEqual(Run one, Run two) {
     assertEquals(one.getClustersPf(), two.getClustersPf());
+    assertEquals(one.getStartDate(), two.getStartDate());
     assertEquals(one.getCompletionDate(), two.getCompletionDate());
     assertEquals(one.getContainerModel(), two.getContainerModel());
     assertEquals(one.getDataReviewDate(), two.getDataReviewDate());
@@ -437,7 +438,18 @@ public class JacksonTest {
     assertEquals(one.getExtractionDaysSpent(), two.getExtractionDaysSpent());
     assertEquals(one.getLibraryPreparationDaysSpent(), two.getLibraryPreparationDaysSpent());
     assertEquals(one.getLibraryQualificationDaysSpent(), two.getLibraryQualificationDaysSpent());
+    assertEquals(one.getLibraryQualificationLoadingDaysSpent(),
+        two.getLibraryQualificationLoadingDaysSpent());
+    assertEquals(one.getLibraryQualificationSequencingDaysSpent(),
+        two.getLibraryQualificationSequencingDaysSpent());
+    assertEquals(one.getLibraryQualificationQcDaysSpent(),
+        two.getLibraryQualificationQcDaysSpent());
     assertEquals(one.getFullDepthSequencingDaysSpent(), two.getFullDepthSequencingDaysSpent());
+    assertEquals(one.getFullDepthSequencingLoadingDaysSpent(),
+        two.getFullDepthSequencingLoadingDaysSpent());
+    assertEquals(one.getFullDepthSequencingSequencingDaysSpent(),
+        two.getFullDepthSequencingSequencingDaysSpent());
+    assertEquals(one.getFullDepthSequencingQcDaysSpent(), two.getFullDepthSequencingQcDaysSpent());
   }
 
   private static <T> void assertListsEqual(List<T> one, List<T> two, BiConsumer<T, T> assertEqual) {
@@ -630,6 +642,7 @@ public class JacksonTest {
   private static Run makeRun() {
     return new Run.Builder()
         .clustersPf(12L)
+        .startDate(LocalDate.of(2024, 1, 5))
         .completionDate(LocalDate.of(2024, 1, 6))
         .containerModel("Flow cell")
         .dataReviewDate(LocalDate.of(2024, 1, 10))
@@ -721,7 +734,13 @@ public class JacksonTest {
         .extractionDaysSpent(1)
         .libraryPreparationDaysSpent(2)
         .libraryQualificationDaysSpent(3)
+        .libraryQualificationLoadingDaysSpent(1)
+        .libraryQualificationSequencingDaysSpent(0)
+        .libraryQualificationQcDaysSpent(2)
         .fullDepthSequencingDaysSpent(4)
+        .fullDepthSequencingLoadingDaysSpent(0)
+        .fullDepthSequencingSequencingDaysSpent(3)
+        .fullDepthSequencingQcDaysSpent(1)
         .build();
   }
 
