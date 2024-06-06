@@ -7,6 +7,15 @@ This file is updated automatically as described in [Unreleased Changes](changes/
 
 ---------------------------------------------------------------------------------------------------
 
+## [1.12.0] - 2024-06-06
+
+### Added
+
+* Test fields for library qualification and full-depth sequencing TAT breakdown of days spent on
+  loading, sequencing, and QC
+* Run start date field
+
+
 ## [1.11.0] - 2024-05-08
 
 ### Changed
