@@ -414,6 +414,7 @@ public class CaseLoader {
           .dataReviewUser(parseString(json, "data_review_user"))
           .dataReviewDate(parseDate(json, "data_review_date"))
           .sequencingLane(parseString(json, "sequencing_lane"))
+          .transferDate(parseDate(json, "transfer_date"))
           .build();
     });
 
@@ -729,6 +730,11 @@ public class CaseLoader {
           .fullDepthSequencings(
               parseIdsAndGet(testNode, "full_depth_sequencing_ids", JsonNode::asText, samplesById))
           .extractionDaysSpent(parseInteger(testNode, "extraction_days_spent", true))
+          .extractionPreparationDaysSpent(
+              parseInteger(testNode, "extraction_preparation_days_spent", true))
+          .extractionQcDaysSpent(parseInteger(testNode, "extraction_qc_days_spent", true))
+          .extractionTransferDaysSpent(
+              parseInteger(testNode, "extraction_transfer_days_spent", true))
           .libraryPreparationDaysSpent(
               parseInteger(testNode, "library_preparation_days_spent", true))
           .libraryQualificationDaysSpent(

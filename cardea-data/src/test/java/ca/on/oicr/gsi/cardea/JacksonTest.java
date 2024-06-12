@@ -414,6 +414,7 @@ public class JacksonTest {
     assertEquals(one.getRelativeCpgInRegions(), two.getRelativeCpgInRegions());
     assertEquals(one.getMethylationBeta(), two.getMethylationBeta());
     assertEquals(one.getPeReads(), two.getPeReads());
+    assertEquals(one.getTransferDate(), two.getTransferDate());
   }
 
   private static void assertTestEqual(Test one, Test two) {
@@ -436,6 +437,9 @@ public class JacksonTest {
     assertEquals(one.getTissueType(), two.getTissueType());
     assertEquals(one.getLibraryDesignCode(), two.getLibraryDesignCode());
     assertEquals(one.getExtractionDaysSpent(), two.getExtractionDaysSpent());
+    assertEquals(one.getExtractionPreparationDaysSpent(), two.getExtractionPreparationDaysSpent());
+    assertEquals(one.getExtractionQcDaysSpent(), two.getExtractionQcDaysSpent());
+    assertEquals(one.getExtractionTransferDaysSpent(), two.getExtractionTransferDaysSpent());
     assertEquals(one.getLibraryPreparationDaysSpent(), two.getLibraryPreparationDaysSpent());
     assertEquals(one.getLibraryQualificationDaysSpent(), two.getLibraryQualificationDaysSpent());
     assertEquals(one.getLibraryQualificationLoadingDaysSpent(),
@@ -712,6 +716,7 @@ public class JacksonTest {
         .relativeCpgInRegions(new BigDecimal("6.66"))
         .methylationBeta(new BigDecimal("7.77"))
         .peReads(35)
+        .transferDate(LocalDate.of(2024, 06, 11))
         .build();
   }
 
@@ -731,7 +736,10 @@ public class JacksonTest {
         .tissueOrigin("Lv")
         .tissueType("P")
         .libraryDesignCode("WG")
-        .extractionDaysSpent(1)
+        .extractionDaysSpent(3)
+        .extractionPreparationDaysSpent(1)
+        .extractionQcDaysSpent(0)
+        .extractionTransferDaysSpent(2)
         .libraryPreparationDaysSpent(2)
         .libraryQualificationDaysSpent(3)
         .libraryQualificationLoadingDaysSpent(1)
