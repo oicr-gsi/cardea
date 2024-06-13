@@ -66,6 +66,7 @@ public class Sample {
   private final BigDecimal relativeCpgInRegions;
   private final BigDecimal methylationBeta;
   private final Integer peReads;
+  private final LocalDate transferDate;
 
   private Sample(Builder builder) {
     this.id = requireNonNull(builder.id);
@@ -124,6 +125,7 @@ public class Sample {
       this.latestActivityDate = Stream.of(createdDate, qcDate, dataReviewDate)
           .filter(Objects::nonNull).max(LocalDate::compareTo).orElseThrow();
     }
+    this.transferDate = builder.transferDate;
   }
 
   @Override
@@ -340,6 +342,10 @@ public class Sample {
     return peReads;
   }
 
+  public LocalDate getTransferDate() {
+    return transferDate;
+  }
+
   @Override
   public int hashCode() {
     return Objects.hash(id, run, sequencingLane);
@@ -398,6 +404,7 @@ public class Sample {
     private BigDecimal methylationBeta;
     private Integer peReads;
     private LocalDate latestActivityDate;
+    private LocalDate transferDate;
 
     public Sample build() {
       return new Sample(this);
@@ -659,6 +666,11 @@ public class Sample {
 
     public Builder latestActivityDate(LocalDate latestActivityDate) {
       this.latestActivityDate = latestActivityDate;
+      return this;
+    }
+
+    public Builder transferDate(LocalDate transferDate) {
+      this.transferDate = transferDate;
       return this;
     }
 

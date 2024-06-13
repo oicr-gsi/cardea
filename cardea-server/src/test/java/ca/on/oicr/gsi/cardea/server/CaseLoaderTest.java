@@ -90,6 +90,7 @@ public class CaseLoaderTest {
     assertEquals("PROJ_1289_Ly_R_nn_1-1", sample.getName());
     assertEquals(Boolean.TRUE, sample.getQcPassed());
     assertEquals(LocalDate.of(2021, 7, 19), sample.getQcDate());
+    assertNull(sample.getTransferDate());
   }
 
   private static void assertRun(Run run) {
@@ -169,6 +170,9 @@ public class CaseLoaderTest {
     assertEquals("PROJ_1289_Ly_R_PE_567_WG", fullDepth.getName());
     assertEquals(Boolean.TRUE, fullDepth.getQcPassed());
     assertEquals(1, test.getExtractionDaysSpent());
+    assertEquals(0, test.getExtractionPreparationDaysSpent());
+    assertEquals(0, test.getExtractionQcDaysSpent());
+    assertEquals(1, test.getExtractionTransferDaysSpent());
     assertEquals(2, test.getLibraryPreparationDaysSpent());
     assertEquals(6, test.getLibraryQualificationDaysSpent());
     assertEquals(1, test.getLibraryQualificationLoadingDaysSpent());

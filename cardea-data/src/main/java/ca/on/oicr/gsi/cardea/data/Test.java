@@ -33,6 +33,9 @@ public class Test {
   private final String tissueType;
   private final String libraryDesignCode;
   private final int extractionDaysSpent;
+  private final int extractionPreparationDaysSpent;
+  private final int extractionQcDaysSpent;
+  private final int extractionTransferDaysSpent;
   private final int libraryPreparationDaysSpent;
   private final int libraryQualificationDaysSpent;
   private final int libraryQualificationLoadingDaysSpent;
@@ -74,6 +77,9 @@ public class Test {
     }
 
     this.extractionDaysSpent = builder.extractionDaysSpent;
+    this.extractionPreparationDaysSpent = builder.extractionPreparationDaysSpent;
+    this.extractionQcDaysSpent = builder.extractionQcDaysSpent;
+    this.extractionTransferDaysSpent = builder.extractionTransferDaysSpent;
     this.libraryPreparationDaysSpent = builder.libraryPreparationDaysSpent;
     this.libraryQualificationDaysSpent = builder.libraryQualificationDaysSpent;
     this.libraryQualificationLoadingDaysSpent = builder.libraryQualificationLoadingDaysSpent;
@@ -149,6 +155,18 @@ public class Test {
     return extractionDaysSpent;
   }
 
+  public int getExtractionPreparationDaysSpent() {
+    return extractionPreparationDaysSpent;
+  }
+
+  public int getExtractionQcDaysSpent() {
+    return extractionQcDaysSpent;
+  }
+
+  public int getExtractionTransferDaysSpent() {
+    return extractionTransferDaysSpent;
+  }
+
   public int getLibraryPreparationDaysSpent() {
     return libraryPreparationDaysSpent;
   }
@@ -203,6 +221,9 @@ public class Test {
     private String tissueOrigin;
     private String tissueType;
     private int extractionDaysSpent;
+    private int extractionPreparationDaysSpent;
+    private int extractionQcDaysSpent;
+    private int extractionTransferDaysSpent;
     private int libraryPreparationDaysSpent;
     private int libraryQualificationDaysSpent;
     private int libraryQualificationLoadingDaysSpent;
@@ -290,6 +311,21 @@ public class Test {
 
     public Builder extractionDaysSpent(int days) {
       this.extractionDaysSpent = days;
+      return this;
+    }
+
+    public Builder extractionPreparationDaysSpent(int days) {
+      this.extractionPreparationDaysSpent = days;
+      return this;
+    }
+
+    public Builder extractionQcDaysSpent(int days) {
+      this.extractionQcDaysSpent = days;
+      return this;
+    }
+
+    public Builder extractionTransferDaysSpent(int days) {
+      this.extractionTransferDaysSpent = days;
       return this;
     }
 
