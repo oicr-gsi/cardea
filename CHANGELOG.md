@@ -7,6 +7,14 @@ This file is updated automatically as described in [Unreleased Changes](changes/
 
 ---------------------------------------------------------------------------------------------------
 
+## [1.13.0] - 2024-06-13
+
+### Added
+
+* Sample transferDate field for extractions
+* Test fields for extraction TAT breakdown of days spent on preparation, QC, and transfer
+
+
 ## [1.12.0] - 2024-06-06
 
 ### Added
