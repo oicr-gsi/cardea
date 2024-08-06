@@ -415,6 +415,7 @@ public class JacksonTest {
     assertEquals(one.getMethylationBeta(), two.getMethylationBeta());
     assertEquals(one.getPeReads(), two.getPeReads());
     assertEquals(one.getTransferDate(), two.getTransferDate());
+    assertEquals(one.getDv200(), two.getDv200());
   }
 
   private static void assertTestEqual(Test one, Test two) {
@@ -717,6 +718,7 @@ public class JacksonTest {
         .methylationBeta(new BigDecimal("7.77"))
         .peReads(35)
         .transferDate(LocalDate.of(2024, 06, 11))
+        .dv200(new BigDecimal("999.99"))
         .build();
   }
 

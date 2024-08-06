@@ -67,6 +67,7 @@ public class Sample {
   private final BigDecimal methylationBeta;
   private final Integer peReads;
   private final LocalDate transferDate;
+  private final BigDecimal dv200;
 
   private Sample(Builder builder) {
     this.id = requireNonNull(builder.id);
@@ -126,6 +127,7 @@ public class Sample {
           .filter(Objects::nonNull).max(LocalDate::compareTo).orElseThrow();
     }
     this.transferDate = builder.transferDate;
+    this.dv200 = builder.dv200;
   }
 
   @Override
@@ -346,6 +348,10 @@ public class Sample {
     return transferDate;
   }
 
+  public BigDecimal getDv200() {
+    return dv200;
+  }
+
   @Override
   public int hashCode() {
     return Objects.hash(id, run, sequencingLane);
@@ -405,6 +411,7 @@ public class Sample {
     private Integer peReads;
     private LocalDate latestActivityDate;
     private LocalDate transferDate;
+    private BigDecimal dv200;
 
     public Sample build() {
       return new Sample(this);
@@ -671,6 +678,11 @@ public class Sample {
 
     public Builder transferDate(LocalDate transferDate) {
       this.transferDate = transferDate;
+      return this;
+    }
+
+    public Builder dv200(BigDecimal dv200) {
+      this.dv200 = dv200;
       return this;
     }
 
