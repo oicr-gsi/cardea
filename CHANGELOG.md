@@ -7,6 +7,13 @@ This file is updated automatically as described in [Unreleased Changes](changes/
 
 ---------------------------------------------------------------------------------------------------
 
+## [1.14.0] - 2024-08-06
+
+### Added
+
+* Sample/library DV200 field
+
+
 ## [1.13.0] - 2024-06-13
 
 ### Added
