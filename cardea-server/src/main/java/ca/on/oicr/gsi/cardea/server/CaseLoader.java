@@ -415,6 +415,7 @@ public class CaseLoader {
           .dataReviewDate(parseDate(json, "data_review_date"))
           .sequencingLane(parseString(json, "sequencing_lane"))
           .transferDate(parseDate(json, "transfer_date"))
+          .dv200(parseDecimal(json, "dv200", false))
           .build();
     });
 
