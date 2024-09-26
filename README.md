@@ -17,9 +17,9 @@ From the project root, build runnable `.jar` file (located in `cardea-server/tar
 
 `mvn clean package`
 
-Or run server via Maven:
+Or run server via Maven (ensure config is in cardea-server):
 
-`mvn clean install && cd cardea-server && mvn clean spring-boot:run`
+mvn clean install && mvn spring-boot:run -pl cardea-server
 
 The server runs on port 8080 by default. To run on a different port, add a `server.port` setting
 to your `application.properties`
