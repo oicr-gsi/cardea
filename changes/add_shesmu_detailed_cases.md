@@ -1,1 +1,1 @@
-Shesmu Detailed Cases enpoint
+Shesmu Detailed Cases endpoint

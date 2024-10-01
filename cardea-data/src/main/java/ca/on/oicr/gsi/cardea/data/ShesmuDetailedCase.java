@@ -20,12 +20,12 @@ public class ShesmuDetailedCase {
   private final String assayVersion;
   private final String caseIdentifier;
   private final CaseStatus caseStatus;
-  private final boolean isStopped;
-  private final boolean isPaused;
+  private final boolean stopped;
+  private final boolean paused;
   private final Optional<Instant> completedDate;
   private final long requisitionId;
   private final String requisitionName;
-  private final Set<ShesmuTest> sequencing;
+  private final Set<ShesmuSequencing> sequencing;
 
   private ShesmuDetailedCase(Builder builder) {
     this.assayName = requireNonNull(builder.assayName);
@@ -33,8 +33,8 @@ public class ShesmuDetailedCase {
     this.caseIdentifier = requireNonNull(builder.caseIdentifier);
     this.caseStatus = requireNonNull(builder.caseStatus);
     this.completedDate = builder.completedDate;
-    this.isStopped = builder.isStopped;
-    this.isPaused = builder.isPaused;
+    this.stopped = builder.stopped;
+    this.paused = builder.paused;
     this.requisitionId = requireNonNull(builder.requisitionId);
     this.requisitionName = requireNonNull(builder.requisitionName);
     this.sequencing = unmodifiableSet(requireNonNull(builder.sequencing));
@@ -56,12 +56,12 @@ public class ShesmuDetailedCase {
     return caseStatus;
   }
 
-  public boolean getIsStopped() {
-    return isStopped;
+  public boolean isStopped() {
+    return stopped;
   }
 
-  public boolean getIsPaused() {
-    return isPaused;
+  public boolean isPaused() {
+    return paused;
   }
 
   public Optional<Instant> getCompletedDate() {
@@ -76,7 +76,7 @@ public class ShesmuDetailedCase {
     return requisitionName;
   }
 
-  public Set<ShesmuTest> getSequencing() {
+  public Set<ShesmuSequencing> getSequencing() {
     return sequencing;
   }
 
@@ -87,12 +87,12 @@ public class ShesmuDetailedCase {
     private String assayVersion;
     private String caseIdentifier;
     private CaseStatus caseStatus;
-    private boolean isPaused;
-    private boolean isStopped;
+    private boolean paused;
+    private boolean stopped;
     private Optional<Instant> completedDate;
     private long requisitionId;
     private String requisitionName;
-    private Set<ShesmuTest> sequencing;
+    private Set<ShesmuSequencing> sequencing;
 
     public ShesmuDetailedCase build() {
       return new ShesmuDetailedCase(this);
@@ -113,13 +113,13 @@ public class ShesmuDetailedCase {
       return this;
     }
 
-    public Builder isPaused(boolean isPaused) {
-      this.isPaused = isPaused;
+    public Builder paused(boolean paused) {
+      this.paused = paused;
       return this;
     }
 
-    public Builder isStopped(boolean isStopped) {
-      this.isStopped = isStopped;
+    public Builder stopped(boolean stopped) {
+      this.stopped = stopped;
       return this;
     }
 
@@ -148,7 +148,7 @@ public class ShesmuDetailedCase {
       return this;
     }
 
-    public Builder sequencing(Set<ShesmuTest> sequencing){
+    public Builder sequencing(Set<ShesmuSequencing> sequencing){
       this.sequencing = sequencing;
       return this;
     }

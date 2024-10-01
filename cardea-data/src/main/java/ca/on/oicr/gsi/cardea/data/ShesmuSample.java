@@ -15,12 +15,12 @@ import static java.util.Objects.requireNonNull;
 public class ShesmuSample {
 
   private final String id;
-  private final Boolean isSupplemental;
+  private final boolean supplemental;
 
 
   private ShesmuSample(Builder builder) {
     this.id = requireNonNull(builder.id);
-    this.isSupplemental = requireNonNull(builder.isSupplemental);
+    this.supplemental = requireNonNull(builder.supplemental);
   }
 
 
@@ -28,8 +28,8 @@ public class ShesmuSample {
     return id;
   }
 
-  public Boolean getIsSupplemental() {
-    return isSupplemental;
+  public Boolean isSupplemental() {
+    return supplemental;
   }
 
 
@@ -38,7 +38,7 @@ public class ShesmuSample {
   public static class Builder {
 
     private String id;
-    private Boolean isSupplemental;
+    private boolean supplemental;
 
     public ShesmuSample build() {
       return new ShesmuSample(this);
@@ -50,8 +50,8 @@ public class ShesmuSample {
       return this;
     }
 
-    public Builder isSupplemental(Boolean isSupplemental) {
-      this.isSupplemental = isSupplemental;
+    public Builder supplemental(boolean supplemental) {
+      this.supplemental = supplemental;
       return this;
     }
 

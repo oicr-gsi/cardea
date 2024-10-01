@@ -1,19 +1,6 @@
 package ca.on.oicr.gsi.cardea.server.service;
 
-import ca.on.oicr.gsi.cardea.data.Case;
-import ca.on.oicr.gsi.cardea.data.CaseData;
-import ca.on.oicr.gsi.cardea.data.CaseDeliverable;
-import ca.on.oicr.gsi.cardea.data.CaseRelease;
-import ca.on.oicr.gsi.cardea.data.CaseStatus;
-import ca.on.oicr.gsi.cardea.data.CaseStatusesForRun;
-import ca.on.oicr.gsi.cardea.data.Run;
-import ca.on.oicr.gsi.cardea.data.Sample;
-import ca.on.oicr.gsi.cardea.data.ShesmuCase;
-import ca.on.oicr.gsi.cardea.data.ShesmuDetailedCase;
-import ca.on.oicr.gsi.cardea.data.ShesmuSample;
-import ca.on.oicr.gsi.cardea.data.ShesmuTest;
-import ca.on.oicr.gsi.cardea.data.Test;
-import ca.on.oicr.gsi.cardea.data.TestCategory;
+import ca.on.oicr.gsi.cardea.data.*;
 import ca.on.oicr.gsi.cardea.server.CaseLoader;
 import ca.on.oicr.gsi.Pair;
 
@@ -144,64 +131,50 @@ public class CaseService {
             .collect(Collectors.toSet());
   }
 
-  private Set<ShesmuTest> getTestsForShesmuWithStatus(Case kase){
+  private Set<ShesmuSequencing> getSequencingForShesmuCase(Case kase){
 
-    Set<ShesmuTest> sTests = new HashSet<>();
-    final var reqId = kase.getRequisition().getId();
+    Set<ShesmuSequencing> sTests = new HashSet<>();
+    final long reqId = kase.getRequisition().getId();
 
     for (Test test : kase.getTests()) {
 
-      var lqs = new HashSet<ShesmuSample>();
-      var fdls = new HashSet<ShesmuSample>();
+      sTests.add(makeShesmuSequencing(test.getFullDepthSequencings(), MetricCategory.FULL_DEPTH_SEQUENCING, reqId, test.getName()));
+      sTests.add(makeShesmuSequencing(test.getLibraryQualifications(), MetricCategory.LIBRARY_QUALIFICATION, reqId, test.getName()));
 
-      Boolean hasLQPassed = false;
-      Boolean hasLQWaiting = false;
-      for (Sample lq : test.getLibraryQualifications()){
-        if (lq.getDataReviewPassed() == null || lq.getQcPassed() == null){
-          hasLQWaiting = true;
-        } else if (lq.getDataReviewPassed() && lq.getQcPassed()) {
-          hasLQPassed = true;
-        }
-        if (lq.getRun() != null) {
-          lqs.add(new ShesmuSample.Builder()
-                  .id(lq.getId())
-                  .isSupplemental(!Objects.equals(lq.getRequisitionId(), reqId))
-                  .build());
-        }
-      }
-
-      Boolean hasFDPassed = false;
-      Boolean hasFDWaiting = false;
-      for (Sample fd : test.getFullDepthSequencings()){
-
-        if (fd.getDataReviewPassed() == null || fd.getQcPassed() == null){
-          hasFDWaiting = true;
-        } else if (fd.getDataReviewPassed() && fd.getQcPassed()) {
-          hasFDPassed = true;
-        }
-
-        fdls.add(new ShesmuSample.Builder()
-                .id(fd.getId())
-                .isSupplemental(!Objects.equals(fd.getRequisitionId(), reqId))
-                .build());
-      }
-
-      sTests.add(new ShesmuTest.Builder()
-              .name(test.getName())
-              .limsIds(lqs)
-              .isComplete((hasLQPassed && !hasLQWaiting))
-              .test(TestCategory.LIBRARYQUALIFICATION)
-              .build());
-
-      sTests.add(new ShesmuTest.Builder()
-              .name(test.getName())
-              .limsIds(fdls)
-              .isComplete((hasFDPassed && !hasFDWaiting))
-              .test(TestCategory.FULLDEPTHSEQUENCING)
-              .build());
     };
 
     return sTests;
+  }
+
+  private ShesmuSequencing makeShesmuSequencing(List<Sample> samples, MetricCategory type, long reqId, String name){
+
+    var lims = new HashSet<ShesmuSample>();
+
+    boolean hasPassed = false;
+    boolean hasWaiting = false;
+    for (Sample sample : samples){
+
+      if (sample.getDataReviewPassed() == null || sample.getQcPassed() == null){
+        hasWaiting = true;
+      } else if (sample.getDataReviewPassed() && sample.getQcPassed()) {
+        hasPassed = true;
+      }
+
+      if (!(sample.getRun() == null && type.equals(MetricCategory.LIBRARY_QUALIFICATION))) {
+        lims.add(new ShesmuSample.Builder()
+                .id(sample.getId())
+                .supplemental(!Objects.equals(sample.getRequisitionId(), reqId))
+                .build());
+      }
+    }
+
+    return new ShesmuSequencing.Builder()
+            .name(name)
+            .limsIds(lims)
+            .complete((hasPassed && !hasWaiting))
+            .test(type)
+            .build();
+
   }
 
   private Set<String> getLimsIusIdsForShesmu(Case kase) {
@@ -261,12 +234,12 @@ public class CaseService {
             .assayVersion(caseData.getAssaysById().get(kase.getAssayId()).getVersion())
             .caseIdentifier(kase.getId())
             .caseStatus(getCaseStatus(kase))
-            .isPaused(kase.getRequisition().isPaused())
-            .isStopped(kase.getRequisition().isStopped())
+            .paused(kase.getRequisition().isPaused())
+            .stopped(kase.getRequisition().isStopped())
             .completedDateLocal(getCompletedDate(kase))
             .requisitionId(kase.getRequisition().getId())
             .requisitionName(kase.getRequisition().getName())
-            .sequencing(getTestsForShesmuWithStatus(kase))
+            .sequencing(getSequencingForShesmuCase(kase))
             .build();
   }
 

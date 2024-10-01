@@ -11,20 +11,20 @@ import static java.util.Objects.requireNonNull;
 /**
  * Immutable Test
  */
-@JsonDeserialize(builder = ShesmuTest.Builder.class)
-public class ShesmuTest {
+@JsonDeserialize(builder = ShesmuSequencing.Builder.class)
+public class ShesmuSequencing {
 
   private final String name;
-  private final TestCategory test;
+  private final MetricCategory test;
   private final Set<ShesmuSample> limsIds;
-  private final Boolean isComplete;
+  private final boolean complete;
 
 
-  private ShesmuTest(Builder builder) {
+  private ShesmuSequencing(Builder builder) {
     this.name = requireNonNull(builder.name);
     this.test = requireNonNull(builder.test);
     this.limsIds = unmodifiableSet(requireNonNull(builder.limsIds));
-    this.isComplete = requireNonNull(builder.isComplete);
+    this.complete = requireNonNull(builder.complete);
   }
 
 
@@ -32,7 +32,7 @@ public class ShesmuTest {
     return name;
   }
 
-  public TestCategory getTest() {
+  public MetricCategory getTest() {
     return test;
   }
 
@@ -40,8 +40,8 @@ public class ShesmuTest {
     return limsIds;
   }
 
-  public Boolean getIsComplete() {
-    return isComplete;
+  public Boolean isComplete() {
+    return complete;
   }
 
 
@@ -51,14 +51,14 @@ public class ShesmuTest {
 
     private String name;
     private Set<ShesmuSample> limsIds;
-    private TestCategory test;
-    private Boolean isComplete;
+    private MetricCategory test;
+    private boolean complete;
 
 
 
 
-    public ShesmuTest build() {
-      return new ShesmuTest(this);
+    public ShesmuSequencing build() {
+      return new ShesmuSequencing(this);
     }
 
 
@@ -67,7 +67,7 @@ public class ShesmuTest {
       return this;
     }
 
-    public Builder test(TestCategory test) {
+    public Builder test(MetricCategory test) {
       this.test = test;
       return this;
     }
@@ -77,8 +77,8 @@ public class ShesmuTest {
       return this;
     }
 
-    public Builder isComplete(Boolean isComplete) {
-      this.isComplete = isComplete;
+    public Builder complete(boolean complete) {
+      this.complete = complete;
       return this;
     }
 
