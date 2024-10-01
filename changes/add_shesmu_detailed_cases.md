@@ -1,0 +1,1 @@
+Shesmu Detailed Cases enpoint
