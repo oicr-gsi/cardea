@@ -11,10 +11,36 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.function.BiConsumer;
-
-import ca.on.oicr.gsi.cardea.data.*;
 import org.springframework.http.converter.json.Jackson2ObjectMapperBuilder;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import ca.on.oicr.gsi.cardea.data.AnalysisQcGroup;
+import ca.on.oicr.gsi.cardea.data.Assay;
+import ca.on.oicr.gsi.cardea.data.AssayTargets;
+import ca.on.oicr.gsi.cardea.data.Case;
+import ca.on.oicr.gsi.cardea.data.CaseDeliverable;
+import ca.on.oicr.gsi.cardea.data.CaseDeliverableImpl;
+import ca.on.oicr.gsi.cardea.data.CaseImpl;
+import ca.on.oicr.gsi.cardea.data.CaseRelease;
+import ca.on.oicr.gsi.cardea.data.CaseReleaseImpl;
+import ca.on.oicr.gsi.cardea.data.CaseStatus;
+import ca.on.oicr.gsi.cardea.data.DeliverableType;
+import ca.on.oicr.gsi.cardea.data.Donor;
+import ca.on.oicr.gsi.cardea.data.Lane;
+import ca.on.oicr.gsi.cardea.data.Metric;
+import ca.on.oicr.gsi.cardea.data.MetricCategory;
+import ca.on.oicr.gsi.cardea.data.MetricSubcategory;
+import ca.on.oicr.gsi.cardea.data.OmittedSample;
+import ca.on.oicr.gsi.cardea.data.Project;
+import ca.on.oicr.gsi.cardea.data.Requisition;
+import ca.on.oicr.gsi.cardea.data.Run;
+import ca.on.oicr.gsi.cardea.data.Sample;
+import ca.on.oicr.gsi.cardea.data.ShesmuCase;
+import ca.on.oicr.gsi.cardea.data.ShesmuDetailedCase;
+import ca.on.oicr.gsi.cardea.data.ShesmuSample;
+import ca.on.oicr.gsi.cardea.data.ShesmuTest;
+import ca.on.oicr.gsi.cardea.data.Test;
+import ca.on.oicr.gsi.cardea.data.TestCategory;
+import ca.on.oicr.gsi.cardea.data.ThresholdType;
 
 public class JacksonTest {
 
