@@ -510,8 +510,8 @@ public class JacksonTest {
   }
 
   private static void assertShesmuTestEqual(ShesmuSequencing one, ShesmuSequencing two) {
-    assertEquals(one.getName(), two.getName());
     assertEquals(one.getTest(), two.getTest());
+    assertEquals(one.getType(), two.getType());
     assertEquals(one.isComplete(), two.isComplete());
     assertEquals(one.getLimsIds().size(), two.getLimsIds().size());
     assertShesmuSampleEqual(one.getLimsIds().iterator().next(), two.getLimsIds().iterator().next());
@@ -821,10 +821,10 @@ public class JacksonTest {
             .supplemental(false)
             .build());
     sequencing.add(new ShesmuSequencing.Builder()
-            .name("Some Test")
+            .test("Some Test")
             .limsIds(limsIds)
             .complete(true)
-            .test(MetricCategory.LIBRARY_QUALIFICATION)
+            .type(MetricCategory.LIBRARY_QUALIFICATION)
             .build());
 
     return new ShesmuDetailedCase.Builder()

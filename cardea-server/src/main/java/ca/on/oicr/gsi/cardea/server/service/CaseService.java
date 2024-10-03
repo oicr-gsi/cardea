@@ -133,22 +133,27 @@ public class CaseService {
 
   private Set<ShesmuSequencing> getSequencingForShesmuCase(Case kase){
 
-    Set<ShesmuSequencing> sTests = new HashSet<>();
+    Set<ShesmuSequencing> sequencings = new HashSet<>();
     final long reqId = kase.getRequisition().getId();
 
     for (Test test : kase.getTests()) {
 
-      sTests.add(makeShesmuSequencing(test.getFullDepthSequencings(), MetricCategory.FULL_DEPTH_SEQUENCING, reqId, test.getName()));
-      sTests.add(makeShesmuSequencing(test.getLibraryQualifications(), MetricCategory.LIBRARY_QUALIFICATION, reqId, test.getName()));
-
+      List<Sample> fullDepthSeqs = test.getFullDepthSequencings();
+      if (fullDepthSeqs != null && !fullDepthSeqs.isEmpty()) {
+        sequencings.add(makeShesmuSequencing(fullDepthSeqs, MetricCategory.FULL_DEPTH_SEQUENCING, reqId, test.getName()));
+      }
+      List<Sample> libraryQuals = test.getLibraryQualifications();
+      if (libraryQuals != null && !libraryQuals.isEmpty()) {
+        sequencings.add(makeShesmuSequencing(libraryQuals, MetricCategory.LIBRARY_QUALIFICATION, reqId, test.getName()));
+      }
     };
 
-    return sTests;
+    return sequencings;
   }
 
   private ShesmuSequencing makeShesmuSequencing(List<Sample> samples, MetricCategory type, long reqId, String name){
 
-    var lims = new HashSet<ShesmuSample>();
+    Set<ShesmuSample> shesmuSamples = new HashSet<>();
 
     boolean hasPassed = false;
     boolean hasWaiting = false;
@@ -161,7 +166,7 @@ public class CaseService {
       }
 
       if (!(sample.getRun() == null && type.equals(MetricCategory.LIBRARY_QUALIFICATION))) {
-        lims.add(new ShesmuSample.Builder()
+        shesmuSamples.add(new ShesmuSample.Builder()
                 .id(sample.getId())
                 .supplemental(!Objects.equals(sample.getRequisitionId(), reqId))
                 .build());
@@ -169,12 +174,11 @@ public class CaseService {
     }
 
     return new ShesmuSequencing.Builder()
-            .name(name)
-            .limsIds(lims)
+            .test(name)
+            .limsIds(shesmuSamples)
             .complete((hasPassed && !hasWaiting))
-            .test(type)
+            .type(type)
             .build();
-
   }
 
   private Set<String> getLimsIusIdsForShesmu(Case kase) {

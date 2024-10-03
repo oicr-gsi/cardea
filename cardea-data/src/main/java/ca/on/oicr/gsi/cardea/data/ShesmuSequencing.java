@@ -14,26 +14,26 @@ import static java.util.Objects.requireNonNull;
 @JsonDeserialize(builder = ShesmuSequencing.Builder.class)
 public class ShesmuSequencing {
 
-  private final String name;
-  private final MetricCategory test;
+  private final String test;
+  private final MetricCategory type;
   private final Set<ShesmuSample> limsIds;
   private final boolean complete;
 
 
   private ShesmuSequencing(Builder builder) {
-    this.name = requireNonNull(builder.name);
     this.test = requireNonNull(builder.test);
+    this.type = requireNonNull(builder.type);
     this.limsIds = unmodifiableSet(requireNonNull(builder.limsIds));
     this.complete = requireNonNull(builder.complete);
   }
 
 
-  public String getName() {
-    return name;
+  public String getTest() {
+    return test;
   }
 
-  public MetricCategory getTest() {
-    return test;
+  public MetricCategory getType() {
+    return type;
   }
 
   public Set<ShesmuSample> getLimsIds() {
@@ -49,26 +49,22 @@ public class ShesmuSequencing {
   @JsonPOJOBuilder(withPrefix = "")
   public static class Builder {
 
-    private String name;
+    private String test;
     private Set<ShesmuSample> limsIds;
-    private MetricCategory test;
+    private MetricCategory type;
     private boolean complete;
-
-
-
 
     public ShesmuSequencing build() {
       return new ShesmuSequencing(this);
     }
 
-
-    public Builder name(String name) {
-      this.name = name;
+    public Builder test(String test) {
+      this.test = test;
       return this;
     }
 
-    public Builder test(MetricCategory test) {
-      this.test = test;
+    public Builder type(MetricCategory type) {
+      this.type = type;
       return this;
     }
 
