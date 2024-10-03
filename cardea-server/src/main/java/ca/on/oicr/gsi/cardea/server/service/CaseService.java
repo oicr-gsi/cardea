@@ -138,13 +138,14 @@ public class CaseService {
 
     for (Test test : kase.getTests()) {
 
-      List<Sample> fullDepthSeqs = test.getFullDepthSequencings();
-      if (fullDepthSeqs != null && !fullDepthSeqs.isEmpty()) {
-        sequencings.add(makeShesmuSequencing(fullDepthSeqs, MetricCategory.FULL_DEPTH_SEQUENCING, reqId, test.getName()));
+      ShesmuSequencing fullDepthSeq = makeShesmuSequencing(test.getFullDepthSequencings(), MetricCategory.FULL_DEPTH_SEQUENCING, reqId, test.getName());
+      if (fullDepthSeq != null) {
+        sequencings.add(fullDepthSeq);
       }
-      List<Sample> libraryQuals = test.getLibraryQualifications();
-      if (libraryQuals != null && !libraryQuals.isEmpty()) {
-        sequencings.add(makeShesmuSequencing(libraryQuals, MetricCategory.LIBRARY_QUALIFICATION, reqId, test.getName()));
+
+      ShesmuSequencing libraryQual = makeShesmuSequencing(test.getLibraryQualifications(), MetricCategory.LIBRARY_QUALIFICATION, reqId, test.getName());
+      if (libraryQual != null) {
+        sequencings.add(libraryQual);
       }
     };
 
@@ -173,6 +174,9 @@ public class CaseService {
       }
     }
 
+    if (shesmuSamples.isEmpty()) {
+      return null;
+    }
     return new ShesmuSequencing.Builder()
             .test(name)
             .limsIds(shesmuSamples)
