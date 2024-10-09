@@ -11,32 +11,11 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.function.BiConsumer;
+
+import ca.on.oicr.gsi.cardea.data.*;
 import org.springframework.http.converter.json.Jackson2ObjectMapperBuilder;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import ca.on.oicr.gsi.cardea.data.AnalysisQcGroup;
-import ca.on.oicr.gsi.cardea.data.Assay;
-import ca.on.oicr.gsi.cardea.data.AssayTargets;
-import ca.on.oicr.gsi.cardea.data.Case;
-import ca.on.oicr.gsi.cardea.data.CaseDeliverable;
-import ca.on.oicr.gsi.cardea.data.CaseDeliverableImpl;
-import ca.on.oicr.gsi.cardea.data.CaseImpl;
-import ca.on.oicr.gsi.cardea.data.CaseRelease;
-import ca.on.oicr.gsi.cardea.data.CaseReleaseImpl;
-import ca.on.oicr.gsi.cardea.data.CaseStatus;
-import ca.on.oicr.gsi.cardea.data.DeliverableType;
-import ca.on.oicr.gsi.cardea.data.Donor;
-import ca.on.oicr.gsi.cardea.data.Lane;
-import ca.on.oicr.gsi.cardea.data.Metric;
-import ca.on.oicr.gsi.cardea.data.MetricCategory;
-import ca.on.oicr.gsi.cardea.data.MetricSubcategory;
-import ca.on.oicr.gsi.cardea.data.OmittedSample;
-import ca.on.oicr.gsi.cardea.data.Project;
-import ca.on.oicr.gsi.cardea.data.Requisition;
-import ca.on.oicr.gsi.cardea.data.Run;
-import ca.on.oicr.gsi.cardea.data.Sample;
-import ca.on.oicr.gsi.cardea.data.ShesmuCase;
-import ca.on.oicr.gsi.cardea.data.Test;
-import ca.on.oicr.gsi.cardea.data.ThresholdType;
+import ca.on.oicr.gsi.cardea.data.ShesmuSequencing;
 
 public class JacksonTest {
 
@@ -192,6 +171,14 @@ public class JacksonTest {
     String serialized = mapper.writeValueAsString(original);
     ShesmuCase deserialized = mapper.readerFor(ShesmuCase.class).readValue(serialized);
     assertShesmuCaseEqual(original, deserialized);
+  }
+
+  @org.junit.jupiter.api.Test
+  public void testShesmuDetailedCaseSerializeDeserialize() throws Exception {
+    ShesmuDetailedCase original = makeShesmuDetailedCase();
+    String serialized = mapper.writeValueAsString(original);
+    ShesmuDetailedCase deserialized = mapper.readerFor(ShesmuDetailedCase.class).readValue(serialized);
+    assertShesmuDetailedCaseEqual(original, deserialized);
   }
 
   private static void assertOmittedSamplesEqual(OmittedSample one, OmittedSample two) {
@@ -503,6 +490,34 @@ public class JacksonTest {
     assertEquals(one.getRequisitionName(), two.getRequisitionName());
   }
 
+  private static void assertShesmuDetailedCaseEqual(ShesmuDetailedCase one, ShesmuDetailedCase two) {
+    assertEquals(one.getAssayName(), two.getAssayName());
+    assertEquals(one.getAssayVersion(), two.getAssayVersion());
+    assertEquals(one.getCaseIdentifier(), two.getCaseIdentifier());
+    assertEquals(one.isPaused(), two.isPaused());
+    assertEquals(one.isStopped(), two.isStopped());
+    assertEquals(one.getCaseStatus(), two.getCaseStatus());
+    assertEquals(one.getCompletedDate(), two.getCompletedDate());
+    assertEquals(one.getSequencing().size(), two.getSequencing().size());
+    assertShesmuTestEqual(one.getSequencing().iterator().next(), two.getSequencing().iterator().next());
+    assertEquals(one.getRequisitionId(), two.getRequisitionId());
+    assertEquals(one.getRequisitionName(), two.getRequisitionName());
+  }
+
+  private static void assertShesmuSampleEqual(ShesmuSample one, ShesmuSample two) {
+    assertEquals(one.getId(), two.getId());
+    assertEquals(one.isSupplemental(), two.isSupplemental());
+  }
+
+  private static void assertShesmuTestEqual(ShesmuSequencing one, ShesmuSequencing two) {
+    assertEquals(one.getTest(), two.getTest());
+    assertEquals(one.getType(), two.getType());
+    assertEquals(one.isComplete(), two.isComplete());
+    assertEquals(one.getLimsIds().size(), two.getLimsIds().size());
+    assertShesmuSampleEqual(one.getLimsIds().iterator().next(), two.getLimsIds().iterator().next());
+
+  }
+
   private static Donor makeDonor() {
     return new Donor.Builder()
         .id("SAM1")
@@ -796,6 +811,34 @@ public class JacksonTest {
         .requisitionId(1L)
         .requisitionName("Some Req")
         .build();
+  }
+
+  private static ShesmuDetailedCase makeShesmuDetailedCase() {
+    Set<ShesmuSequencing> sequencing = new HashSet<>();
+    Set<ShesmuSample> limsIds = new HashSet<>();
+    limsIds.add(new ShesmuSample.Builder()
+            .id("ID1")
+            .supplemental(false)
+            .build());
+    sequencing.add(new ShesmuSequencing.Builder()
+            .test("Some Test")
+            .limsIds(limsIds)
+            .complete(true)
+            .type(MetricCategory.LIBRARY_QUALIFICATION)
+            .build());
+
+    return new ShesmuDetailedCase.Builder()
+            .assayName("Assay")
+            .assayVersion("2.0")
+            .caseIdentifier("CASE10")
+            .stopped(false)
+            .paused(false)
+            .caseStatus(CaseStatus.COMPLETED)
+            .completedDateLocal(LocalDate.of(2024, 1, 13))
+            .sequencing(sequencing)
+            .requisitionId(1L)
+            .requisitionName("Some Req")
+            .build();
   }
 
 }

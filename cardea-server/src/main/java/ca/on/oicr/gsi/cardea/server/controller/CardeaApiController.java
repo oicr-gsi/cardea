@@ -5,6 +5,7 @@ import ca.on.oicr.gsi.cardea.data.Case;
 import ca.on.oicr.gsi.cardea.data.CaseData;
 import ca.on.oicr.gsi.cardea.data.CaseStatusesForRun;
 import ca.on.oicr.gsi.cardea.data.ShesmuCase;
+import ca.on.oicr.gsi.cardea.data.ShesmuDetailedCase;
 
 import java.time.ZonedDateTime;
 
@@ -58,6 +59,11 @@ public class CardeaApiController {
   @GetMapping("/shesmu-cases")
   public Set<ShesmuCase> getShesmuCases() {
     return caseService.getShesmuCases();
+  }
+
+  @GetMapping("/shesmu-detailed-cases")
+  public Set<ShesmuDetailedCase> getShesmuDetailedCases() {
+    return caseService.getShesmuDetailedCases();
   }
 
 }
