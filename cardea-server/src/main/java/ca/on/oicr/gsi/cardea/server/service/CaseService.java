@@ -127,6 +127,7 @@ public class CaseService {
 
   public Set<ShesmuDetailedCase> getShesmuDetailedCases() {
     return caseData.getCases().stream()
+            .filter(kase -> !getSequencingForShesmuCase(kase).isEmpty())
             .map(kase -> convertCaseToShesmuDetailedCase(kase))
             .collect(Collectors.toSet());
   }
