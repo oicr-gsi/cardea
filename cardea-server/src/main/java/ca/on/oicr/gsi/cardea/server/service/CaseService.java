@@ -128,7 +128,7 @@ public class CaseService {
   public Set<ShesmuDetailedCase> getShesmuDetailedCases() {
     return caseData.getCases().stream()
             .filter(kase -> kase.getTests().stream()
-                    .anyMatch(test -> !test.getLibraryQualifications().isEmpty()
+                    .anyMatch(test -> !test.getFullDepthSequencings().isEmpty()
                             || test.getLibraryQualifications().stream()
                             .anyMatch(sample -> sample.getRun() != null)))
             .map(kase -> convertCaseToShesmuDetailedCase(kase))
