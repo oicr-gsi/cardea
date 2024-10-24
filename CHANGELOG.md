@@ -7,6 +7,13 @@ This file is updated automatically as described in [Unreleased Changes](changes/
 
 ---------------------------------------------------------------------------------------------------
 
+## [1.15.0] - 2024-10-24
+
+### Added
+
+* Shesmu Detailed Cases endpoint
+
+
 ## [1.14.0] - 2024-08-06
 
 ### Added

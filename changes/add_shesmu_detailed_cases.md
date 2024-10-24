@@ -1,1 +1,0 @@
-Shesmu Detailed Cases endpoint
