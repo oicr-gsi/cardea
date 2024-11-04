@@ -166,6 +166,14 @@ public class JacksonTest {
   }
 
   @org.junit.jupiter.api.Test
+  public void testOmittedRunSampleSerializeDeserialize() throws Exception {
+    OmittedRunSample original = makeOmittedRunSample();
+    String serialized = mapper.writeValueAsString(original);
+    OmittedRunSample deserialized = mapper.readerFor(OmittedRunSample.class).readValue(serialized);
+    assertOmittedRunSampleEqual(original, deserialized);
+  }
+
+  @org.junit.jupiter.api.Test
   public void testShesmuCaseSerializeDeserialize() throws Exception {
     ShesmuCase original = makeShesmuCase();
     String serialized = mapper.writeValueAsString(original);
@@ -177,7 +185,8 @@ public class JacksonTest {
   public void testShesmuDetailedCaseSerializeDeserialize() throws Exception {
     ShesmuDetailedCase original = makeShesmuDetailedCase();
     String serialized = mapper.writeValueAsString(original);
-    ShesmuDetailedCase deserialized = mapper.readerFor(ShesmuDetailedCase.class).readValue(serialized);
+    ShesmuDetailedCase deserialized =
+        mapper.readerFor(ShesmuDetailedCase.class).readValue(serialized);
     assertShesmuDetailedCaseEqual(original, deserialized);
   }
 
@@ -479,6 +488,21 @@ public class JacksonTest {
     assertEquals(one.getPauseDays(), two.getPauseDays());
   }
 
+  private static void assertOmittedRunSampleEqual(OmittedRunSample one, OmittedRunSample two) {
+    assertEquals(one.getId(), two.getId());
+    assertEquals(one.getName(), two.getName());
+    assertEquals(one.getRunId(), two.getRunId());
+    assertEquals(one.getSequencingLane(), two.getSequencingLane());
+    assertEquals(one.getQcPassed(), two.getQcPassed());
+    assertEquals(one.getQcReason(), two.getQcReason());
+    assertEquals(one.getQcNote(), two.getQcNote());
+    assertEquals(one.getQcUser(), two.getQcUser());
+    assertEquals(one.getQcDate(), two.getQcDate());
+    assertEquals(one.getDataReviewPassed(), two.getDataReviewPassed());
+    assertEquals(one.getDataReviewUser(), two.getDataReviewUser());
+    assertEquals(one.getDataReviewDate(), two.getDataReviewDate());
+  }
+
   private static void assertShesmuCaseEqual(ShesmuCase one, ShesmuCase two) {
     assertEquals(one.getAssayName(), two.getAssayName());
     assertEquals(one.getAssayVersion(), two.getAssayVersion());
@@ -490,7 +514,8 @@ public class JacksonTest {
     assertEquals(one.getRequisitionName(), two.getRequisitionName());
   }
 
-  private static void assertShesmuDetailedCaseEqual(ShesmuDetailedCase one, ShesmuDetailedCase two) {
+  private static void assertShesmuDetailedCaseEqual(ShesmuDetailedCase one,
+      ShesmuDetailedCase two) {
     assertEquals(one.getAssayName(), two.getAssayName());
     assertEquals(one.getAssayVersion(), two.getAssayVersion());
     assertEquals(one.getCaseIdentifier(), two.getCaseIdentifier());
@@ -499,7 +524,8 @@ public class JacksonTest {
     assertEquals(one.getCaseStatus(), two.getCaseStatus());
     assertEquals(one.getCompletedDate(), two.getCompletedDate());
     assertEquals(one.getSequencing().size(), two.getSequencing().size());
-    assertShesmuTestEqual(one.getSequencing().iterator().next(), two.getSequencing().iterator().next());
+    assertShesmuTestEqual(one.getSequencing().iterator().next(),
+        two.getSequencing().iterator().next());
     assertEquals(one.getRequisitionId(), two.getRequisitionId());
     assertEquals(one.getRequisitionName(), two.getRequisitionName());
   }
@@ -796,6 +822,23 @@ public class JacksonTest {
         .build();
   }
 
+  private static OmittedRunSample makeOmittedRunSample() {
+    return new OmittedRunSample.Builder()
+        .id("123_4_LDI567")
+        .name("Joe")
+        .runId(123L)
+        .sequencingLane(4)
+        .qcPassed(true)
+        .qcReason("Good stuff")
+        .qcNote("This is my note")
+        .qcUser("Me")
+        .qcDate(LocalDate.now().minusDays(1L))
+        .dataReviewPassed(true)
+        .dataReviewUser("Someone else")
+        .dataReviewDate(LocalDate.now())
+        .build();
+  }
+
   private static ShesmuCase makeShesmuCase() {
     Set<String> limsIds = new HashSet<>();
     limsIds.add("ID1");
@@ -817,28 +860,28 @@ public class JacksonTest {
     Set<ShesmuSequencing> sequencing = new HashSet<>();
     Set<ShesmuSample> limsIds = new HashSet<>();
     limsIds.add(new ShesmuSample.Builder()
-            .id("ID1")
-            .supplemental(false)
-            .build());
+        .id("ID1")
+        .supplemental(false)
+        .build());
     sequencing.add(new ShesmuSequencing.Builder()
-            .test("Some Test")
-            .limsIds(limsIds)
-            .complete(true)
-            .type(MetricCategory.LIBRARY_QUALIFICATION)
-            .build());
+        .test("Some Test")
+        .limsIds(limsIds)
+        .complete(true)
+        .type(MetricCategory.LIBRARY_QUALIFICATION)
+        .build());
 
     return new ShesmuDetailedCase.Builder()
-            .assayName("Assay")
-            .assayVersion("2.0")
-            .caseIdentifier("CASE10")
-            .stopped(false)
-            .paused(false)
-            .caseStatus(CaseStatus.COMPLETED)
-            .completedDateLocal(LocalDate.of(2024, 1, 13))
-            .sequencing(sequencing)
-            .requisitionId(1L)
-            .requisitionName("Some Req")
-            .build();
+        .assayName("Assay")
+        .assayVersion("2.0")
+        .caseIdentifier("CASE10")
+        .stopped(false)
+        .paused(false)
+        .caseStatus(CaseStatus.COMPLETED)
+        .completedDateLocal(LocalDate.of(2024, 1, 13))
+        .sequencing(sequencing)
+        .requisitionId(1L)
+        .requisitionName("Some Req")
+        .build();
   }
 
 }
