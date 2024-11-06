@@ -1,0 +1,30 @@
+[
+  {
+    "sample_id": "5459_1_LDI36185",
+    "oicr_internal_name": "MISS_011408_Co_P_PE_490_WG",
+    "sequencing_run_id": 5459,
+    "sequencing_lane": 1,
+    "qc_state": "Not Ready",
+    "qc_reason": "Not Ready",
+    "qc_note": null,
+    "qc_user": null,
+    "qc_date": null,
+    "data_review_state": "Pending",
+    "data_review_user": null,
+    "data_review_date": null
+  },
+  {
+    "sample_id": "5459_1_LDI36190",
+    "oicr_internal_name": "MISS_011408_Ly_R_PE_522_WG",
+    "sequencing_run_id": 5459,
+    "sequencing_lane": 1,
+    "qc_state": "Not Ready",
+    "qc_reason": "Not Ready",
+    "qc_note": null,
+    "qc_user": null,
+    "qc_date": null,
+    "data_review_state": "Pending",
+    "data_review_user": null,
+    "data_review_date": null
+  }
+]

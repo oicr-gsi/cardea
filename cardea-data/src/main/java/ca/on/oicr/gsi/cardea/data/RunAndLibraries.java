@@ -10,8 +10,12 @@ import com.fasterxml.jackson.databind.annotation.JsonPOJOBuilder;
 
 /**
  * Immutable RunAndLibraries
+ * 
+ * This is being moved to Dimsum because its only intended use is for data transformation within
+ * Dimsum
  */
 @JsonDeserialize(builder = RunAndLibraries.Builder.class)
+@Deprecated(forRemoval = true)
 public class RunAndLibraries {
 
   private Set<Sample> fullDepthSequencings;

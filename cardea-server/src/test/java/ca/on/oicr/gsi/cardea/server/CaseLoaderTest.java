@@ -15,6 +15,7 @@ import ca.on.oicr.gsi.cardea.data.Lane;
 import ca.on.oicr.gsi.cardea.data.Metric;
 import ca.on.oicr.gsi.cardea.data.MetricCategory;
 import ca.on.oicr.gsi.cardea.data.MetricSubcategory;
+import ca.on.oicr.gsi.cardea.data.OmittedRunSample;
 import ca.on.oicr.gsi.cardea.data.OmittedSample;
 import ca.on.oicr.gsi.cardea.data.Project;
 import ca.on.oicr.gsi.cardea.data.Requisition;
@@ -118,6 +119,21 @@ public class CaseLoaderTest {
     assertEquals(new BigDecimal("0.65"), lane1.getPercentPfixRead2());
   }
 
+  private static void assertOmittedRunSample(OmittedRunSample sample) {
+    assertEquals("5459_1_LDI36185", sample.getId());
+    assertEquals("MISS_011408_Co_P_PE_490_WG", sample.getName());
+    assertEquals(5459L, sample.getRunId());
+    assertEquals(1, sample.getSequencingLane());
+    assertNull(sample.getQcPassed());
+    assertEquals("Not Ready", sample.getQcReason());
+    assertNull(sample.getQcUser());
+    assertNull(sample.getQcDate());
+    assertNull(sample.getQcNote());
+    assertNull(sample.getDataReviewPassed());
+    assertNull(sample.getDataReviewUser());
+    assertNull(sample.getDataReviewDate());
+  }
+
   @BeforeEach
   public void setup() {
     sut = new CaseLoader(dataDirectory, null);
@@ -203,6 +219,15 @@ public class CaseLoaderTest {
         .findAny().orElse(null);
     assertNotNull(qcGroup);
     assertEquals(new BigDecimal("87.6189"), qcGroup.getCallability());
+
+    List<OmittedRunSample> omittedRunSamples = data.getOmittedRunSamples();
+    assertNotNull(omittedRunSamples);
+    assertEquals(2, omittedRunSamples.size());
+    OmittedRunSample omittedRunSample = omittedRunSamples.stream()
+        .filter(x -> "MISS_011408_Co_P_PE_490_WG".equals(x.getName()))
+        .findFirst().orElse(null);
+    assertNotNull(omittedRunSample);
+    assertOmittedRunSample(omittedRunSample);
   }
 
   @Test
@@ -336,6 +361,18 @@ public class CaseLoaderTest {
       Map<Long, Run> runsById = sut.loadRuns(reader);
       assertEquals(6, runsById.size());
       assertRun(runsById.get(testRunId));
+    }
+  }
+
+  @Test
+  public void testLoadOmittedRunSamples() throws Exception {
+    try (FileReader reader = sut.getNoCaseRunlibReader()) {
+      List<OmittedRunSample> samples = sut.loadOmittedRunSamples(reader);
+      assertEquals(2, samples.size());
+      OmittedRunSample sample = samples.stream()
+          .filter(x -> "MISS_011408_Co_P_PE_490_WG".equals(x.getName()))
+          .findFirst().orElse(null);
+      assertOmittedRunSample(sample);
     }
   }
 

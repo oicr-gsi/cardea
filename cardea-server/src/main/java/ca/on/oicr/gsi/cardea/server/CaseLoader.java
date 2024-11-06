@@ -15,6 +15,7 @@ import ca.on.oicr.gsi.cardea.data.Lane;
 import ca.on.oicr.gsi.cardea.data.Metric;
 import ca.on.oicr.gsi.cardea.data.MetricCategory;
 import ca.on.oicr.gsi.cardea.data.MetricSubcategory;
+import ca.on.oicr.gsi.cardea.data.OmittedRunSample;
 import ca.on.oicr.gsi.cardea.data.OmittedSample;
 import ca.on.oicr.gsi.cardea.data.Project;
 import ca.on.oicr.gsi.cardea.data.Requisition;
@@ -61,6 +62,7 @@ public class CaseLoader {
   private File requisitionFile;
   private File runFile;
   private File sampleFile;
+  private File noCaseRunlibFile;
   private File timestampFile;
 
   private Timer refreshTimer = null;
@@ -87,6 +89,7 @@ public class CaseLoader {
     assayFile = new File(dataDirectory, "assays.json");
     timestampFile = new File(dataDirectory, "timestamp");
     noCaseFile = new File(dataDirectory, "receipts_nocase.json");
+    noCaseRunlibFile = new File(dataDirectory, "run_samples_nocase.json");
   }
 
   /**
@@ -127,7 +130,8 @@ public class CaseLoader {
         FileReader runReader = getRunReader();
         FileReader assayReader = getAssayReader();
         FileReader caseReader = getCaseReader();
-        FileReader nocaseReader = getNoCaseReader();) {
+        FileReader nocaseReader = getNoCaseReader();
+        FileReader noCaseRunlibReader = getNoCaseRunlibReader()) {
       ZonedDateTime afterTimestamp = getDataTimestamp();
       if (afterTimestamp == null) {
         log.debug("New case data is currently being written; aborting load.");
@@ -145,6 +149,7 @@ public class CaseLoader {
           loadSamples(sampleReader, donorsById, runsById, requisitionsById);
       List<OmittedSample> omittedSamples =
           loadOmittedSamples(nocaseReader, donorsById, requisitionsById);
+      List<OmittedRunSample> omittedRunSamples = loadOmittedRunSamples(noCaseRunlibReader);
       Map<Long, Assay> assaysById = loadAssays(assayReader);
       List<Case> cases = loadCases(caseReader, projectsByName, samplesById, donorsById,
           requisitionsById, assaysById);
@@ -156,6 +161,7 @@ public class CaseLoader {
           .assaysById(assaysById)
           .cases(cases)
           .omittedSamples(omittedSamples)
+          .omittedRunSamples(omittedRunSamples)
           .timestamp(afterTimestamp)
           .build();
 
@@ -179,6 +185,10 @@ public class CaseLoader {
 
   protected FileReader getNoCaseReader() throws FileNotFoundException {
     return new FileReader(noCaseFile);
+  }
+
+  protected FileReader getNoCaseRunlibReader() throws FileNotFoundException {
+    return new FileReader(noCaseRunlibFile);
   }
 
   protected FileReader getProjectReader() throws FileNotFoundException {
@@ -287,6 +297,26 @@ public class CaseLoader {
           .project(parseString(json, "project_name", true))
           .donor(donorsById.get(parseString(json, "donor_id")))
           .createdDate(parseSampleCreatedDate(json))
+          .build();
+    });
+  }
+
+  protected List<OmittedRunSample> loadOmittedRunSamples(FileReader fileReader)
+      throws DataParseException, IOException {
+    return loadFromJsonArrayFile(fileReader, json -> {
+      return new OmittedRunSample.Builder()
+          .id(parseString(json, "sample_id", true))
+          .name(parseString(json, "oicr_internal_name", true))
+          .runId(parseLong(json, "sequencing_run_id", true))
+          .sequencingLane(parseInteger(json, "sequencing_lane", true))
+          .qcPassed(parseQcPassed(json, "qc_state", true))
+          .qcReason(parseString(json, "qc_reason"))
+          .qcNote(parseString(json, "qc_note"))
+          .qcUser(parseString(json, "qc_user"))
+          .qcDate(parseDate(json, "qc_date"))
+          .dataReviewPassed(parseDataReviewPassed(json, "data_review_state"))
+          .dataReviewUser(parseString(json, "data_review_user"))
+          .dataReviewDate(parseDate(json, "data_review_date"))
           .build();
     });
   }
