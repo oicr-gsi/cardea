@@ -7,6 +7,13 @@ This file is updated automatically as described in [Unreleased Changes](changes/
 
 ---------------------------------------------------------------------------------------------------
 
+## [1.16.0] - 2024-11-07
+
+### Added
+
+* Omitted run samples in Dimsum case data
+
+
 ## [1.15.0] - 2024-10-24
 
 ### Added
