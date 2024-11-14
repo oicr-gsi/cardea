@@ -27,11 +27,11 @@ public class ShesmuSample {
     return id;
   }
 
-  public Boolean isSupplemental() {
+  public boolean isSupplemental() {
     return supplemental;
   }
 
-  public Boolean qcFailed() {
+  public boolean isQcFailed() {
     return qcFailed;
   }
 
@@ -42,7 +42,7 @@ public class ShesmuSample {
 
     private String id;
     private boolean supplemental;
-    private boolean qcFailed;
+    private Boolean qcFailed;
 
     public ShesmuSample build() {
       return new ShesmuSample(this);
@@ -59,7 +59,7 @@ public class ShesmuSample {
       return this;
     }
 
-    public Builder qcFailed(boolean qcFailed) {
+    public Builder qcFailed(Boolean qcFailed) {
       this.qcFailed = qcFailed;
       return this;
     }

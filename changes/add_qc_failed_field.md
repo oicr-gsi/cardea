@@ -1,1 +1,1 @@
-Field qcFailed on shesmu detailed cases
+Field qcFailed on sequencing items in shesmu detailed cases
