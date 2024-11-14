@@ -127,44 +127,47 @@ public class CaseService {
 
   public Set<ShesmuDetailedCase> getShesmuDetailedCases() {
     return caseData.getCases().stream()
-            .filter(kase -> kase.getTests().stream()
-                    .anyMatch(test -> !test.getFullDepthSequencings().isEmpty()
-                            || test.getLibraryQualifications().stream()
-                            .anyMatch(sample -> sample.getRun() != null)))
-            .map(kase -> convertCaseToShesmuDetailedCase(kase))
-            .collect(Collectors.toSet());
+        .filter(kase -> kase.getTests().stream()
+            .anyMatch(test -> !test.getFullDepthSequencings().isEmpty()
+                || test.getLibraryQualifications().stream()
+                    .anyMatch(sample -> sample.getRun() != null)))
+        .map(kase -> convertCaseToShesmuDetailedCase(kase))
+        .collect(Collectors.toSet());
   }
 
-  private Set<ShesmuSequencing> getSequencingForShesmuCase(Case kase){
+  private Set<ShesmuSequencing> getSequencingForShesmuCase(Case kase) {
 
     Set<ShesmuSequencing> sequencings = new HashSet<>();
     final long reqId = kase.getRequisition().getId();
 
     for (Test test : kase.getTests()) {
 
-      ShesmuSequencing fullDepthSeq = makeShesmuSequencing(test.getFullDepthSequencings(), MetricCategory.FULL_DEPTH_SEQUENCING, reqId, test.getName());
+      ShesmuSequencing fullDepthSeq = makeShesmuSequencing(test.getFullDepthSequencings(),
+          MetricCategory.FULL_DEPTH_SEQUENCING, reqId, test.getName());
       if (fullDepthSeq != null) {
         sequencings.add(fullDepthSeq);
       }
 
-      ShesmuSequencing libraryQual = makeShesmuSequencing(test.getLibraryQualifications(), MetricCategory.LIBRARY_QUALIFICATION, reqId, test.getName());
+      ShesmuSequencing libraryQual = makeShesmuSequencing(test.getLibraryQualifications(),
+          MetricCategory.LIBRARY_QUALIFICATION, reqId, test.getName());
       if (libraryQual != null) {
         sequencings.add(libraryQual);
       }
-    };
+    } ;
 
     return sequencings;
   }
 
-  private ShesmuSequencing makeShesmuSequencing(List<Sample> samples, MetricCategory type, long reqId, String name){
+  private ShesmuSequencing makeShesmuSequencing(List<Sample> samples, MetricCategory type,
+      long reqId, String name) {
 
     Set<ShesmuSample> shesmuSamples = new HashSet<>();
 
     boolean hasPassed = false;
     boolean hasWaiting = false;
-    for (Sample sample : samples){
+    for (Sample sample : samples) {
 
-      if (sample.getDataReviewPassed() == null || sample.getQcPassed() == null){
+      if (sample.getDataReviewPassed() == null || sample.getQcPassed() == null) {
         hasWaiting = true;
       } else if (sample.getDataReviewPassed() && sample.getQcPassed()) {
         hasPassed = true;
@@ -172,9 +175,10 @@ public class CaseService {
 
       if (!(sample.getRun() == null && type.equals(MetricCategory.LIBRARY_QUALIFICATION))) {
         shesmuSamples.add(new ShesmuSample.Builder()
-                .id(sample.getId())
-                .supplemental(!Objects.equals(sample.getRequisitionId(), reqId))
-                .build());
+            .id(sample.getId())
+            .supplemental(!Objects.equals(sample.getRequisitionId(), reqId))
+            .qcFailed(getQcFailed(sample))
+            .build());
       }
     }
 
@@ -182,11 +186,19 @@ public class CaseService {
       return null;
     }
     return new ShesmuSequencing.Builder()
-            .test(name)
-            .limsIds(shesmuSamples)
-            .complete((hasPassed && !hasWaiting))
-            .type(type)
-            .build();
+        .test(name)
+        .limsIds(shesmuSamples)
+        .complete((hasPassed && !hasWaiting))
+        .type(type)
+        .build();
+  }
+
+  private boolean getQcFailed(Sample sample) {
+    Run run = sample.getRun();
+    return (!(sample.getDataReviewPassed() == null || sample.getDataReviewPassed())
+        || !(sample.getQcPassed() == null || sample.getQcPassed())
+        || !(run.getDataReviewPassed() == null || run.getDataReviewPassed())
+        || !(run.getQcPassed() == null || run.getQcPassed()));
   }
 
   private Set<String> getLimsIusIdsForShesmu(Case kase) {
@@ -242,17 +254,17 @@ public class CaseService {
 
   private ShesmuDetailedCase convertCaseToShesmuDetailedCase(Case kase) {
     return new ShesmuDetailedCase.Builder()
-            .assayName(caseData.getAssaysById().get(kase.getAssayId()).getName())
-            .assayVersion(caseData.getAssaysById().get(kase.getAssayId()).getVersion())
-            .caseIdentifier(kase.getId())
-            .caseStatus(getCaseStatus(kase))
-            .paused(kase.getRequisition().isPaused())
-            .stopped(kase.getRequisition().isStopped())
-            .completedDateLocal(getCompletedDate(kase))
-            .requisitionId(kase.getRequisition().getId())
-            .requisitionName(kase.getRequisition().getName())
-            .sequencing(getSequencingForShesmuCase(kase))
-            .build();
+        .assayName(caseData.getAssaysById().get(kase.getAssayId()).getName())
+        .assayVersion(caseData.getAssaysById().get(kase.getAssayId()).getVersion())
+        .caseIdentifier(kase.getId())
+        .caseStatus(getCaseStatus(kase))
+        .paused(kase.getRequisition().isPaused())
+        .stopped(kase.getRequisition().isStopped())
+        .completedDateLocal(getCompletedDate(kase))
+        .requisitionId(kase.getRequisition().getId())
+        .requisitionName(kase.getRequisition().getName())
+        .sequencing(getSequencingForShesmuCase(kase))
+        .build();
   }
 
   @Scheduled(fixedDelay = 1L, timeUnit = TimeUnit.MINUTES)
