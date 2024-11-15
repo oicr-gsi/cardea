@@ -41,7 +41,7 @@ public class ShesmuSample {
   public static class Builder {
 
     private String id;
-    private boolean supplemental;
+    private Boolean supplemental;
     private Boolean qcFailed;
 
     public ShesmuSample build() {
@@ -54,7 +54,7 @@ public class ShesmuSample {
       return this;
     }
 
-    public Builder supplemental(boolean supplemental) {
+    public Builder supplemental(Boolean supplemental) {
       this.supplemental = supplemental;
       return this;
     }
