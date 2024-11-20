@@ -3,9 +3,6 @@ package ca.on.oicr.gsi.cardea.data;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonPOJOBuilder;
 
-import java.util.Set;
-
-import static java.util.Collections.unmodifiableSet;
 import static java.util.Objects.requireNonNull;
 
 /**
@@ -16,11 +13,13 @@ public class ShesmuSample {
 
   private final String id;
   private final boolean supplemental;
+  private final boolean qcFailed;
 
 
   private ShesmuSample(Builder builder) {
     this.id = requireNonNull(builder.id);
     this.supplemental = requireNonNull(builder.supplemental);
+    this.qcFailed = requireNonNull(builder.qcFailed);
   }
 
 
@@ -28,8 +27,12 @@ public class ShesmuSample {
     return id;
   }
 
-  public Boolean isSupplemental() {
+  public boolean isSupplemental() {
     return supplemental;
+  }
+
+  public boolean isQcFailed() {
+    return qcFailed;
   }
 
 
@@ -38,7 +41,8 @@ public class ShesmuSample {
   public static class Builder {
 
     private String id;
-    private boolean supplemental;
+    private Boolean supplemental;
+    private Boolean qcFailed;
 
     public ShesmuSample build() {
       return new ShesmuSample(this);
@@ -50,10 +54,16 @@ public class ShesmuSample {
       return this;
     }
 
-    public Builder supplemental(boolean supplemental) {
+    public Builder supplemental(Boolean supplemental) {
       this.supplemental = supplemental;
       return this;
     }
+
+    public Builder qcFailed(Boolean qcFailed) {
+      this.qcFailed = qcFailed;
+      return this;
+    }
+
 
   }
 }

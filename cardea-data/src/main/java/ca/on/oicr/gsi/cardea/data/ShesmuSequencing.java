@@ -40,7 +40,7 @@ public class ShesmuSequencing {
     return limsIds;
   }
 
-  public Boolean isComplete() {
+  public boolean isComplete() {
     return complete;
   }
 
@@ -52,7 +52,7 @@ public class ShesmuSequencing {
     private String test;
     private Set<ShesmuSample> limsIds;
     private MetricCategory type;
-    private boolean complete;
+    private Boolean complete;
 
     public ShesmuSequencing build() {
       return new ShesmuSequencing(this);
@@ -73,7 +73,7 @@ public class ShesmuSequencing {
       return this;
     }
 
-    public Builder complete(boolean complete) {
+    public Builder complete(Boolean complete) {
       this.complete = complete;
       return this;
     }

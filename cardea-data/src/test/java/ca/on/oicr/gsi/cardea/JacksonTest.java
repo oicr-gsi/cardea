@@ -533,6 +533,7 @@ public class JacksonTest {
   private static void assertShesmuSampleEqual(ShesmuSample one, ShesmuSample two) {
     assertEquals(one.getId(), two.getId());
     assertEquals(one.isSupplemental(), two.isSupplemental());
+    assertEquals(one.isQcFailed(), two.isQcFailed());
   }
 
   private static void assertShesmuTestEqual(ShesmuSequencing one, ShesmuSequencing two) {
@@ -862,6 +863,7 @@ public class JacksonTest {
     limsIds.add(new ShesmuSample.Builder()
         .id("ID1")
         .supplemental(false)
+        .qcFailed(false)
         .build());
     sequencing.add(new ShesmuSequencing.Builder()
         .test("Some Test")
