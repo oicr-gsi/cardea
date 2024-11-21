@@ -1,1 +1,0 @@
-Field qcFailed on sequencing items in shesmu detailed cases

@@ -7,6 +7,13 @@ This file is updated automatically as described in [Unreleased Changes](changes/
 
 ---------------------------------------------------------------------------------------------------
 
+## [1.17.0] - 2024-11-21
+
+### Added
+
+* Field qcFailed on sequencing items in shesmu detailed cases
+
+
 ## [1.16.0] - 2024-11-07
 
 ### Added
