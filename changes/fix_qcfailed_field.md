@@ -1,1 +1,0 @@
-Field on cardea detailed cases must be able to handle null values

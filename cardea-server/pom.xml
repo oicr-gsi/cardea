@@ -14,7 +14,7 @@
   <parent>
     <artifactId>cardea</artifactId>
     <groupId>ca.on.oicr.gsi.cardea</groupId>
-    <version>1.17.1-SNAPSHOT</version>
+    <version>1.17.1</version>
   </parent>
 
   <build>
