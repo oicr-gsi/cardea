@@ -195,10 +195,10 @@ public class CaseService {
 
   private boolean getQcFailed(Sample sample) {
     Run run = sample.getRun();
-    return ((sample.getDataReviewPassed() == false)
-        || (sample.getQcPassed() == false)
-        || (run.getDataReviewPassed() == false)
-        || (run.getQcPassed() == false));
+    return ((Boolean.FALSE.equals(sample.getDataReviewPassed()))
+        || (Boolean.FALSE.equals(sample.getQcPassed()))
+        || (Boolean.FALSE.equals(run.getDataReviewPassed()))
+        || (Boolean.FALSE.equals(run.getQcPassed())));
   }
 
   private Set<String> getLimsIusIdsForShesmu(Case kase) {
