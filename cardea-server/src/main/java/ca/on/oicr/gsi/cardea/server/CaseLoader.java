@@ -4,6 +4,7 @@ import ca.on.oicr.gsi.cardea.data.Assay;
 import ca.on.oicr.gsi.cardea.data.AssayTargets;
 import ca.on.oicr.gsi.cardea.data.Case;
 import ca.on.oicr.gsi.cardea.data.CaseImpl;
+import ca.on.oicr.gsi.cardea.data.CaseQc;
 import ca.on.oicr.gsi.cardea.data.CaseRelease;
 import ca.on.oicr.gsi.cardea.data.CaseData;
 import ca.on.oicr.gsi.cardea.data.CaseDeliverable;
@@ -24,6 +25,9 @@ import ca.on.oicr.gsi.cardea.data.Run;
 import ca.on.oicr.gsi.cardea.data.Sample;
 import ca.on.oicr.gsi.cardea.data.Test;
 import ca.on.oicr.gsi.cardea.data.ThresholdType;
+import ca.on.oicr.gsi.cardea.data.CaseQc.AnalysisReviewQcStatus;
+import ca.on.oicr.gsi.cardea.data.CaseQc.ReleaseApprovalQcStatus;
+import ca.on.oicr.gsi.cardea.data.CaseQc.ReleaseQcStatus;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.micrometer.core.instrument.MeterRegistry;
@@ -47,6 +51,7 @@ import java.time.format.DateTimeParseException;
 import java.util.*;
 import java.util.Map.Entry;
 import java.util.concurrent.TimeUnit;
+import java.util.function.BiFunction;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
@@ -479,6 +484,15 @@ public class CaseLoader {
     }
   }
 
+  private static Boolean parseOptionalBoolean(JsonNode json, String fieldName) {
+    JsonNode node = json.get(fieldName);
+    if (node == null || node.isNull()) {
+      return null;
+    } else {
+      return node.asBoolean();
+    }
+  }
+
   private static Boolean parseDataReviewPassed(JsonNode json, String fieldName)
       throws DataParseException {
     String qcState = parseString(json, fieldName);
@@ -799,11 +813,13 @@ public class CaseLoader {
       deliverables.add(new CaseDeliverableImpl.Builder()
           .deliverableType(DeliverableType.valueOf(parseString(node, "deliverable_type")))
           .analysisReviewQcDate(parseDate(node, "analysis_review_qc_date"))
-          .analysisReviewQcPassed(parseQcPassed(node, "analysis_review_qc_state", false))
+          .analysisReviewQcStatus(parseCaseQc(node, "analysis_review_qc_state",
+              "analysis_review_qc_release", AnalysisReviewQcStatus::of))
           .analysisReviewQcUser(parseString(node, "analysis_review_qc_user"))
           .analysisReviewQcNote(parseString(node, "analysis_review_qc_note"))
           .releaseApprovalQcDate(parseDate(node, "release_approval_qc_date"))
-          .releaseApprovalQcPassed(parseQcPassed(node, "release_approval_qc_state", false))
+          .releaseApprovalQcStatus(parseCaseQc(node, "release_approval_qc_state",
+              "release_approval_qc_release", ReleaseApprovalQcStatus::of))
           .releaseApprovalQcUser(parseString(node, "release_approval_qc_user"))
           .releaseApprovalQcNote(parseString(node, "release_approval_qc_note"))
           .releases(parseReleases(node.get("releases")))
@@ -814,6 +830,13 @@ public class CaseLoader {
           .build());
     }
     return deliverables;
+  }
+
+  private <T extends CaseQc> T parseCaseQc(JsonNode node, String qcPassedFieldName,
+      String releaseFieldName, BiFunction<Boolean, Boolean, T> of) throws DataParseException {
+    Boolean qcPassed = parseQcPassed(node, qcPassedFieldName, false);
+    Boolean release = parseOptionalBoolean(node, releaseFieldName);
+    return of.apply(qcPassed, release);
   }
 
   private List<CaseRelease> parseReleases(JsonNode json) throws DataParseException {
@@ -827,7 +850,7 @@ public class CaseLoader {
       list.add(new CaseReleaseImpl.Builder()
           .deliverable(parseString(node, "deliverable", true))
           .qcDate(parseDate(node, "qc_date"))
-          .qcPassed(parseQcPassed(node, "qc_state", false))
+          .qcStatus(parseCaseQc(node, "qc_state", "qc_release", ReleaseQcStatus::of))
           .qcUser(parseString(node, "qc_user"))
           .qcNote(parseString(node, "qc_note"))
           .build());

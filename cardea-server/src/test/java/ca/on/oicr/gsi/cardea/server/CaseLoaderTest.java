@@ -22,6 +22,7 @@ import ca.on.oicr.gsi.cardea.data.Requisition;
 import ca.on.oicr.gsi.cardea.data.AnalysisQcGroup;
 import ca.on.oicr.gsi.cardea.data.Run;
 import ca.on.oicr.gsi.cardea.data.Sample;
+import ca.on.oicr.gsi.cardea.data.CaseQc.AnalysisReviewQcStatus;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -206,7 +207,7 @@ public class CaseLoaderTest {
     assertEquals(DeliverableType.CLINICAL_REPORT, deliverable.getDeliverableType());
     assertEquals("Person", deliverable.getAnalysisReviewQcUser());
     assertEquals(LocalDate.of(2021, 8, 10), deliverable.getAnalysisReviewQcDate());
-    assertTrue(deliverable.getAnalysisReviewQcPassed());
+    assertEquals(AnalysisReviewQcStatus.PASSED, deliverable.getAnalysisReviewQcStatus());
     List<CaseRelease> releases = deliverable.getReleases();
     assertNotNull(releases);
     assertEquals(1, releases.size());

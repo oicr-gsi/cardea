@@ -133,10 +133,12 @@
       {
         "deliverable_type": "CLINICAL_REPORT",
         "analysis_review_qc_state": "Ready",
+        "analysis_review_qc_release": null,
         "analysis_review_qc_user": "Person",
         "analysis_review_qc_date": "2021-08-10",
         "analysis_review_qc_note": "ok",
         "release_approval_qc_state": null,
+        "release_approval_qc_release": null,
         "release_approval_qc_user": null,
         "release_approval_qc_date": null,
         "release_approval_qc_note": null,
@@ -144,6 +146,7 @@
           {
             "deliverable": "Clinical Report",
             "qc_state": null,
+            "qc_release": null,
             "qc_user": null,
             "qc_date": null,
             "qc_note": null

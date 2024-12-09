@@ -9,17 +9,19 @@ import java.util.Objects;
 import java.util.stream.Stream;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonPOJOBuilder;
+import ca.on.oicr.gsi.cardea.data.CaseQc.AnalysisReviewQcStatus;
+import ca.on.oicr.gsi.cardea.data.CaseQc.ReleaseApprovalQcStatus;
 
 @JsonDeserialize(builder = CaseDeliverableImpl.Builder.class)
 public class CaseDeliverableImpl implements CaseDeliverable {
 
   private final DeliverableType deliverableType;
   private final LocalDate analysisReviewQcDate;
-  private final Boolean analysisReviewQcPassed;
+  private final AnalysisReviewQcStatus analysisReviewQcStatus;
   private final String analysisReviewQcUser;
   private final String analysisReviewQcNote;
   private final LocalDate releaseApprovalQcDate;
-  private final Boolean releaseApprovalQcPassed;
+  private final ReleaseApprovalQcStatus releaseApprovalQcStatus;
   private final String releaseApprovalQcUser;
   private final String releaseApprovalQcNote;
   private final List<CaseRelease> releases;
@@ -32,11 +34,11 @@ public class CaseDeliverableImpl implements CaseDeliverable {
   private CaseDeliverableImpl(Builder builder) {
     this.deliverableType = requireNonNull(builder.deliverableType);
     this.analysisReviewQcDate = builder.analysisReviewQcDate;
-    this.analysisReviewQcPassed = builder.analysisReviewQcPassed;
+    this.analysisReviewQcStatus = builder.analysisReviewQcStatus;
     this.analysisReviewQcUser = builder.analysisReviewQcUser;
     this.analysisReviewQcNote = builder.analysisReviewQcNote;
     this.releaseApprovalQcDate = builder.releaseApprovalQcDate;
-    this.releaseApprovalQcPassed = builder.releaseApprovalQcPassed;
+    this.releaseApprovalQcStatus = builder.releaseApprovalQcStatus;
     this.releaseApprovalQcUser = builder.releaseApprovalQcUser;
     this.releaseApprovalQcNote = builder.releaseApprovalQcNote;
     this.releases = builder.releases == null ? Collections.emptyList()
@@ -70,8 +72,8 @@ public class CaseDeliverableImpl implements CaseDeliverable {
   }
 
   @Override
-  public Boolean getAnalysisReviewQcPassed() {
-    return analysisReviewQcPassed;
+  public AnalysisReviewQcStatus getAnalysisReviewQcStatus() {
+    return analysisReviewQcStatus;
   }
 
   @Override
@@ -90,8 +92,8 @@ public class CaseDeliverableImpl implements CaseDeliverable {
   }
 
   @Override
-  public Boolean getReleaseApprovalQcPassed() {
-    return releaseApprovalQcPassed;
+  public ReleaseApprovalQcStatus getReleaseApprovalQcStatus() {
+    return releaseApprovalQcStatus;
   }
 
   @Override
@@ -139,11 +141,11 @@ public class CaseDeliverableImpl implements CaseDeliverable {
 
     private DeliverableType deliverableType;
     private LocalDate analysisReviewQcDate;
-    private Boolean analysisReviewQcPassed;
+    private AnalysisReviewQcStatus analysisReviewQcStatus;
     private String analysisReviewQcUser;
     private String analysisReviewQcNote;
     private LocalDate releaseApprovalQcDate;
-    private Boolean releaseApprovalQcPassed;
+    private ReleaseApprovalQcStatus releaseApprovalQcStatus;
     private String releaseApprovalQcUser;
     private String releaseApprovalQcNote;
     private List<CaseRelease> releases;
@@ -163,8 +165,8 @@ public class CaseDeliverableImpl implements CaseDeliverable {
       return this;
     }
 
-    public Builder analysisReviewQcPassed(Boolean analysisReviewQcPassed) {
-      this.analysisReviewQcPassed = analysisReviewQcPassed;
+    public Builder analysisReviewQcStatus(AnalysisReviewQcStatus analysisReviewQcStatus) {
+      this.analysisReviewQcStatus = analysisReviewQcStatus;
       return this;
     }
 
@@ -183,8 +185,8 @@ public class CaseDeliverableImpl implements CaseDeliverable {
       return this;
     }
 
-    public Builder releaseApprovalQcPassed(Boolean releaseApprovalQcPassed) {
-      this.releaseApprovalQcPassed = releaseApprovalQcPassed;
+    public Builder releaseApprovalQcStatus(ReleaseApprovalQcStatus releaseApprovalQcPassed) {
+      this.releaseApprovalQcStatus = releaseApprovalQcPassed;
       return this;
     }
 

@@ -16,6 +16,9 @@ import ca.on.oicr.gsi.cardea.data.*;
 import org.springframework.http.converter.json.Jackson2ObjectMapperBuilder;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import ca.on.oicr.gsi.cardea.data.ShesmuSequencing;
+import ca.on.oicr.gsi.cardea.data.CaseQc.AnalysisReviewQcStatus;
+import ca.on.oicr.gsi.cardea.data.CaseQc.ReleaseApprovalQcStatus;
+import ca.on.oicr.gsi.cardea.data.CaseQc.ReleaseQcStatus;
 
 public class JacksonTest {
 
@@ -278,7 +281,7 @@ public class JacksonTest {
   private static void assertCaseReleaseEqual(CaseRelease one, CaseRelease two) {
     assertEquals(one.getDeliverable(), two.getDeliverable());
     assertEquals(one.getQcDate(), two.getQcDate());
-    assertEquals(one.getQcPassed(), two.getQcPassed());
+    assertEquals(one.getQcStatus(), two.getQcStatus());
     assertEquals(one.getQcNote(), two.getQcNote());
     assertEquals(one.getQcUser(), two.getQcUser());
   }
@@ -286,11 +289,11 @@ public class JacksonTest {
   private static void assertCaseDeliverableEqual(CaseDeliverable one, CaseDeliverable two) {
     assertEquals(one.getDeliverableType(), two.getDeliverableType());
     assertEquals(one.getAnalysisReviewQcDate(), two.getAnalysisReviewQcDate());
-    assertEquals(one.getAnalysisReviewQcPassed(), two.getAnalysisReviewQcPassed());
+    assertEquals(one.getAnalysisReviewQcStatus(), two.getAnalysisReviewQcStatus());
     assertEquals(one.getAnalysisReviewQcNote(), two.getAnalysisReviewQcNote());
     assertEquals(one.getAnalysisReviewQcUser(), two.getAnalysisReviewQcUser());
     assertEquals(one.getReleaseApprovalQcDate(), two.getReleaseApprovalQcDate());
-    assertEquals(one.getReleaseApprovalQcPassed(), two.getReleaseApprovalQcPassed());
+    assertEquals(one.getReleaseApprovalQcStatus(), two.getReleaseApprovalQcStatus());
     assertEquals(one.getReleaseApprovalQcNote(), two.getReleaseApprovalQcNote());
     assertEquals(one.getReleaseApprovalQcUser(), two.getReleaseApprovalQcUser());
     assertEquals(one.getAnalysisReviewDaysSpent(), two.getAnalysisReviewDaysSpent());
@@ -625,7 +628,7 @@ public class JacksonTest {
     return new CaseReleaseImpl.Builder()
         .deliverable("FastQ")
         .qcDate(LocalDate.of(2024, 1, 2))
-        .qcPassed(false)
+        .qcStatus(ReleaseQcStatus.FAILED_STOP)
         .qcNote("No good")
         .qcUser("Me")
         .build();
@@ -637,11 +640,11 @@ public class JacksonTest {
     return new CaseDeliverableImpl.Builder()
         .deliverableType(DeliverableType.DATA_RELEASE)
         .analysisReviewQcDate(LocalDate.of(2024, 1, 3))
-        .analysisReviewQcPassed(true)
+        .analysisReviewQcStatus(AnalysisReviewQcStatus.PASSED)
         .analysisReviewQcNote("A-OK")
         .analysisReviewQcUser("Someone")
         .releaseApprovalQcDate(LocalDate.of(2024, 1, 4))
-        .releaseApprovalQcPassed(false)
+        .releaseApprovalQcStatus(ReleaseApprovalQcStatus.FAILED_STOP)
         .releaseApprovalQcNote("Something went wrong")
         .releaseApprovalQcUser("Someone else")
         .releases(releases)
