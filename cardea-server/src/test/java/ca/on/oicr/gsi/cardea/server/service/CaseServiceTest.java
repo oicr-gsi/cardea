@@ -20,6 +20,7 @@ import ca.on.oicr.gsi.cardea.data.Donor;
 import ca.on.oicr.gsi.cardea.data.Requisition;
 import ca.on.oicr.gsi.cardea.data.Sample;
 import ca.on.oicr.gsi.cardea.data.Test;
+import ca.on.oicr.gsi.cardea.data.CaseQc.ReleaseQcStatus;
 
 public class CaseServiceTest {
 
@@ -44,7 +45,7 @@ public class CaseServiceTest {
     CaseRelease release = mock(CaseRelease.class);
     when(release.getDeliverable()).thenReturn("Full Pipeline");
     if (requisitionNumber % 1 != 1) {
-      when(release.getQcPassed()).thenReturn(true);
+      when(release.getQcStatus()).thenReturn(ReleaseQcStatus.PASSED_RELEASE);
       when(release.getQcUser()).thenReturn("User");
       when(release.getQcDate()).thenReturn(LocalDate.now());
     }

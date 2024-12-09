@@ -12,6 +12,8 @@ import ca.on.oicr.gsi.cardea.data.Project;
 import ca.on.oicr.gsi.cardea.data.Requisition;
 import ca.on.oicr.gsi.cardea.data.Run;
 import ca.on.oicr.gsi.cardea.data.Sample;
+import ca.on.oicr.gsi.cardea.data.CaseQc.AnalysisReviewQcStatus;
+import ca.on.oicr.gsi.cardea.data.CaseQc.ReleaseApprovalQcStatus;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashSet;
@@ -358,7 +360,7 @@ public class MockCase {
     Case kase = makeCase("PRO4_0001", "Single Test", "PRO4", "REQ04", caseNumber);
     addTest(kase, caseNumber, 1, "Test", true, true, true, true);
     CaseDeliverable deliverable = kase.getDeliverables().get(0);
-    when(deliverable.getAnalysisReviewQcPassed()).thenReturn(Boolean.TRUE);
+    when(deliverable.getAnalysisReviewQcStatus()).thenReturn(AnalysisReviewQcStatus.PASSED);
     when(deliverable.getAnalysisReviewQcUser()).thenReturn("User");
     when(deliverable.getAnalysisReviewQcDate()).thenReturn(LocalDate.now());
     return kase;
@@ -371,10 +373,11 @@ public class MockCase {
     addTest(kase, caseNumber, 1, "Test", true, true, true, true);
     addTest(kase, caseNumber, 2, "Test", true, true, true, true);
     CaseDeliverable deliverable = kase.getDeliverables().get(0);
-    when(deliverable.getAnalysisReviewQcPassed()).thenReturn(Boolean.TRUE);
+    when(deliverable.getAnalysisReviewQcStatus()).thenReturn(AnalysisReviewQcStatus.PASSED);
     when(deliverable.getAnalysisReviewQcUser()).thenReturn("User");
     when(deliverable.getAnalysisReviewQcDate()).thenReturn(LocalDate.now());
-    when(deliverable.getReleaseApprovalQcPassed()).thenReturn(Boolean.TRUE);
+    when(deliverable.getReleaseApprovalQcStatus())
+        .thenReturn(ReleaseApprovalQcStatus.PASSED_PROCEED);
     when(deliverable.getReleaseApprovalQcUser()).thenReturn("User");
     when(deliverable.getReleaseApprovalQcDate()).thenReturn(LocalDate.now());
     return kase;

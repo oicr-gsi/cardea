@@ -1,6 +1,7 @@
 package ca.on.oicr.gsi.cardea.server.service;
 
 import ca.on.oicr.gsi.cardea.data.*;
+import ca.on.oicr.gsi.cardea.data.CaseQc.ReleaseQcStatus;
 import ca.on.oicr.gsi.cardea.server.CaseLoader;
 import ca.on.oicr.gsi.Pair;
 
@@ -90,7 +91,10 @@ public class CaseService {
       return CaseStatus.STOPPED;
     } else if (!kase.getDeliverables().isEmpty() && kase.getDeliverables().stream()
         .allMatch(deliverable -> deliverable.getReleases().stream()
-            .allMatch(release -> Boolean.TRUE.equals(release.getQcPassed())))) {
+            .allMatch(release -> {
+              ReleaseQcStatus status = release.getQcStatus();
+              return status != null && !status.isPending();
+            }))) {
       return CaseStatus.COMPLETED;
     } else {
       return CaseStatus.ACTIVE;
@@ -228,7 +232,8 @@ public class CaseService {
         return null;
       }
       for (CaseRelease release : deliverable.getReleases()) {
-        if (!Boolean.TRUE.equals(release.getQcPassed())) {
+        ReleaseQcStatus status = release.getQcStatus();
+        if (status == null || status.isPending()) {
           return null;
         }
         if (completedDate == null || completedDate.isBefore(release.getQcDate())) {

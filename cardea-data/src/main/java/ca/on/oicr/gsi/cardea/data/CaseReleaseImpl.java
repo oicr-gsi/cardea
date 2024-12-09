@@ -4,20 +4,21 @@ import java.time.LocalDate;
 import java.util.Objects;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonPOJOBuilder;
+import ca.on.oicr.gsi.cardea.data.CaseQc.ReleaseQcStatus;
 
 @JsonDeserialize(builder = CaseReleaseImpl.Builder.class)
 public class CaseReleaseImpl implements CaseRelease {
 
   private final String deliverable;
   private final LocalDate qcDate;
-  private final Boolean qcPassed;
+  private final ReleaseQcStatus qcStatus;
   private final String qcUser;
   private final String qcNote;
 
   private CaseReleaseImpl(Builder builder) {
     this.deliverable = Objects.requireNonNull(builder.deliverable);
     this.qcDate = builder.qcDate;
-    this.qcPassed = builder.qcPassed;
+    this.qcStatus = builder.qcStatus;
     this.qcUser = builder.qcUser;
     this.qcNote = builder.qcNote;
   }
@@ -33,8 +34,8 @@ public class CaseReleaseImpl implements CaseRelease {
   }
 
   @Override
-  public Boolean getQcPassed() {
-    return qcPassed;
+  public ReleaseQcStatus getQcStatus() {
+    return qcStatus;
   }
 
   @Override
@@ -52,7 +53,7 @@ public class CaseReleaseImpl implements CaseRelease {
 
     private String deliverable;
     private LocalDate qcDate;
-    private Boolean qcPassed;
+    private ReleaseQcStatus qcStatus;
     private String qcUser;
     private String qcNote;
 
@@ -66,8 +67,8 @@ public class CaseReleaseImpl implements CaseRelease {
       return this;
     }
 
-    public Builder qcPassed(Boolean qcPassed) {
-      this.qcPassed = qcPassed;
+    public Builder qcStatus(ReleaseQcStatus qcStatus) {
+      this.qcStatus = qcStatus;
       return this;
     }
 
