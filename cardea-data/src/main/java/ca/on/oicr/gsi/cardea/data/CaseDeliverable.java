@@ -3,6 +3,8 @@ package ca.on.oicr.gsi.cardea.data;
 import java.time.LocalDate;
 import java.util.List;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import ca.on.oicr.gsi.cardea.data.CaseQc.AnalysisReviewQcStatus;
+import ca.on.oicr.gsi.cardea.data.CaseQc.ReleaseApprovalQcStatus;
 
 @JsonDeserialize(as = CaseDeliverableImpl.class)
 public interface CaseDeliverable {
@@ -11,7 +13,7 @@ public interface CaseDeliverable {
 
   LocalDate getAnalysisReviewQcDate();
 
-  Boolean getAnalysisReviewQcPassed();
+  AnalysisReviewQcStatus getAnalysisReviewQcStatus();
 
   String getAnalysisReviewQcUser();
 
@@ -19,7 +21,7 @@ public interface CaseDeliverable {
 
   LocalDate getReleaseApprovalQcDate();
 
-  Boolean getReleaseApprovalQcPassed();
+  ReleaseApprovalQcStatus getReleaseApprovalQcStatus();
 
   String getReleaseApprovalQcUser();
 
