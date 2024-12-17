@@ -7,6 +7,14 @@ This file is updated automatically as described in [Unreleased Changes](changes/
 
 ---------------------------------------------------------------------------------------------------
 
+## [1.18.0] - 2024-12-17
+
+### Changed
+
+* Analysis review, release approval, and release now have QC statuses that indicate both QC passed and
+  the release status
+
+
 ## [1.17.1] - 2024-11-22
 
 ### Fixed
