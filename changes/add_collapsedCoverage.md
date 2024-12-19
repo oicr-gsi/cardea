@@ -1,1 +1,0 @@
-Sample collapsed coverage field

@@ -7,6 +7,13 @@ This file is updated automatically as described in [Unreleased Changes](changes/
 
 ---------------------------------------------------------------------------------------------------
 
+## [1.19.0] - 2024-12-19
+
+### Added
+
+* Sample collapsed coverage field
+
+
 ## [1.18.0] - 2024-12-17
 
 ### Changed
