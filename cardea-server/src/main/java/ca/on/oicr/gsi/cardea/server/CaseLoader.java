@@ -433,6 +433,7 @@ public class CaseLoader {
           .mappedToCoding(parseDecimal(json, "mapped_to_coding", false))
           .rawCoverage(parseDecimal(json, "raw_coverage", false))
           .onTargetReads(parseDecimal(json, "on_target_reads", false))
+          .collapsedCoverage(parseDecimal(json, "collapsed_coverage", false))
           .lambdaMethylation(parseDecimal(json, "lambda_methylation", false))
           .lambdaClusters(parseInteger(json, "lambda_clusters", false))
           .puc19Methylation(parseDecimal(json, "puc19_methylation", false))
