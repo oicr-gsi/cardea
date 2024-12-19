@@ -42,6 +42,7 @@ public class Sample {
   private final String name;
   private final String nucleicAcidType;
   private final BigDecimal onTargetReads;
+  private final BigDecimal collapsedCoverage;
   private final String project;
   private final Integer puc19Clusters;
   private final BigDecimal puc19Methylation;
@@ -104,6 +105,7 @@ public class Sample {
     this.mappedToCoding = builder.mappedToCoding;
     this.rawCoverage = builder.rawCoverage;
     this.onTargetReads = builder.onTargetReads;
+    this.collapsedCoverage = builder.collapsedCoverage;
     this.lambdaMethylation = builder.lambdaMethylation;
     this.lambdaClusters = builder.lambdaClusters;
     this.puc19Methylation = builder.puc19Methylation;
@@ -248,6 +250,10 @@ public class Sample {
     return onTargetReads;
   }
 
+  public BigDecimal getCollapsedCoverage() {
+    return collapsedCoverage;
+  }
+
   public String getProject() {
     return project;
   }
@@ -384,6 +390,7 @@ public class Sample {
     private String name;
     private String nucleicAcidType;
     private BigDecimal onTargetReads;
+    private BigDecimal collapsedCoverage;
     private String project;
     private Integer puc19Clusters;
     private BigDecimal puc19Methylation;
@@ -535,6 +542,11 @@ public class Sample {
 
     public Builder onTargetReads(BigDecimal onTargetReads) {
       this.onTargetReads = onTargetReads;
+      return this;
+    }
+
+    public Builder collapsedCoverage(BigDecimal collapsedCoverage) {
+      this.collapsedCoverage = collapsedCoverage;
       return this;
     }
 
