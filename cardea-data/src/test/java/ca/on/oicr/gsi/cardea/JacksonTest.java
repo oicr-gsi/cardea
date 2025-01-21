@@ -526,6 +526,7 @@ public class JacksonTest {
     assertEquals(one.isStopped(), two.isStopped());
     assertEquals(one.getCaseStatus(), two.getCaseStatus());
     assertEquals(one.getCompletedDate(), two.getCompletedDate());
+    assertEquals(one.getClinicalCompletedDate(), two.getClinicalCompletedDate());
     assertEquals(one.getSequencing().size(), two.getSequencing().size());
     assertShesmuTestEqual(one.getSequencing().iterator().next(),
         two.getSequencing().iterator().next());
@@ -883,6 +884,7 @@ public class JacksonTest {
         .paused(false)
         .caseStatus(CaseStatus.COMPLETED)
         .completedDateLocal(LocalDate.of(2024, 1, 13))
+        .clinicalCompletedDateLocal(LocalDate.of(2024, 1, 13))
         .sequencing(sequencing)
         .requisitionId(1L)
         .requisitionName("Some Req")

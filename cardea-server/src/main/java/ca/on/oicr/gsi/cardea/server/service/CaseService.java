@@ -222,22 +222,24 @@ public class CaseService {
         .collect(Collectors.toSet());
   }
 
-  private LocalDate getCompletedDate(Case kase) {
+  private LocalDate getCompletedDate(Case kase, Boolean clinicalOnly) {
     if (kase.getDeliverables().isEmpty()) {
       return null;
     }
     LocalDate completedDate = null;
     for (CaseDeliverable deliverable : kase.getDeliverables()) {
-      if (deliverable.getReleases().isEmpty()) {
-        return null;
-      }
-      for (CaseRelease release : deliverable.getReleases()) {
-        ReleaseQcStatus status = release.getQcStatus();
-        if (status == null || status.isPending()) {
+      if (!clinicalOnly || (clinicalOnly && deliverable.getDeliverableType() == DeliverableType.CLINICAL_REPORT)) {
+        if (deliverable.getReleases().isEmpty()) {
           return null;
         }
-        if (completedDate == null || completedDate.isBefore(release.getQcDate())) {
-          completedDate = release.getQcDate();
+        for (CaseRelease release : deliverable.getReleases()) {
+          ReleaseQcStatus status = release.getQcStatus();
+          if (status == null || status.isPending()) {
+            return null;
+          }
+          if (completedDate == null || completedDate.isBefore(release.getQcDate())) {
+            completedDate = release.getQcDate();
+          }
         }
       }
     }
@@ -250,7 +252,7 @@ public class CaseService {
         .assayVersion(caseData.getAssaysById().get(kase.getAssayId()).getVersion())
         .caseIdentifier(kase.getId())
         .caseStatus(getCaseStatus(kase))
-        .completedDateLocal(getCompletedDate(kase))
+        .completedDateLocal(getCompletedDate(kase, false))
         .limsIds(getLimsIusIdsForShesmu(kase))
         .requisitionId(kase.getRequisition().getId())
         .requisitionName(kase.getRequisition().getName())
@@ -265,7 +267,8 @@ public class CaseService {
         .caseStatus(getCaseStatus(kase))
         .paused(kase.getRequisition().isPaused())
         .stopped(kase.getRequisition().isStopped())
-        .completedDateLocal(getCompletedDate(kase))
+        .completedDateLocal(getCompletedDate(kase, false))
+        .clinicalCompletedDateLocal(getCompletedDate(kase, true))
         .requisitionId(kase.getRequisition().getId())
         .requisitionName(kase.getRequisition().getName())
         .sequencing(getSequencingForShesmuCase(kase))
