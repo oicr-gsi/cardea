@@ -23,6 +23,7 @@ public class ShesmuDetailedCase {
   private final boolean stopped;
   private final boolean paused;
   private final Optional<Instant> completedDate;
+  private final Optional<Instant> clinicalCompletedDate;
   private final long requisitionId;
   private final String requisitionName;
   private final Set<ShesmuSequencing> sequencing;
@@ -33,6 +34,7 @@ public class ShesmuDetailedCase {
     this.caseIdentifier = requireNonNull(builder.caseIdentifier);
     this.caseStatus = requireNonNull(builder.caseStatus);
     this.completedDate = builder.completedDate;
+    this.clinicalCompletedDate = builder.clinicalCompletedDate;
     this.stopped = builder.stopped;
     this.paused = builder.paused;
     this.requisitionId = requireNonNull(builder.requisitionId);
@@ -68,6 +70,10 @@ public class ShesmuDetailedCase {
     return completedDate;
   }
 
+  public Optional<Instant> getClinicalCompletedDate() {
+    return completedDate;
+  }
+
   public long getRequisitionId() {
     return requisitionId;
   }
@@ -90,6 +96,7 @@ public class ShesmuDetailedCase {
     private boolean paused;
     private boolean stopped;
     private Optional<Instant> completedDate;
+    private Optional<Instant> clinicalCompletedDate;
     private long requisitionId;
     private String requisitionName;
     private Set<ShesmuSequencing> sequencing;
@@ -133,8 +140,18 @@ public class ShesmuDetailedCase {
       return this;
     }
 
+    public Builder clinicalCompletedDate(Instant clinicalCompletedDate) {
+      this.clinicalCompletedDate = clinicalCompletedDate == null ? Optional.empty() : Optional.of(clinicalCompletedDate);
+      return this;
+    }
+
     public Builder completedDateLocal(LocalDate completedDate) {
       this.completedDate = convertCompletedDate(completedDate);
+      return this;
+    }
+
+    public Builder clinicalCompletedDateLocal(LocalDate clinicalCompletedDate) {
+      this.clinicalCompletedDate = convertCompletedDate(clinicalCompletedDate);
       return this;
     }
 
