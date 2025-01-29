@@ -71,7 +71,7 @@ public class ShesmuDetailedCase {
   }
 
   public Optional<Instant> getClinicalCompletedDate() {
-    return completedDate;
+    return clinicalCompletedDate;
   }
 
   public long getRequisitionId() {
@@ -141,7 +141,8 @@ public class ShesmuDetailedCase {
     }
 
     public Builder clinicalCompletedDate(Instant clinicalCompletedDate) {
-      this.clinicalCompletedDate = clinicalCompletedDate == null ? Optional.empty() : Optional.of(clinicalCompletedDate);
+      this.clinicalCompletedDate =
+          clinicalCompletedDate == null ? Optional.empty() : Optional.of(clinicalCompletedDate);
       return this;
     }
 
@@ -165,7 +166,7 @@ public class ShesmuDetailedCase {
       return this;
     }
 
-    public Builder sequencing(Set<ShesmuSequencing> sequencing){
+    public Builder sequencing(Set<ShesmuSequencing> sequencing) {
       this.sequencing = sequencing;
       return this;
     }
