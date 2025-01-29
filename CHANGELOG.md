@@ -7,6 +7,13 @@ This file is updated automatically as described in [Unreleased Changes](changes/
 
 ---------------------------------------------------------------------------------------------------
 
+## [1.20.1] - 2025-01-29
+
+### Fixed
+
+* clinicalCompletedDate set based on clinical deliverables, not overall completedDate
+
+
 ## [1.20.0] - 2025-01-23
 
 ### Added

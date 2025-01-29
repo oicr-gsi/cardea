@@ -1,1 +1,0 @@
-clinicalCompletedDate set based on clinical deliverables, not overall completedDate
