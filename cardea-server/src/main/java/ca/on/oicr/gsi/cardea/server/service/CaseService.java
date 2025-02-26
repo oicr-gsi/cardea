@@ -89,7 +89,13 @@ public class CaseService {
   private CaseStatus getCaseStatus(Case kase) {
     if (kase.isStopped()) {
       return CaseStatus.STOPPED;
-    } else if (!kase.getDeliverables().isEmpty() && kase.getDeliverables().stream()
+    } else {
+      return getCaseCompletion(kase);
+    }
+  }
+
+  private CaseStatus getCaseCompletion(Case kase) {
+     if (!kase.getDeliverables().isEmpty() && kase.getDeliverables().stream()
         .allMatch(deliverable -> deliverable.getReleases().stream()
             .allMatch(release -> {
               ReleaseQcStatus status = release.getQcStatus();
@@ -100,6 +106,7 @@ public class CaseService {
       return CaseStatus.ACTIVE;
     }
   }
+
 
   private Set<String> getRunNamesFor(Case kase) {
     return kase.getTests().stream()
@@ -264,7 +271,7 @@ public class CaseService {
         .assayName(caseData.getAssaysById().get(kase.getAssayId()).getName())
         .assayVersion(caseData.getAssaysById().get(kase.getAssayId()).getVersion())
         .caseIdentifier(kase.getId())
-        .caseStatus(getCaseStatus(kase))
+        .caseStatus(getCaseCompletion(kase))
         .paused(kase.getRequisition().isPaused())
         .stopped(kase.getRequisition().isStopped())
         .completedDateLocal(getCompletedDate(kase, false))
