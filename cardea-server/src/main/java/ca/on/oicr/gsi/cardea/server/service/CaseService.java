@@ -178,18 +178,25 @@ public class CaseService {
     boolean hasWaiting = false;
     for (Sample sample : samples) {
 
-      if (sample.getDataReviewPassed() == null || sample.getQcPassed() == null) {
+      if (sample.getDataReviewPassed() == null || (sample.getQcPassed() == null && sample.getQcUser() == null)) {
         hasWaiting = true;
       } else if (sample.getDataReviewPassed() && sample.getQcPassed()) {
         hasPassed = true;
       }
 
-      if (!(sample.getRun() == null && type.equals(MetricCategory.LIBRARY_QUALIFICATION))) {
-        shesmuSamples.add(new ShesmuSample.Builder()
-            .id(sample.getId())
-            .supplemental(!Objects.equals(sample.getRequisitionId(), reqId))
-            .qcFailed(getQcFailed(sample))
-            .build());
+      if (sample.getRun() != null) {
+        Run currRun = sample.getRun();
+        if (currRun.getDataReviewPassed() == null || (currRun.getQcPassed() == null && currRun.getQcUser() == null)){
+          hasWaiting = true;
+        }
+
+        if (!type.equals(MetricCategory.LIBRARY_QUALIFICATION)) {
+          shesmuSamples.add(new ShesmuSample.Builder()
+              .id(sample.getId())
+              .supplemental(!Objects.equals(sample.getRequisitionId(), reqId))
+              .qcFailed(getQcFailed(sample))
+              .build());
+        }
       }
     }
 
