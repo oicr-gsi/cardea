@@ -7,6 +7,18 @@ This file is updated automatically as described in [Unreleased Changes](changes/
 
 ---------------------------------------------------------------------------------------------------
 
+## [1.21.0] - 2025-03-03
+
+### Changed
+
+* Shesmu Detailed Case status can only be ACTIVE or COMPLETE, not STOPPED
+
+### Fixed
+
+* Sample complete logic to show correct status for top-up required and
+  take run status into account for sample completion
+
+
 ## [1.20.1] - 2025-01-29
 
 ### Fixed
