@@ -177,14 +177,19 @@ public class CaseService {
     boolean hasPassed = false;
     boolean hasWaiting = false;
     for (Sample sample : samples) {
+      if (sample.getRun() != null) {
 
-      if (sample.getDataReviewPassed() == null || sample.getQcPassed() == null) {
-        hasWaiting = true;
-      } else if (sample.getDataReviewPassed() && sample.getQcPassed()) {
-        hasPassed = true;
-      }
+        if (sample.getDataReviewPassed() == null || (sample.getQcPassed() == null && sample.getQcUser() == null)) {
+          hasWaiting = true;
+        } else if (Boolean.TRUE.equals(sample.getDataReviewPassed()) && Boolean.TRUE.equals(sample.getQcPassed())) {
+          hasPassed = true;
+        }
 
-      if (!(sample.getRun() == null && type.equals(MetricCategory.LIBRARY_QUALIFICATION))) {
+        Run currRun = sample.getRun();
+        if (currRun.getDataReviewPassed() == null || (currRun.getQcPassed() == null && currRun.getQcUser() == null)){
+          hasWaiting = true;
+        }
+
         shesmuSamples.add(new ShesmuSample.Builder()
             .id(sample.getId())
             .supplemental(!Objects.equals(sample.getRequisitionId(), reqId))
