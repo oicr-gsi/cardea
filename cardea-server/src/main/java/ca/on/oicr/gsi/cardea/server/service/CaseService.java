@@ -95,7 +95,7 @@ public class CaseService {
   }
 
   private CaseStatus getCaseCompletion(Case kase) {
-     if (!kase.getDeliverables().isEmpty() && kase.getDeliverables().stream()
+    if (!kase.getDeliverables().isEmpty() && kase.getDeliverables().stream()
         .allMatch(deliverable -> deliverable.getReleases().stream()
             .allMatch(release -> {
               ReleaseQcStatus status = release.getQcStatus();
@@ -179,14 +179,18 @@ public class CaseService {
     for (Sample sample : samples) {
       if (sample.getRun() != null) {
 
-        if (sample.getDataReviewPassed() == null || (sample.getQcPassed() == null && sample.getQcUser() == null)) {
+        if (sample.getDataReviewPassed() == null
+            || (sample.getQcPassed() == null && sample.getQcUser() == null)) {
           hasWaiting = true;
-        } else if (Boolean.TRUE.equals(sample.getDataReviewPassed()) && Boolean.TRUE.equals(sample.getQcPassed())) {
+        } else if (isTrue(sample.getDataReviewPassed()) && isTrue(sample.getQcPassed())
+            && isTrue(sample.getRun().getQcPassed())
+            && isTrue(sample.getRun().getDataReviewPassed())) {
           hasPassed = true;
         }
 
         Run currRun = sample.getRun();
-        if (currRun.getDataReviewPassed() == null || (currRun.getQcPassed() == null && currRun.getQcUser() == null)){
+        if (currRun.getDataReviewPassed() == null
+            || (currRun.getQcPassed() == null && currRun.getQcUser() == null)) {
           hasWaiting = true;
         }
 
@@ -207,6 +211,10 @@ public class CaseService {
         .complete((hasPassed && !hasWaiting))
         .type(type)
         .build();
+  }
+
+  private static boolean isTrue(Boolean value) {
+    return Boolean.TRUE.equals(value);
   }
 
   private boolean getQcFailed(Sample sample) {
@@ -240,7 +248,8 @@ public class CaseService {
     }
     LocalDate completedDate = null;
     for (CaseDeliverable deliverable : kase.getDeliverables()) {
-      if (!clinicalOnly || (clinicalOnly && deliverable.getDeliverableType() == DeliverableType.CLINICAL_REPORT)) {
+      if (!clinicalOnly || (clinicalOnly
+          && deliverable.getDeliverableType() == DeliverableType.CLINICAL_REPORT)) {
         if (deliverable.getReleases().isEmpty()) {
           return null;
         }
