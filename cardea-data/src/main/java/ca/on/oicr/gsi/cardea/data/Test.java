@@ -32,6 +32,7 @@ public class Test {
   private final String tissueOrigin;
   private final String tissueType;
   private final String libraryDesignCode;
+  private final String libraryQualificationDesignCode;
   private final int extractionDaysSpent;
   private final int extractionPreparationDaysSpent;
   private final int extractionQcDaysSpent;
@@ -53,6 +54,7 @@ public class Test {
     this.timepoint = builder.timepoint;
     this.groupId = builder.groupId;
     this.libraryDesignCode = builder.libraryDesignCode;
+    this.libraryQualificationDesignCode = builder.libraryQualificationDesignCode;
     this.targetedSequencing = builder.targetedSequencing;
     this.extractionSkipped = builder.extractionSkipped;
     this.libraryPreparationSkipped = builder.libraryPreparationSkipped;
@@ -105,6 +107,10 @@ public class Test {
 
   public String getLibraryDesignCode() {
     return libraryDesignCode;
+  }
+
+  public String getLibraryQualificationDesignCode() {
+    return libraryQualificationDesignCode;
   }
 
   public LocalDate getLatestActivityDate() {
@@ -211,6 +217,7 @@ public class Test {
     private List<Sample> fullDepthSequencings;
     private String groupId;
     private String libraryDesignCode;
+    private String libraryQualificationDesignCode;
     private boolean libraryPreparationSkipped;
     private List<Sample> libraryPreparations;
     private boolean libraryQualificationSkipped;
@@ -261,6 +268,11 @@ public class Test {
 
     public Builder libraryDesignCode(String libraryDesignCode) {
       this.libraryDesignCode = libraryDesignCode;
+      return this;
+    }
+
+    public Builder libraryQualificationDesignCode(String libraryQualificationDesignCode) {
+      this.libraryQualificationDesignCode = libraryQualificationDesignCode;
       return this;
     }
 

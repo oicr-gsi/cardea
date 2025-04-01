@@ -764,6 +764,7 @@ public class CaseLoader {
           .timepoint(parseString(testNode, "timepoint"))
           .groupId(parseString(testNode, "group_id"))
           .libraryDesignCode(parseString(testNode, "library_design", false))
+          .libraryQualificationDesignCode(parseString(testNode, "library_qualification_design"))
           .targetedSequencing(parseString(testNode, "targeted_sequencing"))
           .extractionSkipped(parseBoolean(testNode, "extraction_skipped"))
           .libraryPreparationSkipped(parseBoolean(testNode, "library_preparation_skipped"))
