@@ -8,12 +8,14 @@ import ca.on.oicr.gsi.Pair;
 import java.time.Duration;
 import java.time.LocalDate;
 import java.time.ZonedDateTime;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
+import java.util.TreeSet;
 import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -136,14 +138,11 @@ public class CaseService {
         .collect(Collectors.toSet());
   }
 
-  public Set<ShesmuDetailedCase> getShesmuDetailedCases() {
+  public TreeSet<ShesmuDetailedCase> getShesmuDetailedCases() {
     return caseData.getCases().stream()
-        .filter(kase -> kase.getTests().stream()
-            .anyMatch(test -> !test.getFullDepthSequencings().isEmpty()
-                || test.getLibraryQualifications().stream()
-                    .anyMatch(sample -> sample.getRun() != null)))
+        .sorted(Comparator.comparing(Case::getId))
         .map(kase -> convertCaseToShesmuDetailedCase(kase))
-        .collect(Collectors.toSet());
+        .collect(Collectors.toCollection(() -> new TreeSet<>(Comparator.comparing(ShesmuDetailedCase::getCaseIdentifier))));
   }
 
   private Set<ShesmuSequencing> getSequencingForShesmuCase(Case kase) {
