@@ -7,6 +7,23 @@ This file is updated automatically as described in [Unreleased Changes](changes/
 
 ---------------------------------------------------------------------------------------------------
 
+## [1.22.0] - 2025-04-03
+
+### Added
+
+* Library qualification design code to Test fields
+
+### Changed
+
+* shesmu-detailed-cases
+  * to return all cases instead of filtering to those with sequencing
+  * to return cases alphabetized by caseIdentifier
+
+### Fixed
+
+* shesmu-detailed-case did not consider run QC when determining whether sequencing was complete
+
+
 ## [1.21.0] - 2025-03-03
 
 ### Changed
