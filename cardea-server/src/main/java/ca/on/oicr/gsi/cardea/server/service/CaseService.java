@@ -147,7 +147,10 @@ public class CaseService {
 
   private Set<ShesmuSequencing> getSequencingForShesmuCase(Case kase) {
 
-    TreeSet<ShesmuSequencing> sequencings =  new TreeSet<>(Comparator.comparing(ShesmuSequencing::getTest));
+    TreeSet<ShesmuSequencing> sequencings =  new TreeSet<>(Comparator.comparing(ShesmuSequencing::getTest)
+        .thenComparing(shesmuSequencing -> shesmuSequencing.getLimsIds().stream()
+            .map(ShesmuSample::getId)
+            .collect(Collectors.joining(","))));
 
     final long reqId = kase.getRequisition().getId();
 
