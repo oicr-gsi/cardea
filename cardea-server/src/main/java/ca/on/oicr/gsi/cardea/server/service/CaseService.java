@@ -147,7 +147,12 @@ public class CaseService {
 
   private Set<ShesmuSequencing> getSequencingForShesmuCase(Case kase) {
 
-    Set<ShesmuSequencing> sequencings = new HashSet<>();
+
+    TreeSet<ShesmuSequencing> sequencings =  new TreeSet<>(Comparator.comparing(ShesmuSequencing::getTest)
+        .thenComparing(shesmuSequencing -> shesmuSequencing.getLimsIds().stream()
+            .map(ShesmuSample::getId) //IDs are sorted as part of makeShesmuSequencing
+            .collect(Collectors.joining(","))));
+
     final long reqId = kase.getRequisition().getId();
 
     for (Test test : kase.getTests()) {
@@ -171,7 +176,7 @@ public class CaseService {
   private ShesmuSequencing makeShesmuSequencing(List<Sample> samples, MetricCategory type,
       long reqId, String name) {
 
-    Set<ShesmuSample> shesmuSamples = new HashSet<>();
+    TreeSet<ShesmuSample> shesmuSamples = new TreeSet<>(Comparator.comparing(ShesmuSample::getId));
 
     boolean hasPassed = false;
     boolean hasWaiting = false;
