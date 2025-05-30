@@ -22,7 +22,11 @@ import ca.on.oicr.gsi.cardea.data.Requisition;
 import ca.on.oicr.gsi.cardea.data.AnalysisQcGroup;
 import ca.on.oicr.gsi.cardea.data.Run;
 import ca.on.oicr.gsi.cardea.data.Sample;
+import ca.on.oicr.gsi.cardea.data.SampleMetric;
+import ca.on.oicr.gsi.cardea.data.SampleMetricLane;
+import ca.on.oicr.gsi.cardea.data.ThresholdType;
 import ca.on.oicr.gsi.cardea.data.CaseQc.AnalysisReviewQcStatus;
+import ca.on.oicr.gsi.cardea.data.SampleMetric.MetricLevel;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -120,6 +124,37 @@ public class CaseLoaderTest {
     assertEquals(new BigDecimal("0.65"), lane1.getPercentPfixRead2());
   }
 
+  private static void assertRunSample(Sample sample) {
+    assertEquals("5476_1_LDI73620", sample.getId());
+    assertEquals("PROJ_1289_Ly_R_PE_567_WG", sample.getName());
+    assertEquals(Boolean.TRUE, sample.getQcPassed());
+    assertNotNull(sample.getMetrics());
+    assertEquals(1, sample.getMetrics().size());
+    SampleMetric metric = sample.getMetrics().get(0);
+    assertEquals("Bases Over Q30", metric.getName());
+    assertEquals(ThresholdType.GT, metric.getThresholdType());
+    assertEquals(MetricLevel.RUN, metric.getMetricLevel());
+    assertEquals(new BigDecimal("75.0"), metric.getMinimum());
+    assertNull(metric.getMaximum());
+    assertEquals(new BigDecimal("89.1"), metric.getValue());
+    assertNotNull(metric.getLaneValues());
+    assertEquals(2, metric.getLaneValues().size());
+    SampleMetricLane lane1 = metric.getLaneValues().stream()
+        .filter(x -> x.getLaneNumber() == 1)
+        .findAny().orElse(null);
+    assertNotNull(lane1);
+    assertNull(lane1.getLaneValue());
+    assertEquals(new BigDecimal("90.0"), lane1.getRead1Value());
+    assertEquals(new BigDecimal("88.0"), lane1.getRead2Value());
+    SampleMetricLane lane2 = metric.getLaneValues().stream()
+        .filter(x -> x.getLaneNumber() == 2)
+        .findAny().orElse(null);
+    assertNotNull(lane2);
+    assertNull(lane2.getLaneValue());
+    assertEquals(new BigDecimal("90.0"), lane2.getRead1Value());
+    assertEquals(new BigDecimal("88.0"), lane2.getRead2Value());
+  }
+
   private static void assertOmittedRunSample(OmittedRunSample sample) {
     assertEquals("5459_1_LDI36185", sample.getId());
     assertEquals("MISS_011408_Co_P_PE_490_WG", sample.getName());
@@ -183,9 +218,7 @@ public class CaseLoaderTest {
     assertNotNull(test.getFullDepthSequencings());
     assertEquals(1, test.getFullDepthSequencings().size());
     Sample fullDepth = test.getFullDepthSequencings().get(0);
-    assertEquals("5476_1_LDI73620", fullDepth.getId());
-    assertEquals("PROJ_1289_Ly_R_PE_567_WG", fullDepth.getName());
-    assertEquals(Boolean.TRUE, fullDepth.getQcPassed());
+    assertRunSample(fullDepth);
     assertEquals(1, test.getExtractionDaysSpent());
     assertEquals(0, test.getExtractionPreparationDaysSpent());
     assertEquals(0, test.getExtractionQcDaysSpent());
