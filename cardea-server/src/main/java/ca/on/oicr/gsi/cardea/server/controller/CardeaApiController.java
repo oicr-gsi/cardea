@@ -1,6 +1,9 @@
 package ca.on.oicr.gsi.cardea.server.controller;
 
+import ca.on.oicr.gsi.cardea.server.CaseUtils;
 import ca.on.oicr.gsi.cardea.server.service.CaseService;
+import io.swagger.v3.oas.annotations.Operation;
+import ca.on.oicr.gsi.cardea.data.Assay;
 import ca.on.oicr.gsi.cardea.data.Case;
 import ca.on.oicr.gsi.cardea.data.CaseData;
 import ca.on.oicr.gsi.cardea.data.CaseStatusesForRun;
@@ -64,6 +67,18 @@ public class CardeaApiController {
   @GetMapping("/shesmu-detailed-cases")
   public Set<ShesmuDetailedCase> getShesmuDetailedCases() {
     return caseService.getShesmuDetailedCases();
+  }
+
+  @GetMapping("/cases/{caseId}/priority")
+  @Operation(summary = "Retrieve case priority by case ID",
+      description = "Returns the integer priority for the specified case with higher numbers indicating higher priority")
+  public int getCasePriority(@PathVariable String caseId) {
+    Case kase = caseService.getCase(caseId);
+    if (kase == null) {
+      throw new NotFoundException("Could not find a case with ID '%s'".formatted(caseId));
+    }
+    Assay assay = caseService.getAssay(kase.getAssayId());
+    return CaseUtils.getCasePriority(kase, assay);
   }
 
 }

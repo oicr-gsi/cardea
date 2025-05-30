@@ -88,6 +88,16 @@ public class CaseService {
     return refreshFailures;
   }
 
+  public Case getCase(String caseId) {
+    return caseData.getCases().stream()
+        .filter(kase -> Objects.equals(kase.getId(), caseId))
+        .findAny().orElse(null);
+  }
+
+  public Assay getAssay(long assayId) {
+    return caseData.getAssaysById().get(assayId);
+  }
+
   private CaseStatus getCaseStatus(Case kase) {
     if (kase.isStopped()) {
       return CaseStatus.STOPPED;
@@ -142,16 +152,18 @@ public class CaseService {
     return caseData.getCases().stream()
         .sorted(Comparator.comparing(Case::getId))
         .map(kase -> convertCaseToShesmuDetailedCase(kase))
-        .collect(Collectors.toCollection(() -> new TreeSet<>(Comparator.comparing(ShesmuDetailedCase::getCaseIdentifier))));
+        .collect(Collectors.toCollection(
+            () -> new TreeSet<>(Comparator.comparing(ShesmuDetailedCase::getCaseIdentifier))));
   }
 
   private Set<ShesmuSequencing> getSequencingForShesmuCase(Case kase) {
 
 
-    TreeSet<ShesmuSequencing> sequencings =  new TreeSet<>(Comparator.comparing(ShesmuSequencing::getTest)
-        .thenComparing(shesmuSequencing -> shesmuSequencing.getLimsIds().stream()
-            .map(ShesmuSample::getId) //IDs are sorted as part of makeShesmuSequencing
-            .collect(Collectors.joining(","))));
+    TreeSet<ShesmuSequencing> sequencings =
+        new TreeSet<>(Comparator.comparing(ShesmuSequencing::getTest)
+            .thenComparing(shesmuSequencing -> shesmuSequencing.getLimsIds().stream()
+                .map(ShesmuSample::getId) // IDs are sorted as part of makeShesmuSequencing
+                .collect(Collectors.joining(","))));
 
     final long reqId = kase.getRequisition().getId();
 
