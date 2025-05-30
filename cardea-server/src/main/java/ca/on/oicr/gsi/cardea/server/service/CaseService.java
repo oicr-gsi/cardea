@@ -149,6 +149,7 @@ public class CaseService {
 
 
     TreeSet<ShesmuSequencing> sequencings =  new TreeSet<>(Comparator.comparing(ShesmuSequencing::getTest)
+            .thenComparing(ShesmuSequencing::getType)
         .thenComparing(shesmuSequencing -> shesmuSequencing.getLimsIds().stream()
             .map(ShesmuSample::getId) //IDs are sorted as part of makeShesmuSequencing
             .collect(Collectors.joining(","))));
@@ -206,9 +207,6 @@ public class CaseService {
       }
     }
 
-    if (shesmuSamples.isEmpty()) {
-      return null;
-    }
     return new ShesmuSequencing.Builder()
         .test(name)
         .limsIds(shesmuSamples)
