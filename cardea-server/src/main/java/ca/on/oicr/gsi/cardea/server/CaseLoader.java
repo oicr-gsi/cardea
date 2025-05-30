@@ -23,11 +23,14 @@ import ca.on.oicr.gsi.cardea.data.Requisition;
 import ca.on.oicr.gsi.cardea.data.AnalysisQcGroup;
 import ca.on.oicr.gsi.cardea.data.Run;
 import ca.on.oicr.gsi.cardea.data.Sample;
+import ca.on.oicr.gsi.cardea.data.SampleMetric;
+import ca.on.oicr.gsi.cardea.data.SampleMetricLane;
 import ca.on.oicr.gsi.cardea.data.Test;
 import ca.on.oicr.gsi.cardea.data.ThresholdType;
 import ca.on.oicr.gsi.cardea.data.CaseQc.AnalysisReviewQcStatus;
 import ca.on.oicr.gsi.cardea.data.CaseQc.ReleaseApprovalQcStatus;
 import ca.on.oicr.gsi.cardea.data.CaseQc.ReleaseQcStatus;
+import ca.on.oicr.gsi.cardea.data.SampleMetric.MetricLevel;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.micrometer.core.instrument.MeterRegistry;
@@ -452,6 +455,7 @@ public class CaseLoader {
           .sequencingLane(parseString(json, "sequencing_lane"))
           .transferDate(parseDate(json, "transfer_date"))
           .dv200(parseDecimal(json, "dv200", false))
+          .metrics(parseSampleMetrics(json.get("metrics")))
           .build();
     });
 
@@ -718,6 +722,70 @@ public class CaseLoader {
           .build());
     }
     return metrics;
+  }
+
+  private List<SampleMetric> parseSampleMetrics(JsonNode json) throws DataParseException {
+    if (json == null || json.isNull()) {
+      return null;
+    } else if (!json.isArray()) {
+      throw new DataParseException("Invalid sample metrics");
+    }
+    List<SampleMetric> metrics = new ArrayList<>();
+    for (JsonNode node : json) {
+      metrics.add(new SampleMetric.Builder()
+          .name(parseString(node, "name", true))
+          .thresholdType(ThresholdType.valueOf(parseString(node, "threshold_type", true)))
+          .minimum(parseDecimal(node, "threshold_min", false))
+          .maximum(parseDecimal(node, "threshold_max", false))
+          .metricLevel(MetricLevel.valueOf(parseString(node, "metric_level", true)))
+          .preliminary(parseOptionalBoolean(node, "preliminary"))
+          .value(parseDecimal(node, "value", false))
+          .laneValues(parseLaneValues(node.get("run_values")))
+          .qcPassed(parseOptionalBoolean(node, "qc_passed"))
+          .units(parseString(node, "units", false))
+          .build());
+    }
+    return metrics;
+  }
+
+  private Set<SampleMetricLane> parseLaneValues(JsonNode json) throws DataParseException {
+    if (json == null || json.isNull()) {
+      return null;
+    } else if (!json.isObject()) {
+      throw new DataParseException("Invalid sample metric run values");
+    }
+    Set<SampleMetricLane> laneValues = new HashSet<>();
+    Iterator<Entry<String, JsonNode>> lanes = json.fields();
+    while (lanes.hasNext()) {
+      Entry<String, JsonNode> laneEntry = lanes.next();
+      Integer laneNumber = Integer.valueOf(laneEntry.getKey());
+      if (!laneEntry.getValue().isObject()) {
+        throw new DataParseException("Invalid sample metric lane values");
+      }
+      Iterator<String> subLanes = laneEntry.getValue().fieldNames();
+      BigDecimal laneValue = null;
+      BigDecimal read1Value = null;
+      BigDecimal read2Value = null;
+      while (subLanes.hasNext()) {
+        String subLane = subLanes.next();
+        BigDecimal value = parseDecimal(laneEntry.getValue(), subLane, false);
+        switch (subLane) {
+          case "null":
+            laneValue = value;
+            break;
+          case "R1":
+            read1Value = value;
+            break;
+          case "R2":
+            read2Value = value;
+            break;
+          default:
+            throw new DataParseException("Unexpected lane/read label: " + subLane);
+        }
+      }
+      laneValues.add(new SampleMetricLane(laneNumber, laneValue, read1Value, read2Value));
+    }
+    return laneValues;
   }
 
   private AssayTargets parseAssayTargets(JsonNode json) throws DataParseException {
