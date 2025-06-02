@@ -88,6 +88,16 @@ public class CaseService {
     return refreshFailures;
   }
 
+  public Case getCase(String caseId) {
+    return caseData.getCases().stream()
+        .filter(kase -> Objects.equals(kase.getId(), caseId))
+        .findAny().orElse(null);
+  }
+
+  public Assay getAssay(long assayId) {
+    return caseData.getAssaysById().get(assayId);
+  }
+
   private CaseStatus getCaseStatus(Case kase) {
     if (kase.isStopped()) {
       return CaseStatus.STOPPED;
@@ -142,7 +152,8 @@ public class CaseService {
     return caseData.getCases().stream()
         .sorted(Comparator.comparing(Case::getId))
         .map(kase -> convertCaseToShesmuDetailedCase(kase))
-        .collect(Collectors.toCollection(() -> new TreeSet<>(Comparator.comparing(ShesmuDetailedCase::getCaseIdentifier))));
+        .collect(Collectors.toCollection(
+            () -> new TreeSet<>(Comparator.comparing(ShesmuDetailedCase::getCaseIdentifier))));
   }
 
   private Set<ShesmuSequencing> getSequencingForShesmuCase(Case kase) {
