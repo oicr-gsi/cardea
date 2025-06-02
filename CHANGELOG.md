@@ -7,6 +7,18 @@ This file is updated automatically as described in [Unreleased Changes](changes/
 
 ---------------------------------------------------------------------------------------------------
 
+## [1.23.0] - 2025-06-02
+
+### Added
+
+* Endpoint to retrieve case priority
+
+### Changed
+
+* shesmu-detailed-cases sequencing will show tests for expected but incomplete/unregistered samples
+* shesmu-detailed-case endpoint sequencing field will be sorted
+
+
 ## [1.22.0] - 2025-04-03
 
 ### Added
