@@ -53,7 +53,8 @@
     "rrna_contamination": null,
     "mapped_to_coding": null,
     "raw_coverage": null,
-    "on_target_reads": null
+    "on_target_reads": null,
+    "metrics": []
   },
   {
     "sample_id": "SAM413641",
@@ -109,7 +110,8 @@
     "rrna_contamination": null,
     "mapped_to_coding": null,
     "raw_coverage": null,
-    "on_target_reads": null
+    "on_target_reads": null,
+    "metrics": []
   },
   {
     "sample_id": "SAM413643",
@@ -165,7 +167,8 @@
     "rrna_contamination": null,
     "mapped_to_coding": null,
     "raw_coverage": null,
-    "on_target_reads": null
+    "on_target_reads": null,
+    "metrics": []
   },
   {
     "sample_id": "SAM413645",
@@ -221,7 +224,8 @@
     "rrna_contamination": null,
     "mapped_to_coding": null,
     "raw_coverage": null,
-    "on_target_reads": null
+    "on_target_reads": null,
+    "metrics": []
   },
   {
     "sample_id": "SAM413647",
@@ -277,7 +281,8 @@
     "rrna_contamination": null,
     "mapped_to_coding": null,
     "raw_coverage": null,
-    "on_target_reads": null
+    "on_target_reads": null,
+    "metrics": []
   },
   {
     "sample_id": "SAM413593",
@@ -333,7 +338,8 @@
     "rrna_contamination": null,
     "mapped_to_coding": null,
     "raw_coverage": null,
-    "on_target_reads": null
+    "on_target_reads": null,
+    "metrics": []
   },
   {
     "sample_id": "LIB75802",
@@ -390,7 +396,8 @@
     "rrna_contamination": null,
     "mapped_to_coding": null,
     "raw_coverage": null,
-    "on_target_reads": null
+    "on_target_reads": null,
+    "metrics": []
   },
   {
     "sample_id": "5459_1_LDI73620",
@@ -446,7 +453,8 @@
     "rrna_contamination": null,
     "mapped_to_coding": null,
     "raw_coverage": null,
-    "on_target_reads": null
+    "on_target_reads": null,
+    "metrics": []
   },
   {
     "sample_id": "5467_1_LDI73620",
@@ -499,7 +507,8 @@
     "rrna_contamination": null,
     "mapped_to_coding": null,
     "raw_coverage": null,
-    "on_target_reads": null
+    "on_target_reads": null,
+    "metrics": []
   },
   {
     "sample_id": "5476_1_LDI73620",
@@ -555,7 +564,30 @@
     "rrna_contamination": null,
     "mapped_to_coding": null,
     "raw_coverage": null,
-    "on_target_reads": null
+    "on_target_reads": null,
+    "metrics": [
+      {
+        "name": "Bases Over Q30",
+        "threshold_type": "GT",
+        "threshold_min": 75.0,
+        "threshold_max": null,
+        "metric_level": "RUN",
+        "preliminary": null,
+        "run_values": {
+          "1": {
+            "R1": 90.0,
+            "R2": 88.0
+          },
+          "2": {
+            "R1": 90.0,
+            "R2": 88.0
+          }
+        },
+        "value": 89.1,
+        "qc_passed": true,
+        "units": "%"
+      }
+    ]
   },
   {
     "sample_id": "SAM413648",
@@ -611,7 +643,8 @@
     "rrna_contamination": null,
     "mapped_to_coding": null,
     "raw_coverage": null,
-    "on_target_reads": null
+    "on_target_reads": null,
+    "metrics": []
   },
   {
     "sample_id": "LIB76197",
@@ -668,7 +701,8 @@
     "rrna_contamination": null,
     "mapped_to_coding": null,
     "raw_coverage": null,
-    "on_target_reads": null
+    "on_target_reads": null,
+    "metrics": []
   },
   {
     "sample_id": "LIB75803",
@@ -725,7 +759,8 @@
     "rrna_contamination": null,
     "mapped_to_coding": null,
     "raw_coverage": null,
-    "on_target_reads": null
+    "on_target_reads": null,
+    "metrics": []
   },
   {
     "sample_id": "5460_1_LDI73998",
@@ -781,7 +816,8 @@
     "rrna_contamination": null,
     "mapped_to_coding": null,
     "raw_coverage": null,
-    "on_target_reads": null
+    "on_target_reads": null,
+    "metrics": []
   },
   {
     "sample_id": "5459_1_LDI73621",
@@ -837,7 +873,8 @@
     "rrna_contamination": null,
     "mapped_to_coding": null,
     "raw_coverage": null,
-    "on_target_reads": null
+    "on_target_reads": null,
+    "metrics": []
   },
   {
     "sample_id": "5467_1_LDI73621",
@@ -893,7 +930,8 @@
     "rrna_contamination": null,
     "mapped_to_coding": null,
     "raw_coverage": null,
-    "on_target_reads": null
+    "on_target_reads": null,
+    "metrics": []
   },
   {
     "sample_id": "5481_1_LDI73998",
@@ -949,7 +987,8 @@
     "rrna_contamination": 3.6213356920990045,
     "mapped_to_coding": 27.0237,
     "raw_coverage": null,
-    "on_target_reads": null
+    "on_target_reads": null,
+    "metrics": []
   },
   {
     "sample_id": "5476_1_LDI73621",
@@ -1005,7 +1044,8 @@
     "rrna_contamination": null,
     "mapped_to_coding": null,
     "raw_coverage": null,
-    "on_target_reads": null
+    "on_target_reads": null,
+    "metrics": []
   },
   {
     "sample_id": "5540_1_LDI73621",
@@ -1061,7 +1101,8 @@
     "rrna_contamination": null,
     "mapped_to_coding": null,
     "raw_coverage": null,
-    "on_target_reads": null
+    "on_target_reads": null,
+    "metrics": []
   },
   {
     "sample_id": "SAM413735",
@@ -1117,6 +1158,7 @@
     "rrna_contamination": null,
     "mapped_to_coding": null,
     "raw_coverage": null,
-    "on_target_reads": null
+    "on_target_reads": null,
+    "metrics": []
   }
 ]

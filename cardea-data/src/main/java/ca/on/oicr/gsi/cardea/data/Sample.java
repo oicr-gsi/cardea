@@ -4,6 +4,7 @@ import static java.util.Objects.requireNonNull;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.Collections;
+import java.util.List;
 import java.util.Objects;
 import java.util.Set;
 import java.util.stream.Stream;
@@ -69,6 +70,7 @@ public class Sample {
   private final Integer peReads;
   private final LocalDate transferDate;
   private final BigDecimal dv200;
+  private final List<SampleMetric> metrics;
 
   private Sample(Builder builder) {
     this.id = requireNonNull(builder.id);
@@ -130,6 +132,7 @@ public class Sample {
     }
     this.transferDate = builder.transferDate;
     this.dv200 = builder.dv200;
+    this.metrics = Collections.unmodifiableList(builder.metrics);
   }
 
   @Override
@@ -358,6 +361,10 @@ public class Sample {
     return dv200;
   }
 
+  public List<SampleMetric> getMetrics() {
+    return metrics;
+  }
+
   @Override
   public int hashCode() {
     return Objects.hash(id, run, sequencingLane);
@@ -419,6 +426,7 @@ public class Sample {
     private LocalDate latestActivityDate;
     private LocalDate transferDate;
     private BigDecimal dv200;
+    private List<SampleMetric> metrics;
 
     public Sample build() {
       return new Sample(this);
@@ -695,6 +703,11 @@ public class Sample {
 
     public Builder dv200(BigDecimal dv200) {
       this.dv200 = dv200;
+      return this;
+    }
+
+    public Builder metrics(List<SampleMetric> metrics) {
+      this.metrics = metrics;
       return this;
     }
 

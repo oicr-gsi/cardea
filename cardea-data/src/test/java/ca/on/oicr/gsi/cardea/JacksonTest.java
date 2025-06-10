@@ -1,7 +1,6 @@
 package ca.on.oicr.gsi.cardea;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.*;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.Collections;
@@ -15,10 +14,10 @@ import java.util.function.BiConsumer;
 import ca.on.oicr.gsi.cardea.data.*;
 import org.springframework.http.converter.json.Jackson2ObjectMapperBuilder;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import ca.on.oicr.gsi.cardea.data.ShesmuSequencing;
 import ca.on.oicr.gsi.cardea.data.CaseQc.AnalysisReviewQcStatus;
 import ca.on.oicr.gsi.cardea.data.CaseQc.ReleaseApprovalQcStatus;
 import ca.on.oicr.gsi.cardea.data.CaseQc.ReleaseQcStatus;
+import ca.on.oicr.gsi.cardea.data.SampleMetric.MetricLevel;
 
 public class JacksonTest {
 
@@ -415,6 +414,38 @@ public class JacksonTest {
     assertEquals(one.getPeReads(), two.getPeReads());
     assertEquals(one.getTransferDate(), two.getTransferDate());
     assertEquals(one.getDv200(), two.getDv200());
+    assertMetricsEqual(one.getMetrics(), two.getMetrics());
+  }
+
+  private static void assertMetricsEqual(List<SampleMetric> one, List<SampleMetric> two) {
+    assertEquals(one.size(), two.size());
+    for (int i = 0; i < one.size(); i++) {
+      SampleMetric metricOne = one.get(i);
+      SampleMetric metricTwo = two.get(i);
+      assertEquals(metricOne.getName(), metricTwo.getName());
+      assertEquals(metricOne.getThresholdType(), metricTwo.getThresholdType());
+      assertEquals(metricOne.getMinimum(), metricTwo.getMinimum());
+      assertEquals(metricOne.getMaximum(), metricTwo.getMaximum());
+      assertEquals(metricOne.getMetricLevel(), metricTwo.getMetricLevel());
+      assertEquals(metricOne.getPreliminary(), metricTwo.getPreliminary());
+      assertEquals(metricOne.getValue(), metricTwo.getValue());
+      assertEquals(metricOne.getQcPassed(), metricTwo.getQcPassed());
+      assertEquals(metricOne.getUnits(), metricTwo.getUnits());
+      if (metricOne.getLaneValues() == null) {
+        assertNull(metricTwo.getLaneValues());
+      } else {
+        assertEquals(metricOne.getLaneValues().size(), metricTwo.getLaneValues().size());
+        for (SampleMetricLane laneOne : metricOne.getLaneValues()) {
+          SampleMetricLane laneTwo = metricTwo.getLaneValues().stream()
+              .filter(x -> x.getLaneNumber() == laneOne.getLaneNumber())
+              .findAny().orElse(null);
+          assertNotNull(laneTwo);
+          assertEquals(laneOne.getLaneValue(), laneTwo.getLaneValue());
+          assertEquals(laneOne.getRead1Value(), laneTwo.getRead1Value());
+          assertEquals(laneOne.getRead2Value(), laneTwo.getRead2Value());
+        }
+      }
+    }
   }
 
   private static void assertTestEqual(Test one, Test two) {
@@ -765,7 +796,25 @@ public class JacksonTest {
         .peReads(35)
         .transferDate(LocalDate.of(2024, 06, 11))
         .dv200(new BigDecimal("999.99"))
+        .metrics(makeSampleMetrics())
         .build();
+  }
+
+  private static List<SampleMetric> makeSampleMetrics() {
+    return Collections.singletonList(
+        new SampleMetric.Builder()
+            .name("Test Metric")
+            .thresholdType(ThresholdType.BETWEEN)
+            .minimum(new BigDecimal("0.0"))
+            .maximum(new BigDecimal("99.99"))
+            .metricLevel(MetricLevel.LANE)
+            .preliminary(false)
+            .value(new BigDecimal("12.34"))
+            .laneValues(Collections.singleton(new SampleMetricLane(1, new BigDecimal("23.34"),
+                new BigDecimal("34.56"), new BigDecimal("45.67"))))
+            .qcPassed(true)
+            .units("%")
+            .build());
   }
 
   private static Test makeTest() {

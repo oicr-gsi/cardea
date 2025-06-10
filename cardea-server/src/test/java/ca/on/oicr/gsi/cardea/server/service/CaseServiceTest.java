@@ -60,13 +60,19 @@ public class CaseServiceTest {
     // here too
     if (runName == null) {
       newSample = new Sample.Builder().id(name).name(name).donor(mock(Donor.class)).project("PROJ")
-          .tissueOrigin("To").tissueType("T")
-          .createdDate(LocalDate.now()).build();
+          .tissueOrigin("To")
+          .tissueType("T")
+          .metrics(new ArrayList<>())
+          .createdDate(LocalDate.now())
+          .build();
     } else {
       newSample = new Sample.Builder().id(name).name(name).donor(mock(Donor.class)).project("PROJ")
-          .tissueOrigin("To").tissueType("T")
+          .tissueOrigin("To")
+          .tissueType("T")
           .run(new Run.Builder().name(runName).lanes(new ArrayList<>()).build())
-          .createdDate(LocalDate.now()).build();
+          .metrics(new ArrayList<>())
+          .createdDate(LocalDate.now())
+          .build();
     }
 
     collection.add(newSample);
