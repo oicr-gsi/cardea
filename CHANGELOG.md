@@ -7,6 +7,13 @@ This file is updated automatically as described in [Unreleased Changes](changes/
 
 ---------------------------------------------------------------------------------------------------
 
+## [1.24.0] - 2025-06-12
+
+### Added
+
+* Metrics collection to samples, defining the metric properties, value(s), and status
+
+
 ## [1.23.0] - 2025-06-02
 
 ### Added
