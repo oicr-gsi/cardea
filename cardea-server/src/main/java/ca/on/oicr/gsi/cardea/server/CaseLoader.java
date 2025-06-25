@@ -10,7 +10,6 @@ import ca.on.oicr.gsi.cardea.data.CaseData;
 import ca.on.oicr.gsi.cardea.data.CaseDeliverable;
 import ca.on.oicr.gsi.cardea.data.CaseDeliverableImpl;
 import ca.on.oicr.gsi.cardea.data.CaseReleaseImpl;
-import ca.on.oicr.gsi.cardea.data.DeliverableType;
 import ca.on.oicr.gsi.cardea.data.Donor;
 import ca.on.oicr.gsi.cardea.data.Lane;
 import ca.on.oicr.gsi.cardea.data.Metric;
@@ -334,7 +333,6 @@ public class CaseLoader {
     List<Project> projects = loadFromJsonArrayFile(fileReader,
         json -> new Project.Builder().name(parseString(json, "name", true))
             .pipeline(parseString(json, "pipeline", true))
-            .analysisReviewSkipped(parseBoolean(json, "analysis_review_skipped"))
             .deliverables(parseProjectDeliverables(json.get("deliverables")))
             .build());
 
@@ -881,7 +879,8 @@ public class CaseLoader {
     List<CaseDeliverable> deliverables = new ArrayList<>();
     for (JsonNode node : deliverablesNode) {
       deliverables.add(new CaseDeliverableImpl.Builder()
-          .deliverableType(DeliverableType.valueOf(parseString(node, "deliverable_type")))
+          .deliverableCategory(parseString(node, "deliverable_category"))
+          .analysisReviewSkipped(parseBoolean(node, "analysis_review_skipped"))
           .analysisReviewQcDate(parseDate(node, "analysis_review_qc_date"))
           .analysisReviewQcStatus(parseCaseQc(node, "analysis_review_qc_state",
               "analysis_review_qc_release", AnalysisReviewQcStatus::of))
@@ -928,25 +927,25 @@ public class CaseLoader {
     return list;
   }
 
-  private Map<DeliverableType, List<String>> parseProjectDeliverables(JsonNode json)
+  private Map<String, List<String>> parseProjectDeliverables(JsonNode json)
       throws DataParseException {
     if (json == null || !json.isObject()) {
       throw new DataParseException("Invalid project deliverable types");
     }
-    Map<DeliverableType, List<String>> map = new HashMap<>();
+    Map<String, List<String>> map = new HashMap<>();
     Iterator<Entry<String, JsonNode>> iterator = json.fields();
     while (iterator.hasNext()) {
       Entry<String, JsonNode> entry = iterator.next();
-      DeliverableType deliverableType = DeliverableType.valueOf(entry.getKey());
+      String deliverableCategory = entry.getKey();
       JsonNode listJson = entry.getValue();
       if (listJson == null || !listJson.isArray()) {
         throw new DataParseException("Invalid project deliverables");
       }
       List<String> deliverables = new ArrayList<>();
       for (JsonNode node : listJson) {
-        deliverables.add(node.asText());
+        deliverables.add(parseString(node, "name", true));
       }
-      map.put(deliverableType, deliverables);
+      map.put(deliverableCategory, deliverables);
     }
     return map;
   }

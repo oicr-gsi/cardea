@@ -286,7 +286,8 @@ public class JacksonTest {
   }
 
   private static void assertCaseDeliverableEqual(CaseDeliverable one, CaseDeliverable two) {
-    assertEquals(one.getDeliverableType(), two.getDeliverableType());
+    assertEquals(one.getDeliverableCategory(), two.getDeliverableCategory());
+    assertEquals(one.isAnalysisReviewSkipped(), two.isAnalysisReviewSkipped());
     assertEquals(one.getAnalysisReviewQcDate(), two.getAnalysisReviewQcDate());
     assertEquals(one.getAnalysisReviewQcStatus(), two.getAnalysisReviewQcStatus());
     assertEquals(one.getAnalysisReviewQcNote(), two.getAnalysisReviewQcNote());
@@ -313,7 +314,6 @@ public class JacksonTest {
   private static void assertProjectEqual(Project one, Project two) {
     assertEquals(one.getName(), two.getName());
     assertEquals(one.getPipeline(), two.getPipeline());
-    assertEquals(one.isAnalysisReviewSkipped(), two.isAnalysisReviewSkipped());
     assertEquals(one.getDeliverables(), two.getDeliverables());
   }
 
@@ -670,7 +670,8 @@ public class JacksonTest {
     List<CaseRelease> releases = Collections.singletonList(makeCaseRelease());
 
     return new CaseDeliverableImpl.Builder()
-        .deliverableType(DeliverableType.DATA_RELEASE)
+        .deliverableCategory("Data Release")
+        .analysisReviewSkipped(false)
         .analysisReviewQcDate(LocalDate.of(2024, 1, 3))
         .analysisReviewQcStatus(AnalysisReviewQcStatus.PASSED)
         .analysisReviewQcNote("A-OK")
@@ -687,12 +688,11 @@ public class JacksonTest {
   }
 
   private static Project makeProject() {
-    Map<DeliverableType, List<String>> deliverables = new HashMap<>();
-    deliverables.put(DeliverableType.DATA_RELEASE, Collections.singletonList("FastQ"));
+    Map<String, List<String>> deliverables = new HashMap<>();
+    deliverables.put("Data Release", Collections.singletonList("FastQ"));
 
     return new Project.Builder()
         .name("PROJ")
-        .analysisReviewSkipped(false)
         .pipeline("RUO")
         .deliverables(deliverables)
         .build();

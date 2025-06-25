@@ -5,7 +5,6 @@ import static org.mockito.Mockito.when;
 import ca.on.oicr.gsi.cardea.data.Case;
 import ca.on.oicr.gsi.cardea.data.CaseDeliverable;
 import ca.on.oicr.gsi.cardea.data.CaseRelease;
-import ca.on.oicr.gsi.cardea.data.DeliverableType;
 import ca.on.oicr.gsi.cardea.data.Donor;
 import ca.on.oicr.gsi.cardea.data.MetricCategory;
 import ca.on.oicr.gsi.cardea.data.Project;
@@ -124,7 +123,7 @@ public class MockCase {
     addRequisition(kase, caseNumber, requisitionName);
     when(kase.getDeliverables()).thenReturn(new ArrayList<>());
     CaseDeliverable deliverable = mock(CaseDeliverable.class);
-    when(deliverable.getDeliverableType()).thenReturn(DeliverableType.DATA_RELEASE);
+    when(deliverable.getDeliverableCategory()).thenReturn("Data Release");
     when(deliverable.getReleases()).thenReturn(new ArrayList<>());
     CaseRelease release = mock(CaseRelease.class);
     when(release.getDeliverable()).thenReturn("Full Pipeline");

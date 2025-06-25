@@ -131,7 +131,8 @@
     ],
     "deliverables": [
       {
-        "deliverable_type": "CLINICAL_REPORT",
+        "deliverable_category": "Clinical Report",
+        "analysis_review_skipped": false,
         "analysis_review_qc_state": "Ready",
         "analysis_review_qc_release": null,
         "analysis_review_qc_user": "Person",
