@@ -7,6 +7,14 @@ This file is updated automatically as described in [Unreleased Changes](changes/
 
 ---------------------------------------------------------------------------------------------------
 
+## [1.25.0] - 2025-06-30
+
+### Changed
+
+* Deliverable categories are no longer hard-coded
+* Analysis review skipped is now set on the deliverable rather than the project
+
+
 ## [1.24.0] - 2025-06-12
 
 ### Added
