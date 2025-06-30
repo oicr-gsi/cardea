@@ -15,7 +15,8 @@ import ca.on.oicr.gsi.cardea.data.CaseQc.ReleaseApprovalQcStatus;
 @JsonDeserialize(builder = CaseDeliverableImpl.Builder.class)
 public class CaseDeliverableImpl implements CaseDeliverable {
 
-  private final DeliverableType deliverableType;
+  private final String deliverableType;
+  private final boolean analysisReviewSkipped;
   private final LocalDate analysisReviewQcDate;
   private final AnalysisReviewQcStatus analysisReviewQcStatus;
   private final String analysisReviewQcUser;
@@ -32,7 +33,8 @@ public class CaseDeliverableImpl implements CaseDeliverable {
   private final int deliverableDaysSpent;
 
   private CaseDeliverableImpl(Builder builder) {
-    this.deliverableType = requireNonNull(builder.deliverableType);
+    this.deliverableType = requireNonNull(builder.deliverableCategory);
+    this.analysisReviewSkipped = builder.analysisReviewSkipped;
     this.analysisReviewQcDate = builder.analysisReviewQcDate;
     this.analysisReviewQcStatus = builder.analysisReviewQcStatus;
     this.analysisReviewQcUser = builder.analysisReviewQcUser;
@@ -62,8 +64,13 @@ public class CaseDeliverableImpl implements CaseDeliverable {
   }
 
   @Override
-  public DeliverableType getDeliverableType() {
+  public String getDeliverableCategory() {
     return deliverableType;
+  }
+
+  @Override
+  public boolean isAnalysisReviewSkipped() {
+    return analysisReviewSkipped;
   }
 
   @Override
@@ -139,7 +146,8 @@ public class CaseDeliverableImpl implements CaseDeliverable {
   @JsonPOJOBuilder(withPrefix = "")
   public static class Builder {
 
-    private DeliverableType deliverableType;
+    private String deliverableCategory;
+    private boolean analysisReviewSkipped;
     private LocalDate analysisReviewQcDate;
     private AnalysisReviewQcStatus analysisReviewQcStatus;
     private String analysisReviewQcUser;
@@ -155,8 +163,13 @@ public class CaseDeliverableImpl implements CaseDeliverable {
     private int deliverableDaysSpent;
     private LocalDate latestActivityDate;
 
-    public Builder deliverableType(DeliverableType deliverableType) {
-      this.deliverableType = deliverableType;
+    public Builder deliverableCategory(String deliverableCategory) {
+      this.deliverableCategory = deliverableCategory;
+      return this;
+    }
+
+    public Builder analysisReviewSkipped(boolean analysisReviewSkipped) {
+      this.analysisReviewSkipped = analysisReviewSkipped;
       return this;
     }
 

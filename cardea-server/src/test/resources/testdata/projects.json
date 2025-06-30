@@ -2,9 +2,17 @@
   {
     "name": "PROJ",
     "pipeline": "Research",
-    "analysis_review_skipped": false,
     "deliverables": {
-      "DATA_RELEASE": ["Full Pipeline", "cBioPortal Submission"]
+      "Data Release": [
+        {
+          "name": "Full Pipeline",
+          "analysis_review_required": true
+        },
+        {
+          "name": "cBioPortal Submission",
+          "analysis_review_required": true
+        }
+      ]
     }
   }
 ]

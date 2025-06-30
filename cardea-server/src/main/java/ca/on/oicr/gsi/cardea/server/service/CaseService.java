@@ -159,11 +159,12 @@ public class CaseService {
   private Set<ShesmuSequencing> getSequencingForShesmuCase(Case kase) {
 
 
-    TreeSet<ShesmuSequencing> sequencings =  new TreeSet<>(Comparator.comparing(ShesmuSequencing::getTest)
+    TreeSet<ShesmuSequencing> sequencings =
+        new TreeSet<>(Comparator.comparing(ShesmuSequencing::getTest)
             .thenComparing(ShesmuSequencing::getType)
-        .thenComparing(shesmuSequencing -> shesmuSequencing.getLimsIds().stream()
-            .map(ShesmuSample::getId) //IDs are sorted as part of makeShesmuSequencing
-            .collect(Collectors.joining(","))));
+            .thenComparing(shesmuSequencing -> shesmuSequencing.getLimsIds().stream()
+                .map(ShesmuSample::getId) // IDs are sorted as part of makeShesmuSequencing
+                .collect(Collectors.joining(","))));
 
     final long reqId = kase.getRequisition().getId();
 
@@ -255,14 +256,14 @@ public class CaseService {
         .collect(Collectors.toSet());
   }
 
-  private LocalDate getCompletedDate(Case kase, Boolean clinicalOnly) {
+  private LocalDate getCompletedDate(Case kase, String deliverableCategory) {
     if (kase.getDeliverables().isEmpty()) {
       return null;
     }
     LocalDate completedDate = null;
     for (CaseDeliverable deliverable : kase.getDeliverables()) {
-      if (!clinicalOnly || (clinicalOnly
-          && deliverable.getDeliverableType() == DeliverableType.CLINICAL_REPORT)) {
+      if (deliverableCategory == null
+          || Objects.equals(deliverable.getDeliverableCategory(), deliverableCategory)) {
         if (deliverable.getReleases().isEmpty()) {
           return null;
         }
@@ -286,7 +287,7 @@ public class CaseService {
         .assayVersion(caseData.getAssaysById().get(kase.getAssayId()).getVersion())
         .caseIdentifier(kase.getId())
         .caseStatus(getCaseStatus(kase))
-        .completedDateLocal(getCompletedDate(kase, false))
+        .completedDateLocal(getCompletedDate(kase, null))
         .limsIds(getLimsIusIdsForShesmu(kase))
         .requisitionId(kase.getRequisition().getId())
         .requisitionName(kase.getRequisition().getName())
@@ -301,8 +302,8 @@ public class CaseService {
         .caseStatus(getCaseCompletion(kase))
         .paused(kase.getRequisition().isPaused())
         .stopped(kase.getRequisition().isStopped())
-        .completedDateLocal(getCompletedDate(kase, false))
-        .clinicalCompletedDateLocal(getCompletedDate(kase, true))
+        .completedDateLocal(getCompletedDate(kase, null))
+        .clinicalCompletedDateLocal(getCompletedDate(kase, "Clinical Report"))
         .requisitionId(kase.getRequisition().getId())
         .requisitionName(kase.getRequisition().getName())
         .sequencing(getSequencingForShesmuCase(kase))

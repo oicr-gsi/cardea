@@ -9,7 +9,6 @@ import ca.on.oicr.gsi.cardea.data.Case;
 import ca.on.oicr.gsi.cardea.data.CaseData;
 import ca.on.oicr.gsi.cardea.data.CaseDeliverable;
 import ca.on.oicr.gsi.cardea.data.CaseRelease;
-import ca.on.oicr.gsi.cardea.data.DeliverableType;
 import ca.on.oicr.gsi.cardea.data.Donor;
 import ca.on.oicr.gsi.cardea.data.Lane;
 import ca.on.oicr.gsi.cardea.data.Metric;
@@ -83,7 +82,7 @@ public class CaseLoaderTest {
     assertEquals("Research", project.getPipeline());
     assertNotNull(project.getDeliverables());
     assertEquals(1, project.getDeliverables().size());
-    List<String> deliverables = project.getDeliverables().get(DeliverableType.DATA_RELEASE);
+    List<String> deliverables = project.getDeliverables().get("Data Release");
     assertNotNull(deliverables);
     assertEquals(2, deliverables.size());
     assertTrue(deliverables.contains("Full Pipeline"));
@@ -237,7 +236,7 @@ public class CaseLoaderTest {
     assertNotNull(kase.getDeliverables());
     assertEquals(1, kase.getDeliverables().size());
     CaseDeliverable deliverable = kase.getDeliverables().get(0);
-    assertEquals(DeliverableType.CLINICAL_REPORT, deliverable.getDeliverableType());
+    assertEquals("Clinical Report", deliverable.getDeliverableCategory());
     assertEquals("Person", deliverable.getAnalysisReviewQcUser());
     assertEquals(LocalDate.of(2021, 8, 10), deliverable.getAnalysisReviewQcDate());
     assertEquals(AnalysisReviewQcStatus.PASSED, deliverable.getAnalysisReviewQcStatus());

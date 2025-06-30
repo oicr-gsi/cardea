@@ -9,7 +9,9 @@ import ca.on.oicr.gsi.cardea.data.CaseQc.ReleaseApprovalQcStatus;
 @JsonDeserialize(as = CaseDeliverableImpl.class)
 public interface CaseDeliverable {
 
-  DeliverableType getDeliverableType();
+  String getDeliverableCategory();
+
+  boolean isAnalysisReviewSkipped();
 
   LocalDate getAnalysisReviewQcDate();
 
