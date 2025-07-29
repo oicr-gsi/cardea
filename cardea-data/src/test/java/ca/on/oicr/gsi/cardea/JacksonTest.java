@@ -1,6 +1,7 @@
 package ca.on.oicr.gsi.cardea;
 
 import static org.junit.jupiter.api.Assertions.*;
+
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.Collections;
@@ -186,6 +187,7 @@ public class JacksonTest {
   @org.junit.jupiter.api.Test
   public void testShesmuDetailedCaseSerializeDeserialize() throws Exception {
     ShesmuDetailedCase original = makeShesmuDetailedCase();
+
     String serialized = mapper.writeValueAsString(original);
     ShesmuDetailedCase deserialized =
         mapper.readerFor(ShesmuDetailedCase.class).readValue(serialized);
@@ -913,6 +915,8 @@ public class JacksonTest {
   private static ShesmuDetailedCase makeShesmuDetailedCase() {
     Set<ShesmuSequencing> sequencing = new HashSet<>();
     Set<ShesmuSample> limsIds = new HashSet<>();
+    Set<ShesmuCaseRelease> releases = new HashSet<>();
+    Set<ShesmuCaseDeliverable> deliverables = new HashSet<>();
     limsIds.add(new ShesmuSample.Builder()
         .id("ID1")
         .supplemental(false)
@@ -924,6 +928,20 @@ public class JacksonTest {
         .complete(true)
         .type(MetricCategory.LIBRARY_QUALIFICATION)
         .build());
+    releases.add(new ShesmuCaseRelease.Builder()
+        .deliverable("FastQ")
+        .qcUser("Moi")
+        .qcDateLocal(LocalDate.of(2025,7,25))
+        .qcStatus(ReleaseQcStatus.FAILED_STOP)
+        .build());
+    deliverables.add(new ShesmuCaseDeliverable.Builder()
+        .deliverableCategory("FastQ")
+        .analysisReviewSkipped(false)
+            .analysisReviewQcUser("test user")
+            .analysisReviewQcDateLocal(LocalDate.of(2025,7,14))
+            .analysisReviewQcStatus(AnalysisReviewQcStatus.FAILED)
+            .releases(releases)
+        .build());
 
     return new ShesmuDetailedCase.Builder()
         .assayName("Assay")
@@ -934,6 +952,7 @@ public class JacksonTest {
         .caseStatus(CaseStatus.COMPLETED)
         .completedDateLocal(LocalDate.of(2024, 1, 13))
         .clinicalCompletedDateLocal(LocalDate.of(2024, 1, 13))
+        .deliverables(deliverables)
         .sequencing(sequencing)
         .requisitionId(1L)
         .requisitionName("Some Req")

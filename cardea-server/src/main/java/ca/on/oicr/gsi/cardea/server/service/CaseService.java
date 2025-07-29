@@ -158,7 +158,6 @@ public class CaseService {
 
   private Set<ShesmuSequencing> getSequencingForShesmuCase(Case kase) {
 
-
     TreeSet<ShesmuSequencing> sequencings =
         new TreeSet<>(Comparator.comparing(ShesmuSequencing::getTest)
             .thenComparing(ShesmuSequencing::getType)
@@ -184,6 +183,29 @@ public class CaseService {
     } ;
 
     return sequencings;
+  }
+
+  private Set<ShesmuCaseDeliverable> getDeliverablesForShesmuCase(Case kase) {
+    Set<ShesmuCaseDeliverable> deliverables =  kase.getDeliverables().stream()
+        .map(d -> new ShesmuCaseDeliverable.Builder()
+            .deliverableCategory(d.getDeliverableCategory())
+            .analysisReviewSkipped(d.isAnalysisReviewSkipped())
+            .analysisReviewQcDateLocal(d.getAnalysisReviewQcDate())
+            .analysisReviewQcStatus(d.getAnalysisReviewQcStatus())
+            .analysisReviewQcUser(d.getAnalysisReviewQcUser())
+            .releaseApprovalQcDateLocal(d.getReleaseApprovalQcDate())
+            .releaseApprovalQcStatus(d.getReleaseApprovalQcStatus())
+            .releaseApprovalQcUser(d.getReleaseApprovalQcUser())
+            .releases(d.getReleases().stream().map(r -> new ShesmuCaseRelease.Builder()
+                .deliverable(r.getDeliverable())
+                .qcDateLocal(r.getQcDate())
+                .qcStatus(r.getQcStatus())
+                .qcUser(r.getQcUser())
+                .build()).collect(Collectors.toUnmodifiableSet()))
+            .build()
+        ).collect(Collectors.toUnmodifiableSet());
+
+    return deliverables;
   }
 
   private ShesmuSequencing makeShesmuSequencing(List<Sample> samples, MetricCategory type,
@@ -300,6 +322,7 @@ public class CaseService {
         .assayVersion(caseData.getAssaysById().get(kase.getAssayId()).getVersion())
         .caseIdentifier(kase.getId())
         .caseStatus(getCaseCompletion(kase))
+        .deliverables(getDeliverablesForShesmuCase(kase))
         .paused(kase.getRequisition().isPaused())
         .stopped(kase.getRequisition().isStopped())
         .completedDateLocal(getCompletedDate(kase, null))

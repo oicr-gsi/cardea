@@ -4,8 +4,10 @@ import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonPOJOBuilder;
 
 import java.time.*;
+import java.util.List;
 import java.util.Optional;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 import static java.util.Collections.unmodifiableSet;
 import static java.util.Objects.requireNonNull;
@@ -20,6 +22,7 @@ public class ShesmuDetailedCase {
   private final String assayVersion;
   private final String caseIdentifier;
   private final CaseStatus caseStatus;
+  private final Set<ShesmuCaseDeliverable> deliverables;
   private final boolean stopped;
   private final boolean paused;
   private final Optional<Instant> completedDate;
@@ -35,9 +38,10 @@ public class ShesmuDetailedCase {
     this.caseStatus = requireNonNull(builder.caseStatus);
     this.completedDate = builder.completedDate;
     this.clinicalCompletedDate = builder.clinicalCompletedDate;
+    this.deliverables = builder.deliverables;
     this.stopped = builder.stopped;
     this.paused = builder.paused;
-    this.requisitionId = requireNonNull(builder.requisitionId);
+    this.requisitionId = builder.requisitionId;
     this.requisitionName = requireNonNull(builder.requisitionName);
     this.sequencing = unmodifiableSet(requireNonNull(builder.sequencing));
   }
@@ -57,6 +61,8 @@ public class ShesmuDetailedCase {
   public CaseStatus getCaseStatus() {
     return caseStatus;
   }
+
+  public Set<ShesmuCaseDeliverable> getDeliverables() { return deliverables; }
 
   public boolean isStopped() {
     return stopped;
@@ -93,6 +99,7 @@ public class ShesmuDetailedCase {
     private String assayVersion;
     private String caseIdentifier;
     private CaseStatus caseStatus;
+    private Set<ShesmuCaseDeliverable> deliverables;
     private boolean paused;
     private boolean stopped;
     private Optional<Instant> completedDate;
@@ -117,6 +124,15 @@ public class ShesmuDetailedCase {
 
     public Builder caseStatus(CaseStatus caseStatus) {
       this.caseStatus = caseStatus;
+      return this;
+    }
+
+    public Builder deliverables(Set<ShesmuCaseDeliverable> deliverables) {
+      if (deliverables != null && !deliverables.isEmpty()) {
+        this.deliverables = deliverables;
+      } else {
+        this.deliverables = Set.of();
+      }
       return this;
     }
 
