@@ -400,7 +400,13 @@ public class CaseLoaderTest {
   @Test
   public void testLoadOmittedRunSamples() throws Exception {
     try (FileReader reader = sut.getNoCaseRunlibReader()) {
-      List<OmittedRunSample> samples = sut.loadOmittedRunSamples(reader);
+      Run run = mock(Run.class);
+      when(run.getId()).thenReturn(5459L);
+      when(run.getName()).thenReturn("210805_M00753_0369_000000000-G8WYC");
+      Map<Long, Run> runsById = new HashMap<>();
+      runsById.put(5459L, run);
+
+      List<OmittedRunSample> samples = sut.loadOmittedRunSamples(reader, runsById);
       assertEquals(2, samples.size());
       OmittedRunSample sample = samples.stream()
           .filter(x -> "MISS_011408_Co_P_PE_490_WG".equals(x.getName()))

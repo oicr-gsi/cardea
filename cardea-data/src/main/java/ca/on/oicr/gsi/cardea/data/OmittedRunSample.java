@@ -13,8 +13,11 @@ public class OmittedRunSample {
 
   private final String id;
   private final String name;
+  private final String project;
   private final long runId;
+  private final String runName;
   private final int sequencingLane;
+  private final MetricCategory sequencingType;
   private final LocalDate qcDate;
   private final Boolean qcPassed;
   private final String qcReason;
@@ -27,8 +30,15 @@ public class OmittedRunSample {
   private OmittedRunSample(Builder builder) {
     this.id = requireNonNull(builder.id);
     this.name = requireNonNull(builder.name);
+    this.project = requireNonNull(builder.project);
     this.runId = requireNonNull(builder.runId);
+    this.runName = requireNonNull(builder.runName);
     this.sequencingLane = requireNonNull(builder.sequencingLane);
+    this.sequencingType = requireNonNull(builder.sequencingType);
+    if (sequencingType != MetricCategory.LIBRARY_QUALIFICATION
+        && sequencingType != MetricCategory.FULL_DEPTH_SEQUENCING) {
+      throw new IllegalArgumentException("Invalid category for run-sample: " + sequencingType);
+    }
     this.qcPassed = builder.qcPassed;
     this.qcReason = builder.qcReason;
     this.qcNote = builder.qcNote;
@@ -47,12 +57,24 @@ public class OmittedRunSample {
     return name;
   }
 
+  public String getProject() {
+    return project;
+  }
+
   public long getRunId() {
     return runId;
   }
 
+  public String getRunName() {
+    return runName;
+  }
+
   public int getSequencingLane() {
     return sequencingLane;
+  }
+
+  public MetricCategory getSequencingType() {
+    return sequencingType;
   }
 
   public LocalDate getQcDate() {
@@ -92,8 +114,11 @@ public class OmittedRunSample {
 
     private String id;
     private String name;
-    private Long runId;
-    private Integer sequencingLane;
+    private String project;
+    private long runId;
+    private String runName;
+    private int sequencingLane;
+    private MetricCategory sequencingType;
     private LocalDate qcDate;
     private Boolean qcPassed;
     private String qcReason;
@@ -117,13 +142,28 @@ public class OmittedRunSample {
       return this;
     }
 
+    public Builder project(String project) {
+      this.project = project;
+      return this;
+    }
+
     public Builder runId(Long runId) {
       this.runId = runId;
       return this;
     }
 
+    public Builder runName(String runName) {
+      this.runName = runName;
+      return this;
+    }
+
     public Builder sequencingLane(Integer sequencingLane) {
       this.sequencingLane = sequencingLane;
+      return this;
+    }
+
+    public Builder sequencingType(MetricCategory sequencingType) {
+      this.sequencingType = sequencingType;
       return this;
     }
 
