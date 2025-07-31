@@ -2,8 +2,10 @@
   {
     "sample_id": "5459_1_LDI36185",
     "oicr_internal_name": "MISS_011408_Co_P_PE_490_WG",
+    "project_name": "MISS",
     "sequencing_run_id": 5459,
     "sequencing_lane": 1,
+    "qc_step": "LIBRARY_QUALIFICATION",
     "qc_state": "Not Ready",
     "qc_reason": "Not Ready",
     "qc_note": null,
@@ -16,8 +18,10 @@
   {
     "sample_id": "5459_1_LDI36190",
     "oicr_internal_name": "MISS_011408_Ly_R_PE_522_WG",
+    "project_name": "MISS",
     "sequencing_run_id": 5459,
     "sequencing_lane": 1,
+    "qc_step": "FULL_DEPTH_SEQUENCING",
     "qc_state": "Not Ready",
     "qc_reason": "Not Ready",
     "qc_note": null,

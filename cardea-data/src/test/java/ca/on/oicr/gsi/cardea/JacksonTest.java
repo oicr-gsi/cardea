@@ -527,8 +527,11 @@ public class JacksonTest {
   private static void assertOmittedRunSampleEqual(OmittedRunSample one, OmittedRunSample two) {
     assertEquals(one.getId(), two.getId());
     assertEquals(one.getName(), two.getName());
+    assertEquals(one.getProject(), two.getProject());
     assertEquals(one.getRunId(), two.getRunId());
+    assertEquals(one.getRunName(), two.getRunName());
     assertEquals(one.getSequencingLane(), two.getSequencingLane());
+    assertEquals(one.getSequencingType(), two.getSequencingType());
     assertEquals(one.getQcPassed(), two.getQcPassed());
     assertEquals(one.getQcReason(), two.getQcReason());
     assertEquals(one.getQcNote(), two.getQcNote());
@@ -882,8 +885,11 @@ public class JacksonTest {
     return new OmittedRunSample.Builder()
         .id("123_4_LDI567")
         .name("Joe")
+        .project("TEST")
         .runId(123L)
+        .runName("Test Run")
         .sequencingLane(4)
+        .sequencingType(MetricCategory.FULL_DEPTH_SEQUENCING)
         .qcPassed(true)
         .qcReason("Good stuff")
         .qcNote("This is my note")

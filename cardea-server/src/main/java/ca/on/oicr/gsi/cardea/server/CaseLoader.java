@@ -156,7 +156,8 @@ public class CaseLoader {
           loadSamples(sampleReader, donorsById, runsById, requisitionsById);
       List<OmittedSample> omittedSamples =
           loadOmittedSamples(nocaseReader, donorsById, requisitionsById);
-      List<OmittedRunSample> omittedRunSamples = loadOmittedRunSamples(noCaseRunlibReader);
+      List<OmittedRunSample> omittedRunSamples =
+          loadOmittedRunSamples(noCaseRunlibReader, runsById);
       Map<Long, Assay> assaysById = loadAssays(assayReader);
       List<Case> cases = loadCases(caseReader, projectsByName, samplesById, donorsById,
           requisitionsById, assaysById);
@@ -308,14 +309,19 @@ public class CaseLoader {
     });
   }
 
-  protected List<OmittedRunSample> loadOmittedRunSamples(FileReader fileReader)
-      throws DataParseException, IOException {
+  protected List<OmittedRunSample> loadOmittedRunSamples(FileReader fileReader,
+      Map<Long, Run> runsById) throws DataParseException, IOException {
     return loadFromJsonArrayFile(fileReader, json -> {
+      Long runId = parseLong(json, "sequencing_run_id", true);
+      Run run = runsById.get(runId);
       return new OmittedRunSample.Builder()
           .id(parseString(json, "sample_id", true))
           .name(parseString(json, "oicr_internal_name", true))
-          .runId(parseLong(json, "sequencing_run_id", true))
+          .project(parseString(json, "project_name", true))
+          .runId(run.getId())
+          .runName(run.getName())
           .sequencingLane(parseInteger(json, "sequencing_lane", true))
+          .sequencingType(MetricCategory.valueOf(parseString(json, "qc_step", true)))
           .qcPassed(parseQcPassed(json, "qc_state", true))
           .qcReason(parseString(json, "qc_reason"))
           .qcNote(parseString(json, "qc_note"))
