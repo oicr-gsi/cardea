@@ -7,6 +7,14 @@ This file is updated automatically as described in [Unreleased Changes](changes/
 
 ---------------------------------------------------------------------------------------------------
 
+## [1.26.0] - 2025-08-01
+
+### Added
+
+* `deliverables` to /shesmu-detailed-case cases
+* Project, run name, and sequencing type to run-library omissions
+
+
 ## [1.25.0] - 2025-06-30
 
 ### Changed
