@@ -116,8 +116,8 @@ public class CaseLoaderTest {
     assertEquals(2, run.getLanes().size());
     Lane lane1 = run.getLanes().get(0);
     assertEquals(1, lane1.getLaneNumber());
-    assertEquals(90, lane1.getPercentOverQ30Read1());
-    assertEquals(88, lane1.getPercentOverQ30Read2());
+    assertEquals(new BigDecimal("90"), lane1.getPercentOverQ30Read1());
+    assertEquals(new BigDecimal("88"), lane1.getPercentOverQ30Read2());
     assertEquals(2163613696L, lane1.getClustersPf());
     assertEquals(new BigDecimal("0.66"), lane1.getPercentPfixRead1());
     assertEquals(new BigDecimal("0.65"), lane1.getPercentPfixRead2());

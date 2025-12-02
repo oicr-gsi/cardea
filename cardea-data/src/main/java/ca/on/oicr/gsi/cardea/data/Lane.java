@@ -13,8 +13,8 @@ public class Lane {
 
   private final Long clustersPf;
   private final Integer laneNumber;
-  private final Integer percentOverQ30Read1;
-  private final Integer percentOverQ30Read2;
+  private final BigDecimal percentOverQ30Read1;
+  private final BigDecimal percentOverQ30Read2;
   private final BigDecimal percentPfixRead1;
   private final BigDecimal percentPfixRead2;
 
@@ -35,11 +35,11 @@ public class Lane {
     return laneNumber;
   }
 
-  public Integer getPercentOverQ30Read1() {
+  public BigDecimal getPercentOverQ30Read1() {
     return percentOverQ30Read1;
   }
 
-  public Integer getPercentOverQ30Read2() {
+  public BigDecimal getPercentOverQ30Read2() {
     return percentOverQ30Read2;
   }
 
@@ -56,8 +56,8 @@ public class Lane {
 
     private Long clustersPf;
     private Integer laneNumber;
-    private Integer percentOverQ30Read1;
-    private Integer percentOverQ30Read2;
+    private BigDecimal percentOverQ30Read1;
+    private BigDecimal percentOverQ30Read2;
     private BigDecimal percentPfixRead1;
     private BigDecimal percentPfixRead2;
 
@@ -75,12 +75,12 @@ public class Lane {
       return this;
     }
 
-    public Builder percentOverQ30Read1(Integer percentOverQ30Read1) {
+    public Builder percentOverQ30Read1(BigDecimal percentOverQ30Read1) {
       this.percentOverQ30Read1 = percentOverQ30Read1;
       return this;
     }
 
-    public Builder percentOverQ30Read2(Integer percentOverQ30Read2) {
+    public Builder percentOverQ30Read2(BigDecimal percentOverQ30Read2) {
       this.percentOverQ30Read2 = percentOverQ30Read2;
       return this;
     }
