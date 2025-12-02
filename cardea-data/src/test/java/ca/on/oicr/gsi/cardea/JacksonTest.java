@@ -719,8 +719,8 @@ public class JacksonTest {
     return new Lane.Builder()
         .clustersPf(876L)
         .laneNumber(3)
-        .percentOverQ30Read1(67)
-        .percentOverQ30Read2(76)
+        .percentOverQ30Read1(new BigDecimal("67"))
+        .percentOverQ30Read2(new BigDecimal("76"))
         .percentPfixRead1(new BigDecimal("2.3"))
         .percentPfixRead2(new BigDecimal("3.2"))
         .build();
@@ -937,16 +937,16 @@ public class JacksonTest {
     releases.add(new ShesmuCaseRelease.Builder()
         .deliverable("FastQ")
         .qcUser("Moi")
-        .qcDateLocal(LocalDate.of(2025,7,25))
+        .qcDateLocal(LocalDate.of(2025, 7, 25))
         .qcStatus(ReleaseQcStatus.FAILED_STOP)
         .build());
     deliverables.add(new ShesmuCaseDeliverable.Builder()
         .deliverableCategory("FastQ")
         .analysisReviewSkipped(false)
-            .analysisReviewQcUser("test user")
-            .analysisReviewQcDateLocal(LocalDate.of(2025,7,14))
-            .analysisReviewQcStatus(AnalysisReviewQcStatus.FAILED)
-            .releases(releases)
+        .analysisReviewQcUser("test user")
+        .analysisReviewQcDateLocal(LocalDate.of(2025, 7, 14))
+        .analysisReviewQcStatus(AnalysisReviewQcStatus.FAILED)
+        .releases(releases)
         .build());
 
     return new ShesmuDetailedCase.Builder()

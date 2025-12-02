@@ -647,8 +647,8 @@ public class CaseLoader {
   private Lane parseLane(JsonNode json) throws DataParseException {
     return new Lane.Builder()
         .laneNumber(parseInteger(json, "lane_number", true))
-        .percentOverQ30Read1(parseInteger(json, "percent_over_q30_read1", false))
-        .percentOverQ30Read2(parseInteger(json, "percent_over_q30_read2", false))
+        .percentOverQ30Read1(parseDecimal(json, "percent_over_q30_read1", false))
+        .percentOverQ30Read2(parseDecimal(json, "percent_over_q30_read2", false))
         .clustersPf(parseLong(json, "clusters_pf", false))
         .percentPfixRead1(parseDecimal(json, "percent_phix_read1", false))
         .percentPfixRead2(parseDecimal(json, "percent_phix_read2", false))
