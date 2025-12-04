@@ -7,6 +7,13 @@ This file is updated automatically as described in [Unreleased Changes](changes/
 
 ---------------------------------------------------------------------------------------------------
 
+## [1.27.0] - 2025-12-04
+
+### Changed
+
+* Read-level Q30 from integer to decimal
+
+
 ## [1.26.0] - 2025-08-01
 
 ### Added
