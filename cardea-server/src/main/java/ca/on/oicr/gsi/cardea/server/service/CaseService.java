@@ -216,8 +216,13 @@ public class CaseService {
     boolean hasPassed = false;
     boolean hasWaiting = false;
     for (Sample sample : samples) {
+      if (sample.getRun() == null && type == MetricCategory.LIBRARY_QUALIFICATION) {
+        // this is for samples - QC via qPCR, so sequencing is "complete" in that there will be no sequencing samples to QC
+        hasPassed = isTrue(sample.getQcPassed());  // there's no data review on samples
+        hasWaiting = false;
+      }
       if (sample.getRun() != null) {
-
+        // this is for run-libraries
         if (sample.getDataReviewPassed() == null
             || (sample.getQcPassed() == null && sample.getQcUser() == null)) {
           hasWaiting = true;
