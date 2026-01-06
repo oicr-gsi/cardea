@@ -84,6 +84,7 @@ public interface CaseQc {
   public enum ReleaseQcStatus implements CaseQc {
     PENDING("Pending", null, null), //
     PASSED_RELEASE("Passed/Released", true, true), //
+    STAGED("Staged", true, false), //
     FAILED_RELEASE("Failure Released", false, true), //
     FAILED_STOP("Failure Not Released", false, false), //
     NOT_APPLICABLE("N/A", null, false);
