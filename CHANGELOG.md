@@ -7,6 +7,17 @@ This file is updated automatically as described in [Unreleased Changes](changes/
 
 ---------------------------------------------------------------------------------------------------
 
+## [1.28.0] - 2026-01-07
+
+### Added
+
+* "Staged" release QC status
+
+### Fixed
+
+* Set sequencing complete = true for library qualification tests done on samples (means qPCR QC, not sequencing QC)
+
+
 ## [1.27.0] - 2025-12-04
 
 ### Changed
