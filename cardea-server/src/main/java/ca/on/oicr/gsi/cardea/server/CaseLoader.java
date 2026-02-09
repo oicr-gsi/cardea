@@ -20,6 +20,7 @@ import ca.on.oicr.gsi.cardea.data.OmittedSample;
 import ca.on.oicr.gsi.cardea.data.Project;
 import ca.on.oicr.gsi.cardea.data.Requisition;
 import ca.on.oicr.gsi.cardea.data.AnalysisQcGroup;
+import ca.on.oicr.gsi.cardea.data.ArchivalStatus;
 import ca.on.oicr.gsi.cardea.data.Run;
 import ca.on.oicr.gsi.cardea.data.Sample;
 import ca.on.oicr.gsi.cardea.data.SampleMetric;
@@ -259,6 +260,7 @@ public class CaseLoader {
           .releaseDaysSpent(parseInteger(json, "release_days_spent", true))
           .caseDaysSpent(parseInteger(json, "case_days_spent", true))
           .pauseDays(parseInteger(json, "pause_days", true))
+          .archivalStatus(parseEnum(json, "archival_status", false, ArchivalStatus::valueOf))
           .build();
     });
   }
@@ -642,6 +644,15 @@ public class CaseLoader {
       items.add(item);
     }
     return items;
+  }
+
+  private <T> T parseEnum(JsonNode json, String fieldName, boolean required,
+      Function<String, T> valueOf) throws DataParseException {
+    String value = parseString(json, fieldName, required);
+    if (value == null) {
+      return null;
+    }
+    return valueOf.apply(value);
   }
 
   private Lane parseLane(JsonNode json) throws DataParseException {
