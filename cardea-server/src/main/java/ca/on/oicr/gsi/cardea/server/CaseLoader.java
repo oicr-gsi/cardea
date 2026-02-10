@@ -20,7 +20,7 @@ import ca.on.oicr.gsi.cardea.data.OmittedSample;
 import ca.on.oicr.gsi.cardea.data.Project;
 import ca.on.oicr.gsi.cardea.data.Requisition;
 import ca.on.oicr.gsi.cardea.data.AnalysisQcGroup;
-import ca.on.oicr.gsi.cardea.data.ArchivalStatus;
+import ca.on.oicr.gsi.cardea.data.ArchivingStatus;
 import ca.on.oicr.gsi.cardea.data.Run;
 import ca.on.oicr.gsi.cardea.data.Sample;
 import ca.on.oicr.gsi.cardea.data.SampleMetric;
@@ -260,7 +260,7 @@ public class CaseLoader {
           .releaseDaysSpent(parseInteger(json, "release_days_spent", true))
           .caseDaysSpent(parseInteger(json, "case_days_spent", true))
           .pauseDays(parseInteger(json, "pause_days", true))
-          .archivalStatus(parseEnum(json, "archival_status", false, ArchivalStatus::valueOf))
+          .archivingStatus(parseEnum(json, "archiving_status", false, ArchivingStatus::valueOf))
           .build();
     });
   }

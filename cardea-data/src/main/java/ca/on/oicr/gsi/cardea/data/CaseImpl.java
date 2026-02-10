@@ -43,7 +43,7 @@ public class CaseImpl implements Case {
   private final int releaseDaysSpent;
   private final int caseDaysSpent;
   private final int pauseDays;
-  private final ArchivalStatus archivalStatus;
+  private final ArchivingStatus archivingStatus;
 
   private CaseImpl(Builder builder) {
     this.id = requireNonNull(builder.id);
@@ -83,7 +83,7 @@ public class CaseImpl implements Case {
     this.releaseDaysSpent = builder.releaseDaysSpent;
     this.caseDaysSpent = builder.caseDaysSpent;
     this.pauseDays = builder.pauseDays;
-    this.archivalStatus = builder.archivalStatus;
+    this.archivingStatus = builder.archivingStatus;
   }
 
   @Override
@@ -202,8 +202,8 @@ public class CaseImpl implements Case {
   }
 
   @Override
-  public ArchivalStatus getArchivalStatus() {
-    return archivalStatus;
+  public ArchivingStatus getArchivingStatus() {
+    return archivingStatus;
   }
 
   @JsonPOJOBuilder(withPrefix = "")
@@ -231,7 +231,7 @@ public class CaseImpl implements Case {
     private int caseDaysSpent;
     private int pauseDays;
     private LocalDate latestActivityDate;
-    private ArchivalStatus archivalStatus;
+    private ArchivingStatus archivingStatus;
 
     public Case build() {
       return new CaseImpl(this);
@@ -347,8 +347,8 @@ public class CaseImpl implements Case {
       return this;
     }
 
-    public Builder archivalStatus(ArchivalStatus archivalStatus) {
-      this.archivalStatus = archivalStatus;
+    public Builder archivingStatus(ArchivingStatus archivingStatus) {
+      this.archivingStatus = archivingStatus;
       return this;
     }
   }

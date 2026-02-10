@@ -1,6 +1,6 @@
 package ca.on.oicr.gsi.cardea.data;
 
-public enum ArchivalStatus {
+public enum ArchivingStatus {
   PENDING("Pending"), //
   STARTED("Started"), //
   PAUSED("Paused"), //
@@ -8,7 +8,7 @@ public enum ArchivalStatus {
 
   private final String label;
 
-  private ArchivalStatus(String label) {
+  private ArchivingStatus(String label) {
     this.label = label;
   }
 
