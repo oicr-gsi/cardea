@@ -43,6 +43,7 @@ public class CaseImpl implements Case {
   private final int releaseDaysSpent;
   private final int caseDaysSpent;
   private final int pauseDays;
+  private final ArchivingStatus archivingStatus;
 
   private CaseImpl(Builder builder) {
     this.id = requireNonNull(builder.id);
@@ -82,6 +83,7 @@ public class CaseImpl implements Case {
     this.releaseDaysSpent = builder.releaseDaysSpent;
     this.caseDaysSpent = builder.caseDaysSpent;
     this.pauseDays = builder.pauseDays;
+    this.archivingStatus = builder.archivingStatus;
   }
 
   @Override
@@ -199,6 +201,11 @@ public class CaseImpl implements Case {
     return requisition.isStopped();
   }
 
+  @Override
+  public ArchivingStatus getArchivingStatus() {
+    return archivingStatus;
+  }
+
   @JsonPOJOBuilder(withPrefix = "")
   public static class Builder {
 
@@ -224,6 +231,7 @@ public class CaseImpl implements Case {
     private int caseDaysSpent;
     private int pauseDays;
     private LocalDate latestActivityDate;
+    private ArchivingStatus archivingStatus;
 
     public Case build() {
       return new CaseImpl(this);
@@ -336,6 +344,11 @@ public class CaseImpl implements Case {
 
     public Builder latestActivityDate(LocalDate latestActivityDate) {
       this.latestActivityDate = latestActivityDate;
+      return this;
+    }
+
+    public Builder archivingStatus(ArchivingStatus archivingStatus) {
+      this.archivingStatus = archivingStatus;
       return this;
     }
   }

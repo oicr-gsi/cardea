@@ -56,4 +56,6 @@ public interface Case {
   @JsonIgnore
   boolean isStopped();
 
+  ArchivingStatus getArchivingStatus();
+
 }
