@@ -464,6 +464,7 @@ public class CaseLoader {
           .transferDate(parseDate(json, "transfer_date"))
           .dv200(parseDecimal(json, "dv200", false))
           .metrics(parseSampleMetrics(json.get("metrics")))
+          .analysisSkipped(parseOptionalBoolean(json, "analysis_skipped"))
           .build();
     });
 

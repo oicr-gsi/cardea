@@ -802,6 +802,7 @@ public class JacksonTest {
         .transferDate(LocalDate.of(2024, 06, 11))
         .dv200(new BigDecimal("999.99"))
         .metrics(makeSampleMetrics())
+        .analysisSkipped(false)
         .build();
   }
 

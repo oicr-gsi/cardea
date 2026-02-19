@@ -71,6 +71,7 @@ public class Sample {
   private final LocalDate transferDate;
   private final BigDecimal dv200;
   private final List<SampleMetric> metrics;
+  private final Boolean analysisSkipped;
 
   private Sample(Builder builder) {
     this.id = requireNonNull(builder.id);
@@ -133,6 +134,11 @@ public class Sample {
     this.transferDate = builder.transferDate;
     this.dv200 = builder.dv200;
     this.metrics = Collections.unmodifiableList(builder.metrics);
+    if (builder.run != null) {
+      this.analysisSkipped = Objects.requireNonNull(builder.analysisSkipped);
+    } else {
+      this.analysisSkipped = null;
+    }
   }
 
   @Override
@@ -365,6 +371,10 @@ public class Sample {
     return metrics;
   }
 
+  public Boolean getAnalysisSkipped() {
+    return analysisSkipped;
+  }
+
   @Override
   public int hashCode() {
     return Objects.hash(id, run, sequencingLane);
@@ -427,6 +437,7 @@ public class Sample {
     private LocalDate transferDate;
     private BigDecimal dv200;
     private List<SampleMetric> metrics;
+    private Boolean analysisSkipped;
 
     public Sample build() {
       return new Sample(this);
@@ -708,6 +719,11 @@ public class Sample {
 
     public Builder metrics(List<SampleMetric> metrics) {
       this.metrics = metrics;
+      return this;
+    }
+
+    public Builder analysisSkipped(Boolean analysisSkipped) {
+      this.analysisSkipped = analysisSkipped;
       return this;
     }
 
