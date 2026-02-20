@@ -1,1 +1,1 @@
-case archival status
+case archiving status, destination, and TTL (days)
