@@ -261,6 +261,8 @@ public class CaseLoader {
           .caseDaysSpent(parseInteger(json, "case_days_spent", true))
           .pauseDays(parseInteger(json, "pause_days", true))
           .archivingStatus(parseEnum(json, "archiving_status", false, ArchivingStatus::valueOf))
+          .archivingDestination(parseString(json, "archiving_destination", false))
+          .archivingTtlDays(parseInteger(json, "archiving_ttl_days", false))
           .build();
     });
   }

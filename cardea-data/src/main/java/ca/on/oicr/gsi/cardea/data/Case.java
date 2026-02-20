@@ -58,4 +58,8 @@ public interface Case {
 
   ArchivingStatus getArchivingStatus();
 
+  String getArchivingDestination();
+
+  Integer getArchivingTtlDays();
+
 }

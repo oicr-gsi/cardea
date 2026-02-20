@@ -4,7 +4,9 @@ public enum ArchivingStatus {
   PENDING("Pending"), //
   STARTED("Started"), //
   PAUSED("Paused"), //
-  COMPLETE("Complete");
+  COMPLETE("Complete"), //
+  DELETED("Deleted"), //
+  EXPIRED("Expired");
 
   private final String label;
 
