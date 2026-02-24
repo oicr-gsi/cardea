@@ -54,7 +54,8 @@
     "mapped_to_coding": null,
     "raw_coverage": null,
     "on_target_reads": null,
-    "metrics": []
+    "metrics": [],
+    "analysis_skipped": null
   },
   {
     "sample_id": "SAM413641",
@@ -111,7 +112,8 @@
     "mapped_to_coding": null,
     "raw_coverage": null,
     "on_target_reads": null,
-    "metrics": []
+    "metrics": [],
+    "analysis_skipped": null
   },
   {
     "sample_id": "SAM413643",
@@ -168,7 +170,8 @@
     "mapped_to_coding": null,
     "raw_coverage": null,
     "on_target_reads": null,
-    "metrics": []
+    "metrics": [],
+    "analysis_skipped": null
   },
   {
     "sample_id": "SAM413645",
@@ -225,7 +228,8 @@
     "mapped_to_coding": null,
     "raw_coverage": null,
     "on_target_reads": null,
-    "metrics": []
+    "metrics": [],
+    "analysis_skipped": null
   },
   {
     "sample_id": "SAM413647",
@@ -282,7 +286,8 @@
     "mapped_to_coding": null,
     "raw_coverage": null,
     "on_target_reads": null,
-    "metrics": []
+    "metrics": [],
+    "analysis_skipped": null
   },
   {
     "sample_id": "SAM413593",
@@ -339,7 +344,8 @@
     "mapped_to_coding": null,
     "raw_coverage": null,
     "on_target_reads": null,
-    "metrics": []
+    "metrics": [],
+    "analysis_skipped": null
   },
   {
     "sample_id": "LIB75802",
@@ -397,7 +403,8 @@
     "mapped_to_coding": null,
     "raw_coverage": null,
     "on_target_reads": null,
-    "metrics": []
+    "metrics": [],
+    "analysis_skipped": null
   },
   {
     "sample_id": "5459_1_LDI73620",
@@ -454,7 +461,8 @@
     "mapped_to_coding": null,
     "raw_coverage": null,
     "on_target_reads": null,
-    "metrics": []
+    "metrics": [],
+    "analysis_skipped": false
   },
   {
     "sample_id": "5467_1_LDI73620",
@@ -508,7 +516,8 @@
     "mapped_to_coding": null,
     "raw_coverage": null,
     "on_target_reads": null,
-    "metrics": []
+    "metrics": [],
+    "analysis_skipped": false
   },
   {
     "sample_id": "5476_1_LDI73620",
@@ -587,7 +596,8 @@
         "qc_passed": true,
         "units": "%"
       }
-    ]
+    ],
+    "analysis_skipped": false
   },
   {
     "sample_id": "SAM413648",
@@ -644,7 +654,8 @@
     "mapped_to_coding": null,
     "raw_coverage": null,
     "on_target_reads": null,
-    "metrics": []
+    "metrics": [],
+    "analysis_skipped": null
   },
   {
     "sample_id": "LIB76197",
@@ -702,7 +713,8 @@
     "mapped_to_coding": null,
     "raw_coverage": null,
     "on_target_reads": null,
-    "metrics": []
+    "metrics": [],
+    "analysis_skipped": null
   },
   {
     "sample_id": "LIB75803",
@@ -760,7 +772,8 @@
     "mapped_to_coding": null,
     "raw_coverage": null,
     "on_target_reads": null,
-    "metrics": []
+    "metrics": [],
+    "analysis_skipped": null
   },
   {
     "sample_id": "5460_1_LDI73998",
@@ -817,7 +830,8 @@
     "mapped_to_coding": null,
     "raw_coverage": null,
     "on_target_reads": null,
-    "metrics": []
+    "metrics": [],
+    "analysis_skipped": false
   },
   {
     "sample_id": "5459_1_LDI73621",
@@ -874,7 +888,8 @@
     "mapped_to_coding": null,
     "raw_coverage": null,
     "on_target_reads": null,
-    "metrics": []
+    "metrics": [],
+    "analysis_skipped": false
   },
   {
     "sample_id": "5467_1_LDI73621",
@@ -931,7 +946,8 @@
     "mapped_to_coding": null,
     "raw_coverage": null,
     "on_target_reads": null,
-    "metrics": []
+    "metrics": [],
+    "analysis_skipped": false
   },
   {
     "sample_id": "5481_1_LDI73998",
@@ -988,7 +1004,8 @@
     "mapped_to_coding": 27.0237,
     "raw_coverage": null,
     "on_target_reads": null,
-    "metrics": []
+    "metrics": [],
+    "analysis_skipped": false
   },
   {
     "sample_id": "5476_1_LDI73621",
@@ -1045,7 +1062,8 @@
     "mapped_to_coding": null,
     "raw_coverage": null,
     "on_target_reads": null,
-    "metrics": []
+    "metrics": [],
+    "analysis_skipped": false
   },
   {
     "sample_id": "5540_1_LDI73621",
@@ -1102,7 +1120,8 @@
     "mapped_to_coding": null,
     "raw_coverage": null,
     "on_target_reads": null,
-    "metrics": []
+    "metrics": [],
+    "analysis_skipped": false
   },
   {
     "sample_id": "SAM413735",
@@ -1159,6 +1178,7 @@
     "mapped_to_coding": null,
     "raw_coverage": null,
     "on_target_reads": null,
-    "metrics": []
+    "metrics": [],
+    "analysis_skipped": null
   }
 ]

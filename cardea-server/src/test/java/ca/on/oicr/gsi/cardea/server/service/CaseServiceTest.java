@@ -71,6 +71,7 @@ public class CaseServiceTest {
           .tissueType("T")
           .run(new Run.Builder().name(runName).lanes(new ArrayList<>()).build())
           .metrics(new ArrayList<>())
+          .analysisSkipped(false)
           .createdDate(LocalDate.now())
           .build();
     }
