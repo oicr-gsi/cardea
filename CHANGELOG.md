@@ -7,6 +7,14 @@ This file is updated automatically as described in [Unreleased Changes](changes/
 
 ---------------------------------------------------------------------------------------------------
 
+## [1.29.0] - 2026-02-25
+
+### Added
+
+* `analysisSkipped` field on samples, applicable to run-libraries only
+* case archiving status, destination, and TTL (days)
+
+
 ## [1.28.0] - 2026-01-07
 
 ### Added
