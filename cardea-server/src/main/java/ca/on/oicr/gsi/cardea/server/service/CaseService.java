@@ -99,11 +99,12 @@ public class CaseService {
   }
 
   private CaseStatus getCaseStatus(Case kase) {
-    if (kase.isStopped()) {
+    CaseStatus status = getCaseCompletion(kase);
+    // If the case is active, the stopped status takes precedence
+    if (status.equals(CaseStatus.ACTIVE) && kase.isStopped()) {
       return CaseStatus.STOPPED;
-    } else {
-      return getCaseCompletion(kase);
     }
+    return status;
   }
 
   private CaseStatus getCaseCompletion(Case kase) {
