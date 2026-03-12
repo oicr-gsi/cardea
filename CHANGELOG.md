@@ -7,6 +7,13 @@ This file is updated automatically as described in [Unreleased Changes](changes/
 
 ---------------------------------------------------------------------------------------------------
 
+## [1.30.0] - 2026-03-12
+
+### Changed
+
+* stopped and released cases are now considered completed
+
+
 ## [1.29.0] - 2026-02-25
 
 ### Added
