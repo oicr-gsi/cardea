@@ -141,16 +141,16 @@ public class CaseServiceTest {
   @org.junit.jupiter.api.Test
   public void testGetCaseCountsForRun_oneMatchingRun() {
     CaseStatusesForRun matches = sut.getCaseStatusesForRun("Run1");
-    assertEquals(0, matches.getCompletedCases().size());
-    assertEquals(1, matches.getStoppedCases().size());
+    assertEquals(1, matches.getCompletedCases().size());
+    assertEquals(0, matches.getStoppedCases().size());
     assertEquals(0, matches.getActiveCases().size());
   }
 
   @org.junit.jupiter.api.Test
   public void testGetCaseCountsForRun_twoMatchingRuns() {
     CaseStatusesForRun matches = sut.getCaseStatusesForRun("Run2");
-    assertEquals(1, matches.getCompletedCases().size());
-    assertEquals(1, matches.getStoppedCases().size());
+    assertEquals(2, matches.getCompletedCases().size());
+    assertEquals(0, matches.getStoppedCases().size());
     assertEquals(0, matches.getActiveCases().size());
   }
 
