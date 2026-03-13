@@ -23,6 +23,7 @@ import ca.on.oicr.gsi.cardea.data.AnalysisQcGroup;
 import ca.on.oicr.gsi.cardea.data.ArchivingStatus;
 import ca.on.oicr.gsi.cardea.data.Run;
 import ca.on.oicr.gsi.cardea.data.Sample;
+import ca.on.oicr.gsi.cardea.data.SampleImpl;
 import ca.on.oicr.gsi.cardea.data.SampleMetric;
 import ca.on.oicr.gsi.cardea.data.SampleMetricLane;
 import ca.on.oicr.gsi.cardea.data.Test;
@@ -410,7 +411,7 @@ public class CaseLoader {
           throw new DataParseException(String.format("Requisition ID %d not found", requisitionId));
         }
       }
-      return new Sample.Builder().id(parseString(json, "sample_id", true))
+      return new SampleImpl.Builder().id(parseString(json, "sample_id", true))
           .name(parseString(json, "oicr_internal_name", true))
           .requisition(requisition)
           .assayIds(parseLongSet(json.get("assay_ids")))
