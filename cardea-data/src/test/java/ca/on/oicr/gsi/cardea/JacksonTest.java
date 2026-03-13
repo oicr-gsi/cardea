@@ -750,7 +750,7 @@ public class JacksonTest {
   }
 
   private static Sample makeSample(String name) {
-    return new Sample.Builder()
+    return new SampleImpl.Builder()
         .assayIds(Collections.singleton(77L))
         .clustersPerSample(5)
         .preliminaryClustersPerSample(6)

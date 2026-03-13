@@ -19,6 +19,7 @@ import ca.on.oicr.gsi.cardea.data.CaseRelease;
 import ca.on.oicr.gsi.cardea.data.Donor;
 import ca.on.oicr.gsi.cardea.data.Requisition;
 import ca.on.oicr.gsi.cardea.data.Sample;
+import ca.on.oicr.gsi.cardea.data.SampleImpl;
 import ca.on.oicr.gsi.cardea.data.Test;
 import ca.on.oicr.gsi.cardea.data.CaseQc.ReleaseQcStatus;
 
@@ -59,21 +60,23 @@ public class CaseServiceTest {
     // Not using mocks because we're kind-of testing hashcode for distinct filters
     // here too
     if (runName == null) {
-      newSample = new Sample.Builder().id(name).name(name).donor(mock(Donor.class)).project("PROJ")
-          .tissueOrigin("To")
-          .tissueType("T")
-          .metrics(new ArrayList<>())
-          .createdDate(LocalDate.now())
-          .build();
+      newSample =
+          new SampleImpl.Builder().id(name).name(name).donor(mock(Donor.class)).project("PROJ")
+              .tissueOrigin("To")
+              .tissueType("T")
+              .metrics(new ArrayList<>())
+              .createdDate(LocalDate.now())
+              .build();
     } else {
-      newSample = new Sample.Builder().id(name).name(name).donor(mock(Donor.class)).project("PROJ")
-          .tissueOrigin("To")
-          .tissueType("T")
-          .run(new Run.Builder().name(runName).lanes(new ArrayList<>()).build())
-          .metrics(new ArrayList<>())
-          .analysisSkipped(false)
-          .createdDate(LocalDate.now())
-          .build();
+      newSample =
+          new SampleImpl.Builder().id(name).name(name).donor(mock(Donor.class)).project("PROJ")
+              .tissueOrigin("To")
+              .tissueType("T")
+              .run(new Run.Builder().name(runName).lanes(new ArrayList<>()).build())
+              .metrics(new ArrayList<>())
+              .analysisSkipped(false)
+              .createdDate(LocalDate.now())
+              .build();
     }
 
     collection.add(newSample);
