@@ -7,6 +7,13 @@ This file is updated automatically as described in [Unreleased Changes](changes/
 
 ---------------------------------------------------------------------------------------------------
 
+## [1.31.0] - 2026-03-18
+
+### Added
+
+* Interface for sample data model
+
+
 ## [1.30.0] - 2026-03-12
 
 ### Changed
