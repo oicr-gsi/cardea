@@ -6,7 +6,8 @@ public enum ArchivingStatus {
   PAUSED("Paused"), //
   COMPLETE("Complete"), //
   DELETED("Deleted"), //
-  EXPIRED("Expired");
+  EXPIRED("Expired"), //
+  NOT_APPLICABLE("Not applicable");
 
   private final String label;
 
