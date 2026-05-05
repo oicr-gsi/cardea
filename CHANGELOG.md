@@ -7,6 +7,13 @@ This file is updated automatically as described in [Unreleased Changes](changes/
 
 ---------------------------------------------------------------------------------------------------
 
+## [1.32.0] - 2026-05-05
+
+### Added
+
+* 'Not applicable' archiving status
+
+
 ## [1.31.0] - 2026-03-18
 
 ### Added
