@@ -235,14 +235,15 @@ public class CaseLoader {
       Map<Long, Requisition> requisitionsById, Map<Long, Assay> assaysById)
       throws DataParseException, IOException {
     return loadFromJsonArrayFile(fileReader, json -> {
+      String caseId = parseString(json, "id", true);
       String donorId = parseString(json, "donor_id", true);
       Long requisitionId = parseLong(json, "requisition_id", true);
       Long assayId = parseLong(json, "assay_id", true);
       Assay assay = assaysById.get(assayId);
       return new CaseImpl.Builder()
-          .id(parseString(json, "id", true))
+          .id(caseId)
           .donor(donorsById.get(donorId))
-          .projects(parseProjects(json, "project_names", projectsByName))
+          .projects(parseProjects(json, "project_names", projectsByName, caseId))
           .assayId(assayId)
           .assayName(assay.getName())
           .assayDescription(assay.getDescription())
@@ -250,7 +251,7 @@ public class CaseLoader {
           .tissueType(parseString(json, "tissue_type", true))
           .timepoint(parseString(json, "timepoint"))
           .receipts(parseIdsAndGet(json, "receipt_ids", JsonNode::asText, samplesById))
-          .tests(parseTests(json, "assay_tests", samplesById))
+          .tests(parseTests(json, "assay_tests", samplesById, caseId))
           .qcGroups(parseAnalysisQcGroups(json.get("qc_groups"), donorsById))
           .deliverables(parseCaseDeliverables(json.get("deliverables")))
           .requisition(requisitionsById.get(requisitionId))
@@ -824,10 +825,10 @@ public class CaseLoader {
   }
 
   private Set<Project> parseProjects(JsonNode json, String fieldName,
-      Map<String, Project> projectsByName) throws DataParseException {
+      Map<String, Project> projectsByName, String caseId) throws DataParseException {
     JsonNode projectsNode = json.get(fieldName);
     if (projectsNode == null || !projectsNode.isArray() || projectsNode.isEmpty()) {
-      throw new DataParseException("Case has no projects");
+      throw new DataParseException(String.format("Projects node for case %s is invalid", caseId));
     }
     Set<Project> projects = new HashSet<>();
     for (JsonNode projectNode : projectsNode) {
@@ -836,11 +837,11 @@ public class CaseLoader {
     return projects;
   }
 
-  private List<Test> parseTests(JsonNode json, String fieldName, Map<String, Sample> samplesById)
+  private List<Test> parseTests(JsonNode json, String fieldName, Map<String, Sample> samplesById, String caseId)
       throws DataParseException {
     JsonNode testsNode = json.get(fieldName);
     if (testsNode == null || !testsNode.isArray()) {
-      throw new DataParseException(String.format("Field %s is not an array", fieldName));
+      throw new DataParseException(String.format("Field %s is not an array for case %s", fieldName, caseId));
     }
     List<Test> tests = new ArrayList<>();
     for (JsonNode testNode : testsNode) {
