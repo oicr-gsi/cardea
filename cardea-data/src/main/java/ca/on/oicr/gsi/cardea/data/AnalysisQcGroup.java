@@ -3,13 +3,12 @@ package ca.on.oicr.gsi.cardea.data;
 import static java.util.Objects.requireNonNull;
 
 import java.math.BigDecimal;
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
-import com.fasterxml.jackson.databind.annotation.JsonPOJOBuilder;
 
 /**
  * Immutable RequisitionQcGroup
  */
-@JsonDeserialize(builder = AnalysisQcGroup.Builder.class)
+@com.fasterxml.jackson.databind.annotation.JsonDeserialize(builder = AnalysisQcGroup.Builder.class)
+@tools.jackson.databind.annotation.JsonDeserialize(builder = AnalysisQcGroup.Builder.class)
 public class AnalysisQcGroup {
 
   private final BigDecimal callability;
@@ -58,7 +57,8 @@ public class AnalysisQcGroup {
     return tissueType;
   }
 
-  @JsonPOJOBuilder(withPrefix = "")
+  @com.fasterxml.jackson.databind.annotation.JsonPOJOBuilder(withPrefix = "")
+  @tools.jackson.databind.annotation.JsonPOJOBuilder(withPrefix = "")
   public static class Builder {
 
     private BigDecimal callability;

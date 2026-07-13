@@ -12,13 +12,11 @@ import java.util.Set;
 import java.util.function.Function;
 import java.util.stream.Stream;
 
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
-import com.fasterxml.jackson.databind.annotation.JsonPOJOBuilder;
-
 /**
  * Immutable case
  */
-@JsonDeserialize(builder = CaseImpl.Builder.class)
+@com.fasterxml.jackson.databind.annotation.JsonDeserialize(builder = CaseImpl.Builder.class)
+@tools.jackson.databind.annotation.JsonDeserialize(builder = CaseImpl.Builder.class)
 public class CaseImpl implements Case {
 
   private final long assayId;
@@ -220,7 +218,8 @@ public class CaseImpl implements Case {
     return archivingTtlDays;
   }
 
-  @JsonPOJOBuilder(withPrefix = "")
+  @com.fasterxml.jackson.databind.annotation.JsonPOJOBuilder(withPrefix = "")
+  @tools.jackson.databind.annotation.JsonPOJOBuilder(withPrefix = "")
   public static class Builder {
 
     private long assayId;

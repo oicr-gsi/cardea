@@ -5,13 +5,12 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
-import com.fasterxml.jackson.databind.annotation.JsonPOJOBuilder;
 
 /**
  * Immutable Assay
  */
-@JsonDeserialize(builder = Assay.Builder.class)
+@com.fasterxml.jackson.databind.annotation.JsonDeserialize(builder = Assay.Builder.class)
+@tools.jackson.databind.annotation.JsonDeserialize(builder = Assay.Builder.class)
 public class Assay {
 
   private final String description;
@@ -58,7 +57,8 @@ public class Assay {
     return targets;
   }
 
-  @JsonPOJOBuilder(withPrefix = "")
+  @com.fasterxml.jackson.databind.annotation.JsonPOJOBuilder(withPrefix = "")
+  @tools.jackson.databind.annotation.JsonPOJOBuilder(withPrefix = "")
   public static class Builder {
 
     private String description;

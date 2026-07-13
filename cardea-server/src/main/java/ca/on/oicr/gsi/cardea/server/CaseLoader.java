@@ -442,7 +442,7 @@ public class CaseLoader {
           .meanCoverageDeduplicated(parseDecimal(json, "mean_coverage_deduplicated", false))
           .preliminaryMeanCoverageDeduplicated(
               parseDecimal(json, "preliminary_mean_coverage_deduplicated", false))
-          .rRnaContamination(parseDecimal(json, "rrna_contamination", false))
+          .rrnaContamination(parseDecimal(json, "rrna_contamination", false))
           .mappedToCoding(parseDecimal(json, "mapped_to_coding", false))
           .rawCoverage(parseDecimal(json, "raw_coverage", false))
           .onTargetReads(parseDecimal(json, "on_target_reads", false))
@@ -837,11 +837,13 @@ public class CaseLoader {
     return projects;
   }
 
-  private List<Test> parseTests(JsonNode json, String fieldName, Map<String, Sample> samplesById, String caseId)
+  private List<Test> parseTests(JsonNode json, String fieldName, Map<String, Sample> samplesById,
+      String caseId)
       throws DataParseException {
     JsonNode testsNode = json.get(fieldName);
     if (testsNode == null || !testsNode.isArray()) {
-      throw new DataParseException(String.format("Field %s is not an array for case %s", fieldName, caseId));
+      throw new DataParseException(
+          String.format("Field %s is not an array for case %s", fieldName, caseId));
     }
     List<Test> tests = new ArrayList<>();
     for (JsonNode testNode : testsNode) {

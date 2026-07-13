@@ -4,9 +4,9 @@ import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Set;
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 
-@JsonDeserialize(as = SampleImpl.class)
+@com.fasterxml.jackson.databind.annotation.JsonDeserialize(as = SampleImpl.class)
+@tools.jackson.databind.annotation.JsonDeserialize(as = SampleImpl.class)
 public interface Sample {
 
   Set<Long> getAssayIds();
@@ -103,7 +103,7 @@ public interface Sample {
 
   BigDecimal getVolume();
 
-  BigDecimal getrRnaContamination();
+  BigDecimal getRrnaContamination();
 
   BigDecimal getRelativeCpgInRegions();
 

@@ -2,11 +2,10 @@ package ca.on.oicr.gsi.cardea.data;
 
 import java.time.LocalDate;
 import java.util.Objects;
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
-import com.fasterxml.jackson.databind.annotation.JsonPOJOBuilder;
 import ca.on.oicr.gsi.cardea.data.CaseQc.ReleaseQcStatus;
 
-@JsonDeserialize(builder = CaseReleaseImpl.Builder.class)
+@com.fasterxml.jackson.databind.annotation.JsonDeserialize(builder = CaseReleaseImpl.Builder.class)
+@tools.jackson.databind.annotation.JsonDeserialize(builder = CaseReleaseImpl.Builder.class)
 public class CaseReleaseImpl implements CaseRelease {
 
   private final String deliverable;
@@ -48,7 +47,8 @@ public class CaseReleaseImpl implements CaseRelease {
     return qcNote;
   }
 
-  @JsonPOJOBuilder(withPrefix = "")
+  @com.fasterxml.jackson.databind.annotation.JsonPOJOBuilder(withPrefix = "")
+  @tools.jackson.databind.annotation.JsonPOJOBuilder(withPrefix = "")
   public static class Builder {
 
     private String deliverable;

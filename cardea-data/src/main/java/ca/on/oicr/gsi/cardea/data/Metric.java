@@ -3,13 +3,12 @@ package ca.on.oicr.gsi.cardea.data;
 import static java.util.Objects.requireNonNull;
 
 import java.math.BigDecimal;
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
-import com.fasterxml.jackson.databind.annotation.JsonPOJOBuilder;
 
 /**
  * Immutable Metric
  */
-@JsonDeserialize(builder = Metric.Builder.class)
+@com.fasterxml.jackson.databind.annotation.JsonDeserialize(builder = Metric.Builder.class)
+@tools.jackson.databind.annotation.JsonDeserialize(builder = Metric.Builder.class)
 public class Metric {
 
   private final String containerModel;
@@ -100,7 +99,8 @@ public class Metric {
     return negateTissueType;
   }
 
-  @JsonPOJOBuilder(withPrefix = "")
+  @com.fasterxml.jackson.databind.annotation.JsonPOJOBuilder(withPrefix = "")
+  @tools.jackson.databind.annotation.JsonPOJOBuilder(withPrefix = "")
   public static class Builder {
 
     private String containerModel;

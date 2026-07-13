@@ -8,13 +8,12 @@ import java.util.List;
 import java.util.Objects;
 import java.util.Set;
 import java.util.stream.Stream;
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
-import com.fasterxml.jackson.databind.annotation.JsonPOJOBuilder;
 
 /**
  * Immutable Sample
  */
-@JsonDeserialize(builder = SampleImpl.Builder.class)
+@com.fasterxml.jackson.databind.annotation.JsonDeserialize(builder = SampleImpl.Builder.class)
+@tools.jackson.databind.annotation.JsonDeserialize(builder = SampleImpl.Builder.class)
 public class SampleImpl implements Sample {
 
   private final Set<Long> assayIds;
@@ -52,7 +51,7 @@ public class SampleImpl implements Sample {
   private final String qcReason;
   private final String qcNote;
   private final String qcUser;
-  private final BigDecimal rRnaContamination;
+  private final BigDecimal rrnaContamination;
   private final BigDecimal rawCoverage;
   private final Long requisitionId;
   private final String requisitionName;
@@ -104,7 +103,7 @@ public class SampleImpl implements Sample {
     this.duplicationRate = builder.duplicationRate;
     this.meanCoverageDeduplicated = builder.meanCoverageDeduplicated;
     this.preliminaryMeanCoverageDeduplicated = builder.preliminaryMeanCoverageDeduplicated;
-    this.rRnaContamination = builder.rRnaContamination;
+    this.rrnaContamination = builder.rrnaContamination;
     this.mappedToCoding = builder.mappedToCoding;
     this.rawCoverage = builder.rawCoverage;
     this.onTargetReads = builder.onTargetReads;
@@ -391,8 +390,8 @@ public class SampleImpl implements Sample {
   }
 
   @Override
-  public BigDecimal getrRnaContamination() {
-    return rRnaContamination;
+  public BigDecimal getRrnaContamination() {
+    return rrnaContamination;
   }
 
   @Override
@@ -435,7 +434,8 @@ public class SampleImpl implements Sample {
     return Objects.hash(id, run, sequencingLane);
   }
 
-  @JsonPOJOBuilder(withPrefix = "")
+  @com.fasterxml.jackson.databind.annotation.JsonPOJOBuilder(withPrefix = "")
+  @tools.jackson.databind.annotation.JsonPOJOBuilder(withPrefix = "")
   public static class Builder {
 
     private Integer clustersPerSample;
@@ -471,7 +471,7 @@ public class SampleImpl implements Sample {
     private String qcReason;
     private String qcNote;
     private String qcUser;
-    private BigDecimal rRnaContamination;
+    private BigDecimal rrnaContamination;
     private BigDecimal rawCoverage;
     private Long requisitionId;
     private String requisitionName;
@@ -664,8 +664,8 @@ public class SampleImpl implements Sample {
       return this;
     }
 
-    public Builder rRnaContamination(BigDecimal rRnaContamination) {
-      this.rRnaContamination = rRnaContamination;
+    public Builder rrnaContamination(BigDecimal rrnaContamination) {
+      this.rrnaContamination = rrnaContamination;
       return this;
     }
 

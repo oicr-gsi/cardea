@@ -2,13 +2,13 @@ package ca.on.oicr.gsi.cardea.data;
 
 import java.util.Collections;
 import java.util.List;
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
-import com.fasterxml.jackson.databind.annotation.JsonPOJOBuilder;
 
 /**
  * Immutable MetricSubcategory
  */
-@JsonDeserialize(builder = MetricSubcategory.Builder.class)
+@com.fasterxml.jackson.databind.annotation.JsonDeserialize(
+    builder = MetricSubcategory.Builder.class)
+@tools.jackson.databind.annotation.JsonDeserialize(builder = MetricSubcategory.Builder.class)
 public class MetricSubcategory {
 
   private final String libraryDesignCode;
@@ -39,7 +39,8 @@ public class MetricSubcategory {
     return sortPriority;
   }
 
-  @JsonPOJOBuilder(withPrefix = "")
+  @com.fasterxml.jackson.databind.annotation.JsonPOJOBuilder(withPrefix = "")
+  @tools.jackson.databind.annotation.JsonPOJOBuilder(withPrefix = "")
   public static class Builder {
 
     private String libraryDesignCode;

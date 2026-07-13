@@ -4,13 +4,12 @@ import static java.util.Objects.requireNonNull;
 import java.math.BigDecimal;
 import java.util.Collections;
 import java.util.Set;
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
-import com.fasterxml.jackson.databind.annotation.JsonPOJOBuilder;
 
 /**
  * Immutable SampleMetric
  */
-@JsonDeserialize(builder = SampleMetric.Builder.class)
+@com.fasterxml.jackson.databind.annotation.JsonDeserialize(builder = SampleMetric.Builder.class)
+@tools.jackson.databind.annotation.JsonDeserialize(builder = SampleMetric.Builder.class)
 public class SampleMetric {
 
   public static enum MetricLevel {
@@ -82,7 +81,8 @@ public class SampleMetric {
     return units;
   }
 
-  @JsonPOJOBuilder(withPrefix = "")
+  @com.fasterxml.jackson.databind.annotation.JsonPOJOBuilder(withPrefix = "")
+  @tools.jackson.databind.annotation.JsonPOJOBuilder(withPrefix = "")
   public static class Builder {
 
     private String name;

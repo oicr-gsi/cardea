@@ -2,13 +2,12 @@ package ca.on.oicr.gsi.cardea.data;
 
 import static java.util.Objects.requireNonNull;
 import java.time.LocalDate;
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
-import com.fasterxml.jackson.databind.annotation.JsonPOJOBuilder;
 
 /**
  * Immutable OmittedRunSample
  */
-@JsonDeserialize(builder = OmittedRunSample.Builder.class)
+@com.fasterxml.jackson.databind.annotation.JsonDeserialize(builder = OmittedRunSample.Builder.class)
+@tools.jackson.databind.annotation.JsonDeserialize(builder = OmittedRunSample.Builder.class)
 public class OmittedRunSample {
 
   private final String id;
@@ -109,7 +108,8 @@ public class OmittedRunSample {
     return dataReviewUser;
   }
 
-  @JsonPOJOBuilder(withPrefix = "")
+  @com.fasterxml.jackson.databind.annotation.JsonPOJOBuilder(withPrefix = "")
+  @tools.jackson.databind.annotation.JsonPOJOBuilder(withPrefix = "")
   public static class Builder {
 
     private String id;

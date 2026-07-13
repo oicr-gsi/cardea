@@ -4,8 +4,6 @@ import static java.util.Objects.requireNonNull;
 
 import ca.on.oicr.gsi.cardea.data.CaseQc.AnalysisReviewQcStatus;
 import ca.on.oicr.gsi.cardea.data.CaseQc.ReleaseApprovalQcStatus;
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
-import com.fasterxml.jackson.databind.annotation.JsonPOJOBuilder;
 import java.time.Instant;
 import java.time.LocalDate;
 import java.time.LocalTime;
@@ -14,7 +12,9 @@ import java.time.ZonedDateTime;
 import java.util.Optional;
 import java.util.Set;
 
-@JsonDeserialize(builder = ShesmuCaseDeliverable.Builder.class)
+@com.fasterxml.jackson.databind.annotation.JsonDeserialize(
+    builder = ShesmuCaseDeliverable.Builder.class)
+@tools.jackson.databind.annotation.JsonDeserialize(builder = ShesmuCaseDeliverable.Builder.class)
 public class ShesmuCaseDeliverable {
 
   private final String deliverableCategory;
@@ -75,7 +75,8 @@ public class ShesmuCaseDeliverable {
     return releases;
   }
 
-  @JsonPOJOBuilder(withPrefix = "")
+  @com.fasterxml.jackson.databind.annotation.JsonPOJOBuilder(withPrefix = "")
+  @tools.jackson.databind.annotation.JsonPOJOBuilder(withPrefix = "")
   public static class Builder {
 
     private String deliverableCategory;
@@ -88,7 +89,9 @@ public class ShesmuCaseDeliverable {
     private Optional<String> releaseApprovalQcUser;
     private Set<ShesmuCaseRelease> releases;
 
-    public ShesmuCaseDeliverable build() { return new ShesmuCaseDeliverable(this); }
+    public ShesmuCaseDeliverable build() {
+      return new ShesmuCaseDeliverable(this);
+    }
 
     public Builder deliverableCategory(String deliverableCategory) {
       this.deliverableCategory = deliverableCategory;
@@ -101,7 +104,8 @@ public class ShesmuCaseDeliverable {
     }
 
     public Builder analysisReviewQcDate(Instant analysisReviewQcDate) {
-      this.analysisReviewQcDate = analysisReviewQcDate == null ? Optional.empty() : Optional.of(analysisReviewQcDate);
+      this.analysisReviewQcDate =
+          analysisReviewQcDate == null ? Optional.empty() : Optional.of(analysisReviewQcDate);
       return this;
     }
 
@@ -111,17 +115,20 @@ public class ShesmuCaseDeliverable {
     }
 
     public Builder analysisReviewQcStatus(AnalysisReviewQcStatus analysisReviewQcStatus) {
-      this.analysisReviewQcStatus = analysisReviewQcStatus == null ? Optional.empty() : Optional.of(analysisReviewQcStatus);
+      this.analysisReviewQcStatus =
+          analysisReviewQcStatus == null ? Optional.empty() : Optional.of(analysisReviewQcStatus);
       return this;
     }
 
     public Builder analysisReviewQcUser(String analysisReviewQcUser) {
-      this.analysisReviewQcUser = analysisReviewQcUser == null ? Optional.empty() : Optional.of(analysisReviewQcUser);
+      this.analysisReviewQcUser =
+          analysisReviewQcUser == null ? Optional.empty() : Optional.of(analysisReviewQcUser);
       return this;
     }
 
     public Builder releaseApprovalQcDate(Instant releaseApprovalQcDate) {
-      this.releaseApprovalQcDate = releaseApprovalQcDate == null ? Optional.empty() : Optional.of(releaseApprovalQcDate);
+      this.releaseApprovalQcDate =
+          releaseApprovalQcDate == null ? Optional.empty() : Optional.of(releaseApprovalQcDate);
       return this;
     }
 
@@ -131,12 +138,14 @@ public class ShesmuCaseDeliverable {
     }
 
     public Builder releaseApprovalQcStatus(ReleaseApprovalQcStatus releaseApprovalQcStatus) {
-      this.releaseApprovalQcStatus = releaseApprovalQcStatus == null ? Optional.empty() : Optional.of(releaseApprovalQcStatus);
+      this.releaseApprovalQcStatus =
+          releaseApprovalQcStatus == null ? Optional.empty() : Optional.of(releaseApprovalQcStatus);
       return this;
     }
 
     public Builder releaseApprovalQcUser(String releaseApprovalQcUser) {
-      this.releaseApprovalQcUser = releaseApprovalQcUser == null ? Optional.empty() : Optional.of(releaseApprovalQcUser);
+      this.releaseApprovalQcUser =
+          releaseApprovalQcUser == null ? Optional.empty() : Optional.of(releaseApprovalQcUser);
       return this;
     }
 

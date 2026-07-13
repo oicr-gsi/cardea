@@ -4,13 +4,12 @@ import static java.util.Objects.requireNonNull;
 import java.util.Collections;
 import java.util.Objects;
 import java.util.Set;
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
-import com.fasterxml.jackson.databind.annotation.JsonPOJOBuilder;
 
 /**
  * Immutable Requisition
  */
-@JsonDeserialize(builder = Requisition.Builder.class)
+@com.fasterxml.jackson.databind.annotation.JsonDeserialize(builder = Requisition.Builder.class)
+@tools.jackson.databind.annotation.JsonDeserialize(builder = Requisition.Builder.class)
 public class Requisition {
 
   private final Set<Long> assayIds;
@@ -77,7 +76,8 @@ public class Requisition {
     return Objects.hash(id);
   }
 
-  @JsonPOJOBuilder(withPrefix = "")
+  @com.fasterxml.jackson.databind.annotation.JsonPOJOBuilder(withPrefix = "")
+  @tools.jackson.databind.annotation.JsonPOJOBuilder(withPrefix = "")
   public static class Builder {
 
     private Set<Long> assayIds;

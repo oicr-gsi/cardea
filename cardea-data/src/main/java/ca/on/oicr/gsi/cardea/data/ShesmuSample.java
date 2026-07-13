@@ -1,14 +1,12 @@
 package ca.on.oicr.gsi.cardea.data;
 
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
-import com.fasterxml.jackson.databind.annotation.JsonPOJOBuilder;
-
 import static java.util.Objects.requireNonNull;
 
 /**
  * Immutable Test
  */
-@JsonDeserialize(builder = ShesmuSample.Builder.class)
+@com.fasterxml.jackson.databind.annotation.JsonDeserialize(builder = ShesmuSample.Builder.class)
+@tools.jackson.databind.annotation.JsonDeserialize(builder = ShesmuSample.Builder.class)
 public class ShesmuSample {
 
   private final String id;
@@ -37,7 +35,8 @@ public class ShesmuSample {
 
 
 
-  @JsonPOJOBuilder(withPrefix = "")
+  @com.fasterxml.jackson.databind.annotation.JsonPOJOBuilder(withPrefix = "")
+  @tools.jackson.databind.annotation.JsonPOJOBuilder(withPrefix = "")
   public static class Builder {
 
     private String id;
