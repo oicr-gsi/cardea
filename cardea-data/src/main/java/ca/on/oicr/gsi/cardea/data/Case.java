@@ -4,9 +4,9 @@ import java.time.LocalDate;
 import java.util.List;
 import java.util.Set;
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 
-@JsonDeserialize(as = CaseImpl.class)
+@com.fasterxml.jackson.databind.annotation.JsonDeserialize(as = CaseImpl.class)
+@tools.jackson.databind.annotation.JsonDeserialize(as = CaseImpl.class)
 public interface Case {
 
   long getAssayId();

@@ -5,13 +5,12 @@ import static java.util.Objects.requireNonNull;
 import java.time.LocalDate;
 import java.util.Collections;
 import java.util.Set;
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
-import com.fasterxml.jackson.databind.annotation.JsonPOJOBuilder;
 
 /**
  * Immutable OmittedSample
  */
-@JsonDeserialize(builder = OmittedSample.Builder.class)
+@com.fasterxml.jackson.databind.annotation.JsonDeserialize(builder = OmittedSample.Builder.class)
+@tools.jackson.databind.annotation.JsonDeserialize(builder = OmittedSample.Builder.class)
 public class OmittedSample {
 
   private final Set<Long> assayIds;
@@ -67,7 +66,8 @@ public class OmittedSample {
     return requisitionName;
   }
 
-  @JsonPOJOBuilder(withPrefix = "")
+  @com.fasterxml.jackson.databind.annotation.JsonPOJOBuilder(withPrefix = "")
+  @tools.jackson.databind.annotation.JsonPOJOBuilder(withPrefix = "")
   public static class Builder {
 
     private LocalDate createdDate;

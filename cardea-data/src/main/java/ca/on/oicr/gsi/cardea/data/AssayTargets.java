@@ -1,12 +1,10 @@
 package ca.on.oicr.gsi.cardea.data;
 
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
-import com.fasterxml.jackson.databind.annotation.JsonPOJOBuilder;
-
 /**
  * Immutable Assay Targets
  */
-@JsonDeserialize(builder = AssayTargets.Builder.class)
+@com.fasterxml.jackson.databind.annotation.JsonDeserialize(builder = AssayTargets.Builder.class)
+@tools.jackson.databind.annotation.JsonDeserialize(builder = AssayTargets.Builder.class)
 public class AssayTargets {
 
   private final Integer caseDays;
@@ -67,7 +65,8 @@ public class AssayTargets {
     return releaseDays;
   }
 
-  @JsonPOJOBuilder(withPrefix = "")
+  @com.fasterxml.jackson.databind.annotation.JsonPOJOBuilder(withPrefix = "")
+  @tools.jackson.databind.annotation.JsonPOJOBuilder(withPrefix = "")
   public static class Builder {
 
     private Integer caseDays;

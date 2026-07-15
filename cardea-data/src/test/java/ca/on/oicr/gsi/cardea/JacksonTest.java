@@ -11,24 +11,23 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.function.BiConsumer;
-
 import ca.on.oicr.gsi.cardea.data.*;
-import org.springframework.http.converter.json.Jackson2ObjectMapperBuilder;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import ca.on.oicr.gsi.cardea.data.CaseQc.AnalysisReviewQcStatus;
 import ca.on.oicr.gsi.cardea.data.CaseQc.ReleaseApprovalQcStatus;
 import ca.on.oicr.gsi.cardea.data.CaseQc.ReleaseQcStatus;
 import ca.on.oicr.gsi.cardea.data.SampleMetric.MetricLevel;
 
-public class JacksonTest {
+public abstract class JacksonTest {
 
-  private final ObjectMapper mapper = new Jackson2ObjectMapperBuilder().build();
+  protected abstract String serialize(Object value) throws Exception;
+
+  protected abstract <T> T deserialize(String value, Class<T> clazz) throws Exception;
 
   @org.junit.jupiter.api.Test
   public void testDonorSerializeDeserialize() throws Exception {
     Donor original = makeDonor();
-    String serialized = mapper.writeValueAsString(original);
-    Donor deserialized = mapper.readerFor(Donor.class).readValue(serialized);
+    String serialized = serialize(original);
+    Donor deserialized = deserialize(serialized, Donor.class);
     assertDonorsEqual(original, deserialized);
   }
 
@@ -49,8 +48,8 @@ public class JacksonTest {
         .assayIds(assayIds)
         .build();
 
-    String serialized = mapper.writeValueAsString(original);
-    OmittedSample deserialized = mapper.readerFor(OmittedSample.class).readValue(serialized);
+    String serialized = serialize(original);
+    OmittedSample deserialized = deserialize(serialized, OmittedSample.class);
 
     assertOmittedSamplesEqual(original, deserialized);
   }
@@ -58,129 +57,128 @@ public class JacksonTest {
   @org.junit.jupiter.api.Test
   public void testMetricSerializeDeserialize() throws Exception {
     Metric original = makeMetric();
-    String serialized = mapper.writeValueAsString(original);
-    Metric deserialized = mapper.readerFor(Metric.class).readValue(serialized);
+    String serialized = serialize(original);
+    Metric deserialized = deserialize(serialized, Metric.class);
     assertMetricsEqual(original, deserialized);
   }
 
   @org.junit.jupiter.api.Test
   public void testMetricSubcategorySerializeDeserialize() throws Exception {
     MetricSubcategory original = makeMetricSubcategory();
-    String serialized = mapper.writeValueAsString(original);
-    MetricSubcategory deserialized =
-        mapper.readerFor(MetricSubcategory.class).readValue(serialized);
+    String serialized = serialize(original);
+    MetricSubcategory deserialized = deserialize(serialized, MetricSubcategory.class);
     assertMetricSubcategoriesEqual(original, deserialized);
   }
 
   @org.junit.jupiter.api.Test
   public void testAssayTargetsSerializeDeserialize() throws Exception {
     AssayTargets original = makeAssayTargets();
-    String serialized = mapper.writeValueAsString(original);
-    AssayTargets deserialized = mapper.readerFor(AssayTargets.class).readValue(serialized);
+    String serialized = serialize(original);
+    AssayTargets deserialized = deserialize(serialized, AssayTargets.class);
     assertAssayTargetsEqual(original, deserialized);
   }
 
   @org.junit.jupiter.api.Test
   public void testAssaySerializeDeserialize() throws Exception {
     Assay original = makeAssay();
-    String serialized = mapper.writeValueAsString(original);
-    Assay deserialized = mapper.readerFor(Assay.class).readValue(serialized);
+    String serialized = serialize(original);
+    Assay deserialized = deserialize(serialized, Assay.class);
     assertAssaysEqual(original, deserialized);
   }
 
   @org.junit.jupiter.api.Test
   public void testAnalysisQcGroupSerializeDeserialize() throws Exception {
     AnalysisQcGroup original = makeAnalysisQcGroup();
-    String serialized = mapper.writeValueAsString(original);
-    AnalysisQcGroup deserialized = mapper.readerFor(AnalysisQcGroup.class).readValue(serialized);
+    String serialized = serialize(original);
+    AnalysisQcGroup deserialized = deserialize(serialized, AnalysisQcGroup.class);
     assertAnalysisQcGroupEqual(original, deserialized);
   }
 
   @org.junit.jupiter.api.Test
   public void testCaseReleaseSerializeDeserialize() throws Exception {
     CaseRelease original = makeCaseRelease();
-    String serialized = mapper.writeValueAsString(original);
-    CaseRelease deserialized = mapper.readerFor(CaseRelease.class).readValue(serialized);
+    String serialized = serialize(original);
+    CaseRelease deserialized = deserialize(serialized, CaseRelease.class);
     assertCaseReleaseEqual(original, deserialized);
   }
 
   @org.junit.jupiter.api.Test
   public void testCaseDeliverableSerializeDeserialize() throws Exception {
     CaseDeliverable original = makeCaseDeliverable();
-    String serialized = mapper.writeValueAsString(original);
-    CaseDeliverable deserialized = mapper.readerFor(CaseDeliverable.class).readValue(serialized);
+    String serialized = serialize(original);
+    CaseDeliverable deserialized = deserialize(serialized, CaseDeliverable.class);
     assertCaseDeliverableEqual(original, deserialized);
   }
 
   @org.junit.jupiter.api.Test
   public void testProjectSerializeDeserialize() throws Exception {
     Project original = makeProject();
-    String serialized = mapper.writeValueAsString(original);
-    Project deserialized = mapper.readerFor(Project.class).readValue(serialized);
+    String serialized = serialize(original);
+    Project deserialized = deserialize(serialized, Project.class);
     assertProjectEqual(original, deserialized);
   }
 
   @org.junit.jupiter.api.Test
   public void testRequisitionSerializeDeserialize() throws Exception {
     Requisition original = makeRequisition();
-    String serialized = mapper.writeValueAsString(original);
-    Requisition deserialized = mapper.readerFor(Requisition.class).readValue(serialized);
+    String serialized = serialize(original);
+    Requisition deserialized = deserialize(serialized, Requisition.class);
     assertRequisitionEqual(original, deserialized);
   }
 
   @org.junit.jupiter.api.Test
   public void testLaneSerializeDeserialize() throws Exception {
     Lane original = makeLane();
-    String serialized = mapper.writeValueAsString(original);
-    Lane deserialized = mapper.readerFor(Lane.class).readValue(serialized);
+    String serialized = serialize(original);
+    Lane deserialized = deserialize(serialized, Lane.class);
     assertLaneEqual(original, deserialized);
   }
 
   @org.junit.jupiter.api.Test
   public void testRunSerializeDeserialize() throws Exception {
     Run original = makeRun();
-    String serialized = mapper.writeValueAsString(original);
-    Run deserialized = mapper.readerFor(Run.class).readValue(serialized);
+    String serialized = serialize(original);
+    Run deserialized = deserialize(serialized, Run.class);
     assertRunEqual(original, deserialized);
   }
 
   @org.junit.jupiter.api.Test
   public void testSampleSerializeDeserialize() throws Exception {
     Sample original = makeSample("Sammy");
-    String serialized = mapper.writeValueAsString(original);
-    Sample deserialized = mapper.readerFor(Sample.class).readValue(serialized);
+    String serialized = serialize(original);
+    Sample deserialized = deserialize(serialized, Sample.class);
     assertSampleEqual(original, deserialized);
   }
 
   @org.junit.jupiter.api.Test
   public void testTestSerializeDeserialize() throws Exception {
     Test original = makeTest();
-    String serialized = mapper.writeValueAsString(original);
-    Test deserialized = mapper.readerFor(Test.class).readValue(serialized);
+    String serialized = serialize(original);
+    Test deserialized = deserialize(serialized, Test.class);
     assertTestEqual(original, deserialized);
   }
 
   @org.junit.jupiter.api.Test
   public void testCaseSerializeDeserialize() throws Exception {
     Case original = makeCase();
-    String serialized = mapper.writeValueAsString(original);
-    Case deserialized = mapper.readerFor(Case.class).readValue(serialized);
+    String serialized = serialize(original);
+    Case deserialized = deserialize(serialized, Case.class);
     assertCaseEqual(original, deserialized);
   }
 
   @org.junit.jupiter.api.Test
   public void testOmittedRunSampleSerializeDeserialize() throws Exception {
     OmittedRunSample original = makeOmittedRunSample();
-    String serialized = mapper.writeValueAsString(original);
-    OmittedRunSample deserialized = mapper.readerFor(OmittedRunSample.class).readValue(serialized);
+    String serialized = serialize(original);
+    OmittedRunSample deserialized = deserialize(serialized, OmittedRunSample.class);
     assertOmittedRunSampleEqual(original, deserialized);
   }
 
   @org.junit.jupiter.api.Test
   public void testShesmuCaseSerializeDeserialize() throws Exception {
     ShesmuCase original = makeShesmuCase();
-    String serialized = mapper.writeValueAsString(original);
-    ShesmuCase deserialized = mapper.readerFor(ShesmuCase.class).readValue(serialized);
+    String serialized = serialize(original);
+    ShesmuCase deserialized = deserialize(serialized, ShesmuCase.class);
     assertShesmuCaseEqual(original, deserialized);
   }
 
@@ -188,9 +186,8 @@ public class JacksonTest {
   public void testShesmuDetailedCaseSerializeDeserialize() throws Exception {
     ShesmuDetailedCase original = makeShesmuDetailedCase();
 
-    String serialized = mapper.writeValueAsString(original);
-    ShesmuDetailedCase deserialized =
-        mapper.readerFor(ShesmuDetailedCase.class).readValue(serialized);
+    String serialized = serialize(original);
+    ShesmuDetailedCase deserialized = deserialize(serialized, ShesmuDetailedCase.class);
     assertShesmuDetailedCaseEqual(original, deserialized);
   }
 
@@ -398,7 +395,7 @@ public class JacksonTest {
     assertEquals(one.getQcReason(), two.getQcReason());
     assertEquals(one.getQcNote(), two.getQcNote());
     assertEquals(one.getQcUser(), two.getQcUser());
-    assertEquals(one.getrRnaContamination(), two.getrRnaContamination());
+    assertEquals(one.getRrnaContamination(), two.getRrnaContamination());
     assertEquals(one.getRawCoverage(), two.getRawCoverage());
     assertEquals(one.getRequisitionId(), two.getRequisitionId());
     assertEquals(one.getRequisitionName(), two.getRequisitionName());
@@ -784,7 +781,7 @@ public class JacksonTest {
         .qcReason("Ready")
         .qcNote("All good")
         .qcUser("Lab Tech")
-        .rRnaContamination(new BigDecimal("3.33"))
+        .rrnaContamination(new BigDecimal("3.33"))
         .rawCoverage(new BigDecimal("4.44"))
         .requisition(makeRequisition())
         .run(makeRun())

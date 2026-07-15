@@ -2,13 +2,12 @@ package ca.on.oicr.gsi.cardea.data;
 
 import java.math.BigDecimal;
 import java.util.Objects;
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
-import com.fasterxml.jackson.databind.annotation.JsonPOJOBuilder;
 
 /**
  * Immutable Lane
  */
-@JsonDeserialize(builder = Lane.Builder.class)
+@com.fasterxml.jackson.databind.annotation.JsonDeserialize(builder = Lane.Builder.class)
+@tools.jackson.databind.annotation.JsonDeserialize(builder = Lane.Builder.class)
 public class Lane {
 
   private final Long clustersPf;
@@ -51,7 +50,8 @@ public class Lane {
     return percentPfixRead2;
   }
 
-  @JsonPOJOBuilder(withPrefix = "")
+  @com.fasterxml.jackson.databind.annotation.JsonPOJOBuilder(withPrefix = "")
+  @tools.jackson.databind.annotation.JsonPOJOBuilder(withPrefix = "")
   public static class Builder {
 
     private Long clustersPf;

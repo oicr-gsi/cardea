@@ -1,8 +1,5 @@
 package ca.on.oicr.gsi.cardea.data;
 
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
-import com.fasterxml.jackson.databind.annotation.JsonPOJOBuilder;
-
 import java.util.Set;
 
 import static java.util.Collections.*;
@@ -11,7 +8,8 @@ import static java.util.Objects.requireNonNull;
 /**
  * Immutable Test
  */
-@JsonDeserialize(builder = ShesmuSequencing.Builder.class)
+@com.fasterxml.jackson.databind.annotation.JsonDeserialize(builder = ShesmuSequencing.Builder.class)
+@tools.jackson.databind.annotation.JsonDeserialize(builder = ShesmuSequencing.Builder.class)
 public class ShesmuSequencing {
 
   private final String test;
@@ -44,9 +42,8 @@ public class ShesmuSequencing {
     return complete;
   }
 
-
-
-  @JsonPOJOBuilder(withPrefix = "")
+  @com.fasterxml.jackson.databind.annotation.JsonPOJOBuilder(withPrefix = "")
+  @tools.jackson.databind.annotation.JsonPOJOBuilder(withPrefix = "")
   public static class Builder {
 
     private String test;

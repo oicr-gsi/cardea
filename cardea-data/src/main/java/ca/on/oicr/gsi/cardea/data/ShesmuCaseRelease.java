@@ -1,10 +1,6 @@
 package ca.on.oicr.gsi.cardea.data;
 
-import static java.util.Objects.requireNonNull;
-
 import ca.on.oicr.gsi.cardea.data.CaseQc.ReleaseQcStatus;
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
-import com.fasterxml.jackson.databind.annotation.JsonPOJOBuilder;
 import java.time.Instant;
 import java.time.LocalDate;
 import java.time.LocalTime;
@@ -12,7 +8,9 @@ import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.util.Optional;
 
-@JsonDeserialize(builder = ShesmuCaseRelease.Builder.class)
+@com.fasterxml.jackson.databind.annotation.JsonDeserialize(
+    builder = ShesmuCaseRelease.Builder.class)
+@tools.jackson.databind.annotation.JsonDeserialize(builder = ShesmuCaseRelease.Builder.class)
 public class ShesmuCaseRelease {
 
   private final String deliverable;
@@ -43,7 +41,8 @@ public class ShesmuCaseRelease {
     return qcUser;
   }
 
-  @JsonPOJOBuilder(withPrefix = "")
+  @com.fasterxml.jackson.databind.annotation.JsonPOJOBuilder(withPrefix = "")
+  @tools.jackson.databind.annotation.JsonPOJOBuilder(withPrefix = "")
   public static class Builder {
 
     private String deliverable;
@@ -51,7 +50,9 @@ public class ShesmuCaseRelease {
     private Optional<ReleaseQcStatus> qcStatus;
     private Optional<String> qcUser;
 
-    public ShesmuCaseRelease build() { return new ShesmuCaseRelease(this); }
+    public ShesmuCaseRelease build() {
+      return new ShesmuCaseRelease(this);
+    }
 
     public Builder deliverable(String deliverable) {
       this.deliverable = deliverable;
@@ -69,7 +70,7 @@ public class ShesmuCaseRelease {
     }
 
     public Builder qcStatus(ReleaseQcStatus qcStatus) {
-      this.qcStatus = qcStatus == null ? Optional.empty(): Optional.of(qcStatus);
+      this.qcStatus = qcStatus == null ? Optional.empty() : Optional.of(qcStatus);
       return this;
     }
 

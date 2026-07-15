@@ -1,13 +1,8 @@
 package ca.on.oicr.gsi.cardea.data;
 
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
-import com.fasterxml.jackson.databind.annotation.JsonPOJOBuilder;
-
 import java.time.*;
-import java.util.List;
 import java.util.Optional;
 import java.util.Set;
-import java.util.stream.Collectors;
 
 import static java.util.Collections.unmodifiableSet;
 import static java.util.Objects.requireNonNull;
@@ -15,7 +10,9 @@ import static java.util.Objects.requireNonNull;
 /**
  * Immutable ShesmuCase
  */
-@JsonDeserialize(builder = ShesmuDetailedCase.Builder.class)
+@com.fasterxml.jackson.databind.annotation.JsonDeserialize(
+    builder = ShesmuDetailedCase.Builder.class)
+@tools.jackson.databind.annotation.JsonDeserialize(builder = ShesmuDetailedCase.Builder.class)
 public class ShesmuDetailedCase {
 
   private final String assayName;
@@ -62,7 +59,9 @@ public class ShesmuDetailedCase {
     return caseStatus;
   }
 
-  public Set<ShesmuCaseDeliverable> getDeliverables() { return deliverables; }
+  public Set<ShesmuCaseDeliverable> getDeliverables() {
+    return deliverables;
+  }
 
   public boolean isStopped() {
     return stopped;
@@ -92,7 +91,8 @@ public class ShesmuDetailedCase {
     return sequencing;
   }
 
-  @JsonPOJOBuilder(withPrefix = "")
+  @com.fasterxml.jackson.databind.annotation.JsonPOJOBuilder(withPrefix = "")
+  @tools.jackson.databind.annotation.JsonPOJOBuilder(withPrefix = "")
   public static class Builder {
 
     private String assayName;

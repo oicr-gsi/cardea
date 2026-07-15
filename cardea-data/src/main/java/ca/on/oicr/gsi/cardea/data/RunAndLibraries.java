@@ -5,8 +5,6 @@ import static java.util.Objects.requireNonNull;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
-import com.fasterxml.jackson.databind.annotation.JsonPOJOBuilder;
 
 /**
  * Immutable RunAndLibraries
@@ -14,7 +12,8 @@ import com.fasterxml.jackson.databind.annotation.JsonPOJOBuilder;
  * This is being moved to Dimsum because its only intended use is for data transformation within
  * Dimsum
  */
-@JsonDeserialize(builder = RunAndLibraries.Builder.class)
+@com.fasterxml.jackson.databind.annotation.JsonDeserialize(builder = RunAndLibraries.Builder.class)
+@tools.jackson.databind.annotation.JsonDeserialize(builder = RunAndLibraries.Builder.class)
 @Deprecated(forRemoval = true)
 public class RunAndLibraries {
 
@@ -40,7 +39,8 @@ public class RunAndLibraries {
     return run;
   }
 
-  @JsonPOJOBuilder(withPrefix = "")
+  @com.fasterxml.jackson.databind.annotation.JsonPOJOBuilder(withPrefix = "")
+  @tools.jackson.databind.annotation.JsonPOJOBuilder(withPrefix = "")
   public static class Builder {
 
     private Set<Sample> fullDepthSequencings = new HashSet<>();

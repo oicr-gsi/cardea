@@ -11,13 +11,12 @@ import java.time.ZonedDateTime;
 
 import java.util.Optional;
 import java.util.Set;
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
-import com.fasterxml.jackson.databind.annotation.JsonPOJOBuilder;
 
 /**
  * Immutable ShesmuCase
  */
-@JsonDeserialize(builder = ShesmuCase.Builder.class)
+@com.fasterxml.jackson.databind.annotation.JsonDeserialize(builder = ShesmuCase.Builder.class)
+@tools.jackson.databind.annotation.JsonDeserialize(builder = ShesmuCase.Builder.class)
 public class ShesmuCase {
 
   private final String assayName;
@@ -72,7 +71,8 @@ public class ShesmuCase {
     return requisitionName;
   }
 
-  @JsonPOJOBuilder(withPrefix = "")
+  @com.fasterxml.jackson.databind.annotation.JsonPOJOBuilder(withPrefix = "")
+  @tools.jackson.databind.annotation.JsonPOJOBuilder(withPrefix = "")
   public static class Builder {
 
     private String assayName;

@@ -7,12 +7,12 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Stream;
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
-import com.fasterxml.jackson.databind.annotation.JsonPOJOBuilder;
 import ca.on.oicr.gsi.cardea.data.CaseQc.AnalysisReviewQcStatus;
 import ca.on.oicr.gsi.cardea.data.CaseQc.ReleaseApprovalQcStatus;
 
-@JsonDeserialize(builder = CaseDeliverableImpl.Builder.class)
+@com.fasterxml.jackson.databind.annotation.JsonDeserialize(
+    builder = CaseDeliverableImpl.Builder.class)
+@tools.jackson.databind.annotation.JsonDeserialize(builder = CaseDeliverableImpl.Builder.class)
 public class CaseDeliverableImpl implements CaseDeliverable {
 
   private final String deliverableType;
@@ -143,7 +143,8 @@ public class CaseDeliverableImpl implements CaseDeliverable {
     return latestActivityDate;
   }
 
-  @JsonPOJOBuilder(withPrefix = "")
+  @com.fasterxml.jackson.databind.annotation.JsonPOJOBuilder(withPrefix = "")
+  @tools.jackson.databind.annotation.JsonPOJOBuilder(withPrefix = "")
   public static class Builder {
 
     private String deliverableCategory;

@@ -5,13 +5,12 @@ import static java.util.Objects.requireNonNull;
 import java.time.ZonedDateTime;
 import java.util.List;
 import java.util.Map;
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
-import com.fasterxml.jackson.databind.annotation.JsonPOJOBuilder;
 
 /**
  * Immutable CaseData
  */
-@JsonDeserialize(builder = CaseData.Builder.class)
+@com.fasterxml.jackson.databind.annotation.JsonDeserialize(builder = CaseData.Builder.class)
+@tools.jackson.databind.annotation.JsonDeserialize(builder = CaseData.Builder.class)
 public class CaseData {
   private final Map<Long, Assay> assaysById;
   private final List<Case> cases;
@@ -47,7 +46,8 @@ public class CaseData {
     return timestamp;
   }
 
-  @JsonPOJOBuilder(withPrefix = "")
+  @com.fasterxml.jackson.databind.annotation.JsonPOJOBuilder(withPrefix = "")
+  @tools.jackson.databind.annotation.JsonPOJOBuilder(withPrefix = "")
   public static class Builder {
     private Map<Long, Assay> assaysById;
     private List<Case> cases;
