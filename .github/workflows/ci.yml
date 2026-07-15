@@ -16,4 +16,4 @@ jobs:
           distribution: 'temurin'
           java-version: '17'
           cache: 'maven'
-      - run: mvn --batch-mode package
+      - run: mvn --batch-mode package spotless:check

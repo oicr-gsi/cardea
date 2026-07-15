@@ -86,4 +86,53 @@
     </repository>
   </repositories>
 
+  <build>
+    <plugins>
+      <plugin>
+        <groupId>com.diffplug.spotless</groupId>
+        <artifactId>spotless-maven-plugin</artifactId>
+        <version>3.8.0</version>
+        <configuration>
+          <pom>
+            <sortPom/>
+          </pom>
+          <markdown>
+            <includes>
+              <include>**/*.md</include>
+            </includes>
+            <excludes>
+              <exclude>LICENSE.md</exclude>
+            </excludes>
+            <flexmark/>
+          </markdown>
+          <java>
+            <googleJavaFormat/>
+          </java>
+          <json>
+            <includes>
+              <include>**/*.json</include>
+            </includes>
+            <excludes>
+              <exclude>.vscode/*</exclude>
+            </excludes>
+            <jackson>
+              <jsonFeatures>
+                <QUOTE_FIELD_NAMES>true</QUOTE_FIELD_NAMES>
+              </jsonFeatures>
+            </jackson>
+          </json>
+        </configuration>
+        <executions>
+          <execution>
+            <id>install-pre-push-hook</id>
+            <phase>initialize</phase>
+            <goals>
+              <goal>install-git-pre-push-hook</goal>
+            </goals>
+          </execution>
+        </executions>
+      </plugin>
+    </plugins>
+  </build>
+
 </project>
