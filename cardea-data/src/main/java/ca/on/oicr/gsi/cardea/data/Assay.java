@@ -1,14 +1,13 @@
 package ca.on.oicr.gsi.cardea.data;
 
 import static java.util.Objects.requireNonNull;
+
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
-/**
- * Immutable Assay
- */
+/** Immutable Assay */
 @com.fasterxml.jackson.databind.annotation.JsonDeserialize(builder = Assay.Builder.class)
 @tools.jackson.databind.annotation.JsonDeserialize(builder = Assay.Builder.class)
 public class Assay {
@@ -27,8 +26,10 @@ public class Assay {
     this.version = requireNonNull(builder.version);
     Map<MetricCategory, List<MetricSubcategory>> tempMap =
         builder.metricCategories.entrySet().stream()
-            .collect(Collectors.toMap(entry -> entry.getKey(),
-                entry -> Collections.unmodifiableList(entry.getValue())));
+            .collect(
+                Collectors.toMap(
+                    entry -> entry.getKey(),
+                    entry -> Collections.unmodifiableList(entry.getValue())));
     this.metricCategories = Collections.unmodifiableMap(tempMap);
     this.targets = requireNonNull(builder.targets);
   }
@@ -101,7 +102,5 @@ public class Assay {
       this.targets = targets;
       return this;
     }
-
   }
-
 }

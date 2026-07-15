@@ -1,6 +1,7 @@
 package ca.on.oicr.gsi.cardea.data;
 
 import static java.util.Objects.requireNonNull;
+
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.Collections;
@@ -9,9 +10,7 @@ import java.util.Objects;
 import java.util.Set;
 import java.util.stream.Stream;
 
-/**
- * Immutable Sample
- */
+/** Immutable Sample */
 @com.fasterxml.jackson.databind.annotation.JsonDeserialize(builder = SampleImpl.Builder.class)
 @tools.jackson.databind.annotation.JsonDeserialize(builder = SampleImpl.Builder.class)
 public class SampleImpl implements Sample {
@@ -77,8 +76,10 @@ public class SampleImpl implements Sample {
     this.name = requireNonNull(builder.name);
     this.requisitionId = builder.requisitionId;
     this.requisitionName = builder.requisitionName;
-    this.assayIds = builder.assayIds == null ? Collections.emptySet()
-        : Collections.unmodifiableSet(builder.assayIds);
+    this.assayIds =
+        builder.assayIds == null
+            ? Collections.emptySet()
+            : Collections.unmodifiableSet(builder.assayIds);
     this.tissueOrigin = requireNonNull(builder.tissueOrigin);
     this.tissueType = requireNonNull(builder.tissueType);
     this.tissueMaterial = builder.tissueMaterial;
@@ -127,8 +128,11 @@ public class SampleImpl implements Sample {
     if (builder.latestActivityDate != null) {
       this.latestActivityDate = builder.latestActivityDate;
     } else {
-      this.latestActivityDate = Stream.of(createdDate, qcDate, dataReviewDate)
-          .filter(Objects::nonNull).max(LocalDate::compareTo).orElseThrow();
+      this.latestActivityDate =
+          Stream.of(createdDate, qcDate, dataReviewDate)
+              .filter(Objects::nonNull)
+              .max(LocalDate::compareTo)
+              .orElseThrow();
     }
     this.transferDate = builder.transferDate;
     this.dv200 = builder.dv200;
@@ -142,12 +146,9 @@ public class SampleImpl implements Sample {
 
   @Override
   public boolean equals(Object obj) {
-    if (this == obj)
-      return true;
-    if (obj == null)
-      return false;
-    if (getClass() != obj.getClass())
-      return false;
+    if (this == obj) return true;
+    if (obj == null) return false;
+    if (getClass() != obj.getClass()) return false;
     SampleImpl other = (SampleImpl) obj;
     return Objects.equals(id, other.id)
         && Objects.equals(run, other.run)
@@ -678,8 +679,7 @@ public class SampleImpl implements Sample {
       if (requisition == null) {
         return this;
       }
-      return this.requisitionId(requisition.getId())
-          .requisitionName(requisition.getName());
+      return this.requisitionId(requisition.getId()).requisitionName(requisition.getName());
     }
 
     public Builder requisitionId(Long requisitionId) {
@@ -781,6 +781,5 @@ public class SampleImpl implements Sample {
       this.analysisSkipped = analysisSkipped;
       return this;
     }
-
   }
 }

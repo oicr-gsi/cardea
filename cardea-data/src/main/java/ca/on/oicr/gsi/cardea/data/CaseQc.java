@@ -135,5 +135,4 @@ public interface CaseQc {
   public default boolean isPending() {
     return getQcPassed() == null && getRelease() == null;
   }
-
 }

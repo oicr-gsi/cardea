@@ -1,8 +1,8 @@
 package ca.on.oicr.gsi.cardea.data;
 
+import ca.on.oicr.gsi.cardea.data.CaseQc.ReleaseQcStatus;
 import java.time.LocalDate;
 import java.util.Objects;
-import ca.on.oicr.gsi.cardea.data.CaseQc.ReleaseQcStatus;
 
 @com.fasterxml.jackson.databind.annotation.JsonDeserialize(builder = CaseReleaseImpl.Builder.class)
 @tools.jackson.databind.annotation.JsonDeserialize(builder = CaseReleaseImpl.Builder.class)
@@ -85,6 +85,5 @@ public class CaseReleaseImpl implements CaseRelease {
     public CaseReleaseImpl build() {
       return new CaseReleaseImpl(this);
     }
-
   }
 }

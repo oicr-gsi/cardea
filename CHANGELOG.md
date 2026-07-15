@@ -17,13 +17,11 @@ This file is updated automatically as described in [Unreleased Changes](changes/
 
 * Add case ID to data load error messages where available
 
-
 ## [1.32.0] - 2026-05-05
 
 ### Added
 
 * 'Not applicable' archiving status
-
 
 ## [1.31.0] - 2026-03-18
 
@@ -31,13 +29,11 @@ This file is updated automatically as described in [Unreleased Changes](changes/
 
 * Interface for sample data model
 
-
 ## [1.30.0] - 2026-03-12
 
 ### Changed
 
 * stopped and released cases are now considered completed
-
 
 ## [1.29.0] - 2026-02-25
 
@@ -45,7 +41,6 @@ This file is updated automatically as described in [Unreleased Changes](changes/
 
 * `analysisSkipped` field on samples, applicable to run-libraries only
 * case archiving status, destination, and TTL (days)
-
 
 ## [1.28.0] - 2026-01-07
 
@@ -57,13 +52,11 @@ This file is updated automatically as described in [Unreleased Changes](changes/
 
 * Set sequencing complete = true for library qualification tests done on samples (means qPCR QC, not sequencing QC)
 
-
 ## [1.27.0] - 2025-12-04
 
 ### Changed
 
 * Read-level Q30 from integer to decimal
-
 
 ## [1.26.0] - 2025-08-01
 
@@ -72,7 +65,6 @@ This file is updated automatically as described in [Unreleased Changes](changes/
 * `deliverables` to /shesmu-detailed-case cases
 * Project, run name, and sequencing type to run-library omissions
 
-
 ## [1.25.0] - 2025-06-30
 
 ### Changed
@@ -80,13 +72,11 @@ This file is updated automatically as described in [Unreleased Changes](changes/
 * Deliverable categories are no longer hard-coded
 * Analysis review skipped is now set on the deliverable rather than the project
 
-
 ## [1.24.0] - 2025-06-12
 
 ### Added
 
 * Metrics collection to samples, defining the metric properties, value(s), and status
-
 
 ## [1.23.0] - 2025-06-02
 
@@ -98,7 +88,6 @@ This file is updated automatically as described in [Unreleased Changes](changes/
 
 * shesmu-detailed-cases sequencing will show tests for expected but incomplete/unregistered samples
 * shesmu-detailed-case endpoint sequencing field will be sorted
-
 
 ## [1.22.0] - 2025-04-03
 
@@ -116,7 +105,6 @@ This file is updated automatically as described in [Unreleased Changes](changes/
 
 * shesmu-detailed-case did not consider run QC when determining whether sequencing was complete
 
-
 ## [1.21.0] - 2025-03-03
 
 ### Changed
@@ -128,13 +116,11 @@ This file is updated automatically as described in [Unreleased Changes](changes/
 * Sample complete logic to show correct status for top-up required and
   take run status into account for sample completion
 
-
 ## [1.20.1] - 2025-01-29
 
 ### Fixed
 
 * clinicalCompletedDate set based on clinical deliverables, not overall completedDate
-
 
 ## [1.20.0] - 2025-01-23
 
@@ -142,13 +128,11 @@ This file is updated automatically as described in [Unreleased Changes](changes/
 
 * new date field clinicalCompletedDate to shesmu detailed cases
 
-
 ## [1.19.0] - 2024-12-19
 
 ### Added
 
 * Sample collapsed coverage field
-
 
 ## [1.18.0] - 2024-12-17
 
@@ -157,13 +141,11 @@ This file is updated automatically as described in [Unreleased Changes](changes/
 * Analysis review, release approval, and release now have QC statuses that indicate both QC passed and
   the release status
 
-
 ## [1.17.1] - 2024-11-22
 
 ### Fixed
 
 * Field on cardea detailed cases must be able to handle null values
-
 
 ## [1.17.0] - 2024-11-21
 
@@ -171,13 +153,11 @@ This file is updated automatically as described in [Unreleased Changes](changes/
 
 * Field qcFailed on sequencing items in shesmu detailed cases
 
-
 ## [1.16.0] - 2024-11-07
 
 ### Added
 
 * Omitted run samples in Dimsum case data
-
 
 ## [1.15.0] - 2024-10-24
 
@@ -185,13 +165,11 @@ This file is updated automatically as described in [Unreleased Changes](changes/
 
 * Shesmu Detailed Cases endpoint
 
-
 ## [1.14.0] - 2024-08-06
 
 ### Added
 
 * Sample/library DV200 field
-
 
 ## [1.13.0] - 2024-06-13
 
@@ -200,7 +178,6 @@ This file is updated automatically as described in [Unreleased Changes](changes/
 * Sample transferDate field for extractions
 * Test fields for extraction TAT breakdown of days spent on preparation, QC, and transfer
 
-
 ## [1.12.0] - 2024-06-06
 
 ### Added
@@ -208,7 +185,6 @@ This file is updated automatically as described in [Unreleased Changes](changes/
 * Test fields for library qualification and full-depth sequencing TAT breakdown of days spent on
   loading, sequencing, and QC
 * Run start date field
-
 
 ## [1.11.0] - 2024-05-08
 
@@ -222,7 +198,6 @@ This file is updated automatically as described in [Unreleased Changes](changes/
 
 * Missing requisition and assay information for omitted samples
 
-
 ## [1.10.0] - 2024-04-10
 
 ### Added
@@ -230,20 +205,17 @@ This file is updated automatically as described in [Unreleased Changes](changes/
 * Deliverable-type-level turn-around time fields
 * Project analysisReviewSkipped field
 
-
 ## [1.9.1] - 2024-03-13
 
 ### Fixed
 
 * Missing (null) `completedDate`s in `shesmu-cases` endpoint
 
-
 ## [1.9.0] - 2024-03-11
 
 ### Added
 
 * New metrics for cfMeDIPs assays
-
 
 ## [1.8.0] - 2024-02-28
 
@@ -259,7 +231,6 @@ This file is updated automatically as described in [Unreleased Changes](changes/
 
 * Requisition QCs
 
-
 ## [1.7.0] - 2024-01-03
 
 ### Added
@@ -270,7 +241,6 @@ This file is updated automatically as described in [Unreleased Changes](changes/
 ### Fixed
 
 * Loading samples that have no requisition
-
 
 ## [1.6.0] - 2023-11-16
 
@@ -284,7 +254,6 @@ This file is updated automatically as described in [Unreleased Changes](changes/
 
 * Case start date provided by QC-Gate-ETL (based on latest sample receipt) will be used
 
-
 ## [1.5.0] - 2023-09-19
 
 ### Changed
@@ -294,13 +263,11 @@ This file is updated automatically as described in [Unreleased Changes](changes/
   * Draft Report -> Release Approval
   * Final Report -> Release
 
-
 ## [1.4.0] - 2023-08-18
 
 ### Changed
 
 * Data types to work with Dimsum data parsing and loading
-
 
 ## [1.3.0] - 2023-08-08
 
@@ -308,7 +275,6 @@ This file is updated automatically as described in [Unreleased Changes](changes/
 
 * Sample QC Note field
 * capability for Jackson parsing for data models using Builder notation
-
 
 ## [1.2.0] - 2023-07-31
 
@@ -323,7 +289,6 @@ This file is updated automatically as described in [Unreleased Changes](changes/
 * data for the wrong donor could be included in Informatics Review metrics on the Case QC Report
 * Only run-library IUSes are included in `shesmu-cases` limsIds field
 
-
 ## [1.1.0] - 2023-05-19
 
 ### Added
@@ -334,13 +299,11 @@ This file is updated automatically as described in [Unreleased Changes](changes/
 
 * Return list of case IDs instead of count of cases in summary by run
 
-
 ## [1.0.1] - 2023-05-10
 
 ### Fixed
 
 * Convert `/shesmu-cases` `completedDate` to Instant for better Shesmu compatibility
-
 
 ## [1.0.0] - 2023-05-08
 
@@ -353,7 +316,7 @@ This file is updated automatically as described in [Unreleased Changes](changes/
 * OpenAPI URLs now displays correct URL scheme
 * Forward headers for correct URL display in OpenAPI docs
 
-
 # Unreleased
 
 * Copied the Dimsum project and modified it to serve as the basis for the Cardea project
+

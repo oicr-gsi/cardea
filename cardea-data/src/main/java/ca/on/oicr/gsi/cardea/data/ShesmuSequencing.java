@@ -1,13 +1,11 @@
 package ca.on.oicr.gsi.cardea.data;
 
-import java.util.Set;
-
 import static java.util.Collections.*;
 import static java.util.Objects.requireNonNull;
 
-/**
- * Immutable Test
- */
+import java.util.Set;
+
+/** Immutable Test */
 @com.fasterxml.jackson.databind.annotation.JsonDeserialize(builder = ShesmuSequencing.Builder.class)
 @tools.jackson.databind.annotation.JsonDeserialize(builder = ShesmuSequencing.Builder.class)
 public class ShesmuSequencing {
@@ -17,14 +15,12 @@ public class ShesmuSequencing {
   private final Set<ShesmuSample> limsIds;
   private final boolean complete;
 
-
   private ShesmuSequencing(Builder builder) {
     this.test = requireNonNull(builder.test);
     this.type = requireNonNull(builder.type);
     this.limsIds = unmodifiableSet(requireNonNull(builder.limsIds));
     this.complete = requireNonNull(builder.complete);
   }
-
 
   public String getTest() {
     return test;
@@ -74,6 +70,5 @@ public class ShesmuSequencing {
       this.complete = complete;
       return this;
     }
-
   }
 }

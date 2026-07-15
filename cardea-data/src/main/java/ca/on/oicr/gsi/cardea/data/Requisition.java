@@ -1,13 +1,12 @@
 package ca.on.oicr.gsi.cardea.data;
 
 import static java.util.Objects.requireNonNull;
+
 import java.util.Collections;
 import java.util.Objects;
 import java.util.Set;
 
-/**
- * Immutable Requisition
- */
+/** Immutable Requisition */
 @com.fasterxml.jackson.databind.annotation.JsonDeserialize(builder = Requisition.Builder.class)
 @tools.jackson.databind.annotation.JsonDeserialize(builder = Requisition.Builder.class)
 public class Requisition {
@@ -23,8 +22,10 @@ public class Requisition {
   private Requisition(Builder builder) {
     this.id = requireNonNull(builder.id);
     this.name = requireNonNull(builder.name);
-    this.assayIds = builder.assayIds == null ? Collections.emptySet()
-        : Collections.unmodifiableSet(builder.assayIds);
+    this.assayIds =
+        builder.assayIds == null
+            ? Collections.emptySet()
+            : Collections.unmodifiableSet(builder.assayIds);
     this.stopped = builder.stopped;
     this.stopReason = builder.stopReason;
     this.paused = builder.paused;
@@ -33,12 +34,9 @@ public class Requisition {
 
   @Override
   public boolean equals(Object obj) {
-    if (this == obj)
-      return true;
-    if (obj == null)
-      return false;
-    if (getClass() != obj.getClass())
-      return false;
+    if (this == obj) return true;
+    if (obj == null) return false;
+    if (getClass() != obj.getClass()) return false;
     Requisition other = (Requisition) obj;
     return Objects.equals(id, other.id);
   }

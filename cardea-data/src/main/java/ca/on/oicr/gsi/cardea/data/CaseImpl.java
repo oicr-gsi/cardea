@@ -12,9 +12,7 @@ import java.util.Set;
 import java.util.function.Function;
 import java.util.stream.Stream;
 
-/**
- * Immutable case
- */
+/** Immutable case */
 @com.fasterxml.jackson.databind.annotation.JsonDeserialize(builder = CaseImpl.Builder.class)
 @tools.jackson.databind.annotation.JsonDeserialize(builder = CaseImpl.Builder.class)
 public class CaseImpl implements Case {
@@ -68,14 +66,18 @@ public class CaseImpl implements Case {
     if (builder.latestActivityDate != null) {
       this.latestActivityDate = builder.latestActivityDate;
     } else {
-      this.latestActivityDate = Stream
-          .concat(Stream.of(receipts.stream().map(Sample::getLatestActivityDate),
-              tests.stream().map(Test::getLatestActivityDate))
-              .flatMap(Function.identity()),
-              deliverables == null ? Stream.empty()
-                  : deliverables.stream().map(CaseDeliverable::getLatestActivityDate))
-          .filter(Objects::nonNull).max(LocalDate::compareTo)
-          .orElse(null);
+      this.latestActivityDate =
+          Stream.concat(
+                  Stream.of(
+                          receipts.stream().map(Sample::getLatestActivityDate),
+                          tests.stream().map(Test::getLatestActivityDate))
+                      .flatMap(Function.identity()),
+                  deliverables == null
+                      ? Stream.empty()
+                      : deliverables.stream().map(CaseDeliverable::getLatestActivityDate))
+              .filter(Objects::nonNull)
+              .max(LocalDate::compareTo)
+              .orElse(null);
     }
     this.receiptDaysSpent = builder.receiptDaysSpent;
     this.analysisReviewDaysSpent = builder.analysisReviewDaysSpent;

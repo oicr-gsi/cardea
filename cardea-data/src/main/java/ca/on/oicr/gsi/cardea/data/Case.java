@@ -1,9 +1,9 @@
 package ca.on.oicr.gsi.cardea.data;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Set;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @com.fasterxml.jackson.databind.annotation.JsonDeserialize(as = CaseImpl.class)
 @tools.jackson.databind.annotation.JsonDeserialize(as = CaseImpl.class)
@@ -61,5 +61,4 @@ public interface Case {
   String getArchivingDestination();
 
   Integer getArchivingTtlDays();
-
 }

@@ -1,11 +1,10 @@
 package ca.on.oicr.gsi.cardea.data;
 
 import static java.util.Objects.requireNonNull;
+
 import java.time.LocalDate;
 
-/**
- * Immutable OmittedRunSample
- */
+/** Immutable OmittedRunSample */
 @com.fasterxml.jackson.databind.annotation.JsonDeserialize(builder = OmittedRunSample.Builder.class)
 @tools.jackson.databind.annotation.JsonDeserialize(builder = OmittedRunSample.Builder.class)
 public class OmittedRunSample {
@@ -206,7 +205,5 @@ public class OmittedRunSample {
       this.dataReviewUser = dataReviewUser;
       return this;
     }
-
   }
-
 }

@@ -15,5 +15,4 @@ public class Jackson3Test extends JacksonTest {
   protected <T> T deserialize(String value, Class<T> clazz) throws Exception {
     return mapper.readerFor(clazz).readValue(value);
   }
-
 }

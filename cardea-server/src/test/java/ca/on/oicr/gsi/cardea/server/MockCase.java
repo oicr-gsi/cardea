@@ -2,8 +2,11 @@ package ca.on.oicr.gsi.cardea.server;
 
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
+
 import ca.on.oicr.gsi.cardea.data.Case;
 import ca.on.oicr.gsi.cardea.data.CaseDeliverable;
+import ca.on.oicr.gsi.cardea.data.CaseQc.AnalysisReviewQcStatus;
+import ca.on.oicr.gsi.cardea.data.CaseQc.ReleaseApprovalQcStatus;
 import ca.on.oicr.gsi.cardea.data.CaseRelease;
 import ca.on.oicr.gsi.cardea.data.Donor;
 import ca.on.oicr.gsi.cardea.data.MetricCategory;
@@ -11,21 +14,40 @@ import ca.on.oicr.gsi.cardea.data.Project;
 import ca.on.oicr.gsi.cardea.data.Requisition;
 import ca.on.oicr.gsi.cardea.data.Run;
 import ca.on.oicr.gsi.cardea.data.Sample;
-import ca.on.oicr.gsi.cardea.data.CaseQc.AnalysisReviewQcStatus;
-import ca.on.oicr.gsi.cardea.data.CaseQc.ReleaseApprovalQcStatus;
+import java.time.*;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashSet;
-import java.time.*;
 import java.util.List;
 
 public class MockCase {
 
   private static final List<Case> cases =
-      Arrays.asList(makeCase0(), makeCase1(), makeCase2(), makeCase3(), makeCase4(), makeCase5(),
-          makeCase6(), makeCase7(), makeCase8(), makeCase9(), makeCase10(), makeCase11(),
-          makeCase12(), makeCase13(), makeCase14(), makeCase15(), makeCase16(), makeCase17(),
-          makeCase18(), makeCase19(), makeCase20(), makeCase21(), makeCase22(), makeCase23());
+      Arrays.asList(
+          makeCase0(),
+          makeCase1(),
+          makeCase2(),
+          makeCase3(),
+          makeCase4(),
+          makeCase5(),
+          makeCase6(),
+          makeCase7(),
+          makeCase8(),
+          makeCase9(),
+          makeCase10(),
+          makeCase11(),
+          makeCase12(),
+          makeCase13(),
+          makeCase14(),
+          makeCase15(),
+          makeCase16(),
+          makeCase17(),
+          makeCase18(),
+          makeCase19(),
+          makeCase20(),
+          makeCase21(),
+          makeCase22(),
+          makeCase23());
 
   private static Requisition addRequisition(Case kase, int caseNumber, String name) {
     Requisition requisition = mock(Requisition.class);
@@ -36,8 +58,12 @@ public class MockCase {
     return requisition;
   }
 
-  private static Sample addRunLibrary(List<Sample> gateItems, String id, Boolean qcPassed,
-      String qcReason, Boolean dataReviewPassed) {
+  private static Sample addRunLibrary(
+      List<Sample> gateItems,
+      String id,
+      Boolean qcPassed,
+      String qcReason,
+      Boolean dataReviewPassed) {
     Sample sample = addSample(gateItems, id, qcPassed, qcReason);
     Run run = mock(Run.class);
     when(sample.getRun()).thenReturn(run);
@@ -49,8 +75,8 @@ public class MockCase {
     return sample;
   }
 
-  private static Sample addSample(List<Sample> gateItems, String id, Boolean qcPassed,
-      String qcReason) {
+  private static Sample addSample(
+      List<Sample> gateItems, String id, Boolean qcPassed, String qcReason) {
     Sample sample = mock(Sample.class);
     when(sample.getId()).thenReturn(id);
     when(sample.getQcPassed()).thenReturn(qcPassed);
@@ -63,8 +89,8 @@ public class MockCase {
     return sample;
   }
 
-  private static ca.on.oicr.gsi.cardea.data.Test addTest(Case kase, int caseNumber, int testNumber,
-      String name) {
+  private static ca.on.oicr.gsi.cardea.data.Test addTest(
+      Case kase, int caseNumber, int testNumber, String name) {
     ca.on.oicr.gsi.cardea.data.Test test = mock(ca.on.oicr.gsi.cardea.data.Test.class);
     when(test.getName()).thenReturn(name);
     when(test.getGroupId()).thenReturn(makeTestGroupId(caseNumber, testNumber));
@@ -76,9 +102,15 @@ public class MockCase {
     return test;
   }
 
-  private static ca.on.oicr.gsi.cardea.data.Test addTest(Case kase, int caseNumber, int testNumber,
-      String name, boolean extractionComplete, boolean libraryPrepComplete,
-      boolean libraryQualificationComplete, boolean fullDepthComplete) {
+  private static ca.on.oicr.gsi.cardea.data.Test addTest(
+      Case kase,
+      int caseNumber,
+      int testNumber,
+      String name,
+      boolean extractionComplete,
+      boolean libraryPrepComplete,
+      boolean libraryQualificationComplete,
+      boolean fullDepthComplete) {
     ca.on.oicr.gsi.cardea.data.Test test = addTest(kase, caseNumber, testNumber, name);
     if (extractionComplete) {
       String extractionId = makeSampleId(caseNumber, testNumber, MetricCategory.EXTRACTION, 1);
@@ -105,8 +137,12 @@ public class MockCase {
     return cases;
   }
 
-  private static Case makeCase(String donorName, String assayName, String projectName,
-      String requisitionName, int caseNumber) {
+  private static Case makeCase(
+      String donorName,
+      String assayName,
+      String projectName,
+      String requisitionName,
+      int caseNumber) {
     Case kase = mock(Case.class);
     Donor donor = mock(Donor.class);
     when(donor.getName()).thenReturn(donorName);
@@ -417,13 +453,12 @@ public class MockCase {
     return project;
   }
 
-  private static String makeSampleId(int caseNumber, int testNumber, MetricCategory gate,
-      int sampleNumber) {
+  private static String makeSampleId(
+      int caseNumber, int testNumber, MetricCategory gate, int sampleNumber) {
     return "C%dT%dG%dS%d".formatted(caseNumber, testNumber, gate.ordinal(), sampleNumber);
   }
 
   public static String makeTestGroupId(int caseNumber, int testNumber) {
     return "C%dT%d".formatted(caseNumber, testNumber);
   }
-
 }

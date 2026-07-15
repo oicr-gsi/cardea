@@ -3,9 +3,7 @@ package ca.on.oicr.gsi.cardea.data;
 import java.util.Collections;
 import java.util.List;
 
-/**
- * Immutable MetricSubcategory
- */
+/** Immutable MetricSubcategory */
 @com.fasterxml.jackson.databind.annotation.JsonDeserialize(
     builder = MetricSubcategory.Builder.class)
 @tools.jackson.databind.annotation.JsonDeserialize(builder = MetricSubcategory.Builder.class)
@@ -71,7 +69,5 @@ public class MetricSubcategory {
       this.sortPriority = sortPriority;
       return this;
     }
-
   }
-
 }

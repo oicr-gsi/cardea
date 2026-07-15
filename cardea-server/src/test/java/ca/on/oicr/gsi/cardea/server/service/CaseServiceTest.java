@@ -5,23 +5,23 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
+import ca.on.oicr.gsi.cardea.data.Case;
+import ca.on.oicr.gsi.cardea.data.CaseData;
+import ca.on.oicr.gsi.cardea.data.CaseDeliverable;
+import ca.on.oicr.gsi.cardea.data.CaseQc.ReleaseQcStatus;
+import ca.on.oicr.gsi.cardea.data.CaseRelease;
 import ca.on.oicr.gsi.cardea.data.CaseStatusesForRun;
+import ca.on.oicr.gsi.cardea.data.Donor;
+import ca.on.oicr.gsi.cardea.data.Requisition;
 import ca.on.oicr.gsi.cardea.data.Run;
+import ca.on.oicr.gsi.cardea.data.Sample;
+import ca.on.oicr.gsi.cardea.data.SampleImpl;
+import ca.on.oicr.gsi.cardea.data.Test;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import org.junit.jupiter.api.BeforeEach;
-import ca.on.oicr.gsi.cardea.data.Case;
-import ca.on.oicr.gsi.cardea.data.CaseData;
-import ca.on.oicr.gsi.cardea.data.CaseDeliverable;
-import ca.on.oicr.gsi.cardea.data.CaseRelease;
-import ca.on.oicr.gsi.cardea.data.Donor;
-import ca.on.oicr.gsi.cardea.data.Requisition;
-import ca.on.oicr.gsi.cardea.data.Sample;
-import ca.on.oicr.gsi.cardea.data.SampleImpl;
-import ca.on.oicr.gsi.cardea.data.Test;
-import ca.on.oicr.gsi.cardea.data.CaseQc.ReleaseQcStatus;
 
 public class CaseServiceTest {
 
@@ -61,7 +61,11 @@ public class CaseServiceTest {
     // here too
     if (runName == null) {
       newSample =
-          new SampleImpl.Builder().id(name).name(name).donor(mock(Donor.class)).project("PROJ")
+          new SampleImpl.Builder()
+              .id(name)
+              .name(name)
+              .donor(mock(Donor.class))
+              .project("PROJ")
               .tissueOrigin("To")
               .tissueType("T")
               .metrics(new ArrayList<>())
@@ -69,7 +73,11 @@ public class CaseServiceTest {
               .build();
     } else {
       newSample =
-          new SampleImpl.Builder().id(name).name(name).donor(mock(Donor.class)).project("PROJ")
+          new SampleImpl.Builder()
+              .id(name)
+              .name(name)
+              .donor(mock(Donor.class))
+              .project("PROJ")
               .tissueOrigin("To")
               .tissueType("T")
               .run(new Run.Builder().name(runName).lanes(new ArrayList<>()).build())
@@ -92,14 +100,22 @@ public class CaseServiceTest {
     addSample(test.getLibraryPreparations(), makeSampleName(caseNumber, testLetter, "C", 1), null);
     addSample(test.getLibraryPreparations(), makeSampleName(caseNumber, testLetter, "C", 2), null);
     when(test.getLibraryQualifications()).thenReturn(new ArrayList<>());
-    addSample(test.getLibraryQualifications(), makeSampleName(caseNumber, testLetter, "D", 1),
+    addSample(
+        test.getLibraryQualifications(),
+        makeSampleName(caseNumber, testLetter, "D", 1),
         String.format("Run%s", caseNumber));
-    addSample(test.getLibraryQualifications(), makeSampleName(caseNumber, testLetter, "D", 2),
+    addSample(
+        test.getLibraryQualifications(),
+        makeSampleName(caseNumber, testLetter, "D", 2),
         String.format("Run%s", (caseNumber + 1)));
     when(test.getFullDepthSequencings()).thenReturn(new ArrayList<>());
-    addSample(test.getFullDepthSequencings(), makeSampleName(caseNumber, testLetter, "E", 1),
+    addSample(
+        test.getFullDepthSequencings(),
+        makeSampleName(caseNumber, testLetter, "E", 1),
         String.format("Run%s", caseNumber));
-    addSample(test.getFullDepthSequencings(), makeSampleName(caseNumber, testLetter, "E", 2),
+    addSample(
+        test.getFullDepthSequencings(),
+        makeSampleName(caseNumber, testLetter, "E", 2),
         String.format("Run%s", (caseNumber + 1)));
     kase.getTests().add(test);
   }
@@ -118,8 +134,8 @@ public class CaseServiceTest {
   // Sample names are case number + test letter (N if n/a) + gate letter
   // (receipt=A, extract=B,
   // etc.) + sample number
-  private String makeSampleName(int caseNumber, String testLetter, String gateLetter,
-      int sampleNumber) {
+  private String makeSampleName(
+      int caseNumber, String testLetter, String gateLetter, int sampleNumber) {
     return caseNumber + testLetter + "-" + gateLetter + sampleNumber;
   }
 
@@ -163,5 +179,4 @@ public class CaseServiceTest {
     assertNotNull(data);
     assertEquals(2, data.getCases().size());
   }
-
 }

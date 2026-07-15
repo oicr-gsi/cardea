@@ -1,35 +1,19 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-  xmlns="http://maven.apache.org/POM/4.0.0"
-  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-
-  <artifactId>cardea-data</artifactId>
-  <groupId>ca.on.oicr.gsi.cardea</groupId>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 
   <modelVersion>4.0.0</modelVersion>
-  <name>Cardea Case API data model library</name>
-
-  <packaging>jar</packaging>
 
   <parent>
-    <artifactId>cardea</artifactId>
     <groupId>ca.on.oicr.gsi.cardea</groupId>
+    <artifactId>cardea</artifactId>
     <version>1.33.1-SNAPSHOT</version>
   </parent>
+  <groupId>ca.on.oicr.gsi.cardea</groupId>
 
-  <build>
-    <plugins>
-      <plugin>
-        <artifactId>maven-surefire-plugin</artifactId>
-        <configuration>
-          <!-- explicitly control property locations, so local config is never included -->
-          <argLine>
-            -Dspring.config.location=classpath:/application.yml,classpath:/application-noauth.yml,classpath:/application-test.properties</argLine>
-        </configuration>
-        <groupId>org.apache.maven.plugins</groupId>
-      </plugin>
-    </plugins>
-  </build>
+  <artifactId>cardea-data</artifactId>
+
+  <packaging>jar</packaging>
+  <name>Cardea Case API data model library</name>
 
   <dependencies>
     <!-- including both Jackson 2 and Jackson 3 to maintain JsonDeserialize annotations for both -->
@@ -55,15 +39,28 @@
     </dependency>
 
     <dependency>
-      <artifactId>spring-boot-starter-json</artifactId>
       <groupId>org.springframework.boot</groupId>
+      <artifactId>spring-boot-starter-json</artifactId>
       <scope>test</scope>
     </dependency>
     <dependency>
-      <artifactId>spring-boot-starter-test</artifactId>
       <groupId>org.springframework.boot</groupId>
+      <artifactId>spring-boot-starter-test</artifactId>
       <scope>test</scope>
     </dependency>
   </dependencies>
+
+  <build>
+    <plugins>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-surefire-plugin</artifactId>
+        <configuration>
+          <!-- explicitly control property locations, so local config is never included -->
+          <argLine>-Dspring.config.location=classpath:/application.yml,classpath:/application-noauth.yml,classpath:/application-test.properties</argLine>
+        </configuration>
+      </plugin>
+    </plugins>
+  </build>
 
 </project>

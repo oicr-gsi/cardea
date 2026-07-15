@@ -4,7 +4,9 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 
 public enum CaseStatus {
-  ACTIVE, COMPLETED, STOPPED;
+  ACTIVE,
+  COMPLETED,
+  STOPPED;
 
   @JsonValue
   public String getLabel() {

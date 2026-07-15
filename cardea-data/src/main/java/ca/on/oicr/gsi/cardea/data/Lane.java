@@ -3,9 +3,7 @@ package ca.on.oicr.gsi.cardea.data;
 import java.math.BigDecimal;
 import java.util.Objects;
 
-/**
- * Immutable Lane
- */
+/** Immutable Lane */
 @com.fasterxml.jackson.databind.annotation.JsonDeserialize(builder = Lane.Builder.class)
 @tools.jackson.databind.annotation.JsonDeserialize(builder = Lane.Builder.class)
 public class Lane {
@@ -94,7 +92,5 @@ public class Lane {
       this.percentPfixRead2 = percentPfixRead2;
       return this;
     }
-
   }
-
 }

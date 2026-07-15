@@ -2,6 +2,11 @@ package ca.on.oicr.gsi.cardea;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+import ca.on.oicr.gsi.cardea.data.*;
+import ca.on.oicr.gsi.cardea.data.CaseQc.AnalysisReviewQcStatus;
+import ca.on.oicr.gsi.cardea.data.CaseQc.ReleaseApprovalQcStatus;
+import ca.on.oicr.gsi.cardea.data.CaseQc.ReleaseQcStatus;
+import ca.on.oicr.gsi.cardea.data.SampleMetric.MetricLevel;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.Collections;
@@ -11,11 +16,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.function.BiConsumer;
-import ca.on.oicr.gsi.cardea.data.*;
-import ca.on.oicr.gsi.cardea.data.CaseQc.AnalysisReviewQcStatus;
-import ca.on.oicr.gsi.cardea.data.CaseQc.ReleaseApprovalQcStatus;
-import ca.on.oicr.gsi.cardea.data.CaseQc.ReleaseQcStatus;
-import ca.on.oicr.gsi.cardea.data.SampleMetric.MetricLevel;
 
 public abstract class JacksonTest {
 
@@ -37,16 +37,17 @@ public abstract class JacksonTest {
     assayIds.add(2L);
     assayIds.add(3L);
 
-    OmittedSample original = new OmittedSample.Builder()
-        .id("SAM9")
-        .name("Sample")
-        .donor(makeDonor())
-        .createdDate(LocalDate.of(2024, 1, 1))
-        .project("PROJ")
-        .requisitionId(1L)
-        .requisitionName("Test Req")
-        .assayIds(assayIds)
-        .build();
+    OmittedSample original =
+        new OmittedSample.Builder()
+            .id("SAM9")
+            .name("Sample")
+            .donor(makeDonor())
+            .createdDate(LocalDate.of(2024, 1, 1))
+            .project("PROJ")
+            .requisitionId(1L)
+            .requisitionName("Test Req")
+            .assayIds(assayIds)
+            .build();
 
     String serialized = serialize(original);
     OmittedSample deserialized = deserialize(serialized, OmittedSample.class);
@@ -380,8 +381,8 @@ public abstract class JacksonTest {
     assertEquals(one.getLibrarySize(), two.getLibrarySize());
     assertEquals(one.getMappedToCoding(), two.getMappedToCoding());
     assertEquals(one.getMeanCoverageDeduplicated(), two.getMeanCoverageDeduplicated());
-    assertEquals(one.getPreliminaryMeanCoverageDeduplicated(),
-        two.getPreliminaryMeanCoverageDeduplicated());
+    assertEquals(
+        one.getPreliminaryMeanCoverageDeduplicated(), two.getPreliminaryMeanCoverageDeduplicated());
     assertEquals(one.getMeanInsertSize(), two.getMeanInsertSize());
     assertEquals(one.getMedianInsertSize(), two.getMedianInsertSize());
     assertEquals(one.getName(), two.getName());
@@ -435,9 +436,11 @@ public abstract class JacksonTest {
       } else {
         assertEquals(metricOne.getLaneValues().size(), metricTwo.getLaneValues().size());
         for (SampleMetricLane laneOne : metricOne.getLaneValues()) {
-          SampleMetricLane laneTwo = metricTwo.getLaneValues().stream()
-              .filter(x -> x.getLaneNumber() == laneOne.getLaneNumber())
-              .findAny().orElse(null);
+          SampleMetricLane laneTwo =
+              metricTwo.getLaneValues().stream()
+                  .filter(x -> x.getLaneNumber() == laneOne.getLaneNumber())
+                  .findAny()
+                  .orElse(null);
           assertNotNull(laneTwo);
           assertEquals(laneOne.getLaneValue(), laneTwo.getLaneValue());
           assertEquals(laneOne.getRead1Value(), laneTwo.getRead1Value());
@@ -450,15 +453,19 @@ public abstract class JacksonTest {
   private static void assertTestEqual(Test one, Test two) {
     assertEquals(one.isExtractionSkipped(), two.isExtractionSkipped());
     assertListsEqual(one.getExtractions(), two.getExtractions(), JacksonTest::assertSampleEqual);
-    assertListsEqual(one.getFullDepthSequencings(), two.getFullDepthSequencings(),
+    assertListsEqual(
+        one.getFullDepthSequencings(),
+        two.getFullDepthSequencings(),
         JacksonTest::assertSampleEqual);
     assertEquals(one.getGroupId(), two.getGroupId());
     assertEquals(one.getLatestActivityDate(), two.getLatestActivityDate());
     assertEquals(one.isLibraryPreparationSkipped(), two.isLibraryPreparationSkipped());
-    assertListsEqual(one.getLibraryPreparations(), two.getLibraryPreparations(),
-        JacksonTest::assertSampleEqual);
+    assertListsEqual(
+        one.getLibraryPreparations(), two.getLibraryPreparations(), JacksonTest::assertSampleEqual);
     assertEquals(one.isLibraryQualificationSkipped(), two.isLibraryQualificationSkipped());
-    assertListsEqual(one.getLibraryQualifications(), two.getLibraryQualifications(),
+    assertListsEqual(
+        one.getLibraryQualifications(),
+        two.getLibraryQualifications(),
         JacksonTest::assertSampleEqual);
     assertEquals(one.getName(), two.getName());
     assertEquals(one.getTargetedSequencing(), two.getTargetedSequencing());
@@ -472,16 +479,19 @@ public abstract class JacksonTest {
     assertEquals(one.getExtractionTransferDaysSpent(), two.getExtractionTransferDaysSpent());
     assertEquals(one.getLibraryPreparationDaysSpent(), two.getLibraryPreparationDaysSpent());
     assertEquals(one.getLibraryQualificationDaysSpent(), two.getLibraryQualificationDaysSpent());
-    assertEquals(one.getLibraryQualificationLoadingDaysSpent(),
+    assertEquals(
+        one.getLibraryQualificationLoadingDaysSpent(),
         two.getLibraryQualificationLoadingDaysSpent());
-    assertEquals(one.getLibraryQualificationSequencingDaysSpent(),
+    assertEquals(
+        one.getLibraryQualificationSequencingDaysSpent(),
         two.getLibraryQualificationSequencingDaysSpent());
-    assertEquals(one.getLibraryQualificationQcDaysSpent(),
-        two.getLibraryQualificationQcDaysSpent());
+    assertEquals(
+        one.getLibraryQualificationQcDaysSpent(), two.getLibraryQualificationQcDaysSpent());
     assertEquals(one.getFullDepthSequencingDaysSpent(), two.getFullDepthSequencingDaysSpent());
-    assertEquals(one.getFullDepthSequencingLoadingDaysSpent(),
-        two.getFullDepthSequencingLoadingDaysSpent());
-    assertEquals(one.getFullDepthSequencingSequencingDaysSpent(),
+    assertEquals(
+        one.getFullDepthSequencingLoadingDaysSpent(), two.getFullDepthSequencingLoadingDaysSpent());
+    assertEquals(
+        one.getFullDepthSequencingSequencingDaysSpent(),
         two.getFullDepthSequencingSequencingDaysSpent());
     assertEquals(one.getFullDepthSequencingQcDaysSpent(), two.getFullDepthSequencingQcDaysSpent());
   }
@@ -508,8 +518,8 @@ public abstract class JacksonTest {
     assertEquals(one.getStartDate(), two.getStartDate());
     assertListsEqual(one.getTests(), two.getTests(), JacksonTest::assertTestEqual);
     assertListsEqual(one.getQcGroups(), two.getQcGroups(), JacksonTest::assertAnalysisQcGroupEqual);
-    assertListsEqual(one.getDeliverables(), two.getDeliverables(),
-        JacksonTest::assertCaseDeliverableEqual);
+    assertListsEqual(
+        one.getDeliverables(), two.getDeliverables(), JacksonTest::assertCaseDeliverableEqual);
     assertEquals(one.getTimepoint(), two.getTimepoint());
     assertEquals(one.getTissueOrigin(), two.getTissueOrigin());
     assertEquals(one.getTissueType(), two.getTissueType());
@@ -550,8 +560,8 @@ public abstract class JacksonTest {
     assertEquals(one.getRequisitionName(), two.getRequisitionName());
   }
 
-  private static void assertShesmuDetailedCaseEqual(ShesmuDetailedCase one,
-      ShesmuDetailedCase two) {
+  private static void assertShesmuDetailedCaseEqual(
+      ShesmuDetailedCase one, ShesmuDetailedCase two) {
     assertEquals(one.getAssayName(), two.getAssayName());
     assertEquals(one.getAssayVersion(), two.getAssayVersion());
     assertEquals(one.getCaseIdentifier(), two.getCaseIdentifier());
@@ -561,8 +571,8 @@ public abstract class JacksonTest {
     assertEquals(one.getCompletedDate(), two.getCompletedDate());
     assertEquals(one.getClinicalCompletedDate(), two.getClinicalCompletedDate());
     assertEquals(one.getSequencing().size(), two.getSequencing().size());
-    assertShesmuTestEqual(one.getSequencing().iterator().next(),
-        two.getSequencing().iterator().next());
+    assertShesmuTestEqual(
+        one.getSequencing().iterator().next(), two.getSequencing().iterator().next());
     assertEquals(one.getRequisitionId(), two.getRequisitionId());
     assertEquals(one.getRequisitionName(), two.getRequisitionName());
   }
@@ -579,15 +589,10 @@ public abstract class JacksonTest {
     assertEquals(one.isComplete(), two.isComplete());
     assertEquals(one.getLimsIds().size(), two.getLimsIds().size());
     assertShesmuSampleEqual(one.getLimsIds().iterator().next(), two.getLimsIds().iterator().next());
-
   }
 
   private static Donor makeDonor() {
-    return new Donor.Builder()
-        .id("SAM1")
-        .name("Donor")
-        .externalName("ext")
-        .build();
+    return new Donor.Builder().id("SAM1").name("Donor").externalName("ext").build();
   }
 
   private static Metric makeMetric() {
@@ -693,11 +698,7 @@ public abstract class JacksonTest {
     Map<String, List<String>> deliverables = new HashMap<>();
     deliverables.put("Data Release", Collections.singletonList("FastQ"));
 
-    return new Project.Builder()
-        .name("PROJ")
-        .pipeline("RUO")
-        .deliverables(deliverables)
-        .build();
+    return new Project.Builder().name("PROJ").pipeline("RUO").deliverables(deliverables).build();
   }
 
   private static Requisition makeRequisition() {
@@ -813,8 +814,13 @@ public abstract class JacksonTest {
             .metricLevel(MetricLevel.LANE)
             .preliminary(false)
             .value(new BigDecimal("12.34"))
-            .laneValues(Collections.singleton(new SampleMetricLane(1, new BigDecimal("23.34"),
-                new BigDecimal("34.56"), new BigDecimal("45.67"))))
+            .laneValues(
+                Collections.singleton(
+                    new SampleMetricLane(
+                        1,
+                        new BigDecimal("23.34"),
+                        new BigDecimal("34.56"),
+                        new BigDecimal("45.67"))))
             .qcPassed(true)
             .units("%")
             .build());
@@ -921,31 +927,30 @@ public abstract class JacksonTest {
     Set<ShesmuSample> limsIds = new HashSet<>();
     Set<ShesmuCaseRelease> releases = new HashSet<>();
     Set<ShesmuCaseDeliverable> deliverables = new HashSet<>();
-    limsIds.add(new ShesmuSample.Builder()
-        .id("ID1")
-        .supplemental(false)
-        .qcFailed(false)
-        .build());
-    sequencing.add(new ShesmuSequencing.Builder()
-        .test("Some Test")
-        .limsIds(limsIds)
-        .complete(true)
-        .type(MetricCategory.LIBRARY_QUALIFICATION)
-        .build());
-    releases.add(new ShesmuCaseRelease.Builder()
-        .deliverable("FastQ")
-        .qcUser("Moi")
-        .qcDateLocal(LocalDate.of(2025, 7, 25))
-        .qcStatus(ReleaseQcStatus.FAILED_STOP)
-        .build());
-    deliverables.add(new ShesmuCaseDeliverable.Builder()
-        .deliverableCategory("FastQ")
-        .analysisReviewSkipped(false)
-        .analysisReviewQcUser("test user")
-        .analysisReviewQcDateLocal(LocalDate.of(2025, 7, 14))
-        .analysisReviewQcStatus(AnalysisReviewQcStatus.FAILED)
-        .releases(releases)
-        .build());
+    limsIds.add(new ShesmuSample.Builder().id("ID1").supplemental(false).qcFailed(false).build());
+    sequencing.add(
+        new ShesmuSequencing.Builder()
+            .test("Some Test")
+            .limsIds(limsIds)
+            .complete(true)
+            .type(MetricCategory.LIBRARY_QUALIFICATION)
+            .build());
+    releases.add(
+        new ShesmuCaseRelease.Builder()
+            .deliverable("FastQ")
+            .qcUser("Moi")
+            .qcDateLocal(LocalDate.of(2025, 7, 25))
+            .qcStatus(ReleaseQcStatus.FAILED_STOP)
+            .build());
+    deliverables.add(
+        new ShesmuCaseDeliverable.Builder()
+            .deliverableCategory("FastQ")
+            .analysisReviewSkipped(false)
+            .analysisReviewQcUser("test user")
+            .analysisReviewQcDateLocal(LocalDate.of(2025, 7, 14))
+            .analysisReviewQcStatus(AnalysisReviewQcStatus.FAILED)
+            .releases(releases)
+            .build());
 
     return new ShesmuDetailedCase.Builder()
         .assayName("Assay")
@@ -962,5 +967,4 @@ public abstract class JacksonTest {
         .requisitionName("Some Req")
         .build();
   }
-
 }

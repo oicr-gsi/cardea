@@ -2,9 +2,7 @@ package ca.on.oicr.gsi.cardea.data;
 
 import static java.util.Objects.requireNonNull;
 
-/**
- * Immutable Donor
- */
+/** Immutable Donor */
 @com.fasterxml.jackson.databind.annotation.JsonDeserialize(builder = Donor.Builder.class)
 @tools.jackson.databind.annotation.JsonDeserialize(builder = Donor.Builder.class)
 public class Donor {
@@ -57,6 +55,5 @@ public class Donor {
       this.name = name;
       return this;
     }
-
   }
 }

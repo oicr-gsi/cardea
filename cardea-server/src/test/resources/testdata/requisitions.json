@@ -1,20 +1,17 @@
-[
-  {
-    "id": 512,
-    "name": "REQ-1",
-    "assay_id": 2,
-    "stopped": false,
-    "stop_reason": null,
-    "paused": false,
-    "pause_reason": null
-  },
-  {
-    "id": 999,
-    "name": "REQ-X",
-    "assay_id": null,
-    "stopped": false,
-    "stop_reason": null,
-    "paused": false,
-    "pause_reason": null
-  }
-]
+[ {
+  "id": 512,
+  "name": "REQ-1",
+  "assay_id": 2,
+  "stopped": false,
+  "stop_reason": null,
+  "paused": false,
+  "pause_reason": null
+}, {
+  "id": 999,
+  "name": "REQ-X",
+  "assay_id": null,
+  "stopped": false,
+  "stop_reason": null,
+  "paused": false,
+  "pause_reason": null
+} ]

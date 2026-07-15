@@ -1,14 +1,19 @@
 package ca.on.oicr.gsi.cardea.server;
 
+import ca.on.oicr.gsi.cardea.data.AnalysisQcGroup;
+import ca.on.oicr.gsi.cardea.data.ArchivingStatus;
 import ca.on.oicr.gsi.cardea.data.Assay;
 import ca.on.oicr.gsi.cardea.data.AssayTargets;
 import ca.on.oicr.gsi.cardea.data.Case;
-import ca.on.oicr.gsi.cardea.data.CaseImpl;
-import ca.on.oicr.gsi.cardea.data.CaseQc;
-import ca.on.oicr.gsi.cardea.data.CaseRelease;
 import ca.on.oicr.gsi.cardea.data.CaseData;
 import ca.on.oicr.gsi.cardea.data.CaseDeliverable;
 import ca.on.oicr.gsi.cardea.data.CaseDeliverableImpl;
+import ca.on.oicr.gsi.cardea.data.CaseImpl;
+import ca.on.oicr.gsi.cardea.data.CaseQc;
+import ca.on.oicr.gsi.cardea.data.CaseQc.AnalysisReviewQcStatus;
+import ca.on.oicr.gsi.cardea.data.CaseQc.ReleaseApprovalQcStatus;
+import ca.on.oicr.gsi.cardea.data.CaseQc.ReleaseQcStatus;
+import ca.on.oicr.gsi.cardea.data.CaseRelease;
 import ca.on.oicr.gsi.cardea.data.CaseReleaseImpl;
 import ca.on.oicr.gsi.cardea.data.Donor;
 import ca.on.oicr.gsi.cardea.data.Lane;
@@ -19,29 +24,18 @@ import ca.on.oicr.gsi.cardea.data.OmittedRunSample;
 import ca.on.oicr.gsi.cardea.data.OmittedSample;
 import ca.on.oicr.gsi.cardea.data.Project;
 import ca.on.oicr.gsi.cardea.data.Requisition;
-import ca.on.oicr.gsi.cardea.data.AnalysisQcGroup;
-import ca.on.oicr.gsi.cardea.data.ArchivingStatus;
 import ca.on.oicr.gsi.cardea.data.Run;
 import ca.on.oicr.gsi.cardea.data.Sample;
 import ca.on.oicr.gsi.cardea.data.SampleImpl;
 import ca.on.oicr.gsi.cardea.data.SampleMetric;
+import ca.on.oicr.gsi.cardea.data.SampleMetric.MetricLevel;
 import ca.on.oicr.gsi.cardea.data.SampleMetricLane;
 import ca.on.oicr.gsi.cardea.data.Test;
 import ca.on.oicr.gsi.cardea.data.ThresholdType;
-import ca.on.oicr.gsi.cardea.data.CaseQc.AnalysisReviewQcStatus;
-import ca.on.oicr.gsi.cardea.data.CaseQc.ReleaseApprovalQcStatus;
-import ca.on.oicr.gsi.cardea.data.CaseQc.ReleaseQcStatus;
-import ca.on.oicr.gsi.cardea.data.SampleMetric.MetricLevel;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.micrometer.core.instrument.MeterRegistry;
 import io.micrometer.core.instrument.Timer;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.stereotype.Component;
-
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
@@ -58,6 +52,11 @@ import java.util.concurrent.TimeUnit;
 import java.util.function.BiFunction;
 import java.util.function.Function;
 import java.util.stream.Collectors;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Component;
 
 @Component
 public class CaseLoader {
@@ -79,15 +78,16 @@ public class CaseLoader {
   private ObjectMapper mapper = new ObjectMapper();
 
   public CaseLoader(
-      @Value("${datadirectory}") File dataDirectory,
-      @Autowired MeterRegistry meterRegistry) {
+      @Value("${datadirectory}") File dataDirectory, @Autowired MeterRegistry meterRegistry) {
     if (!dataDirectory.isDirectory() || !dataDirectory.canRead()) {
       throw new IllegalStateException(
           String.format("Data directory unreadable: %s", dataDirectory.getAbsolutePath()));
     }
     if (meterRegistry != null) {
-      refreshTimer = Timer.builder("case_data_refresh_time")
-          .description("Time taken to refresh the case data").register(meterRegistry);
+      refreshTimer =
+          Timer.builder("case_data_refresh_time")
+              .description("Time taken to refresh the case data")
+              .register(meterRegistry);
     }
     projectFile = new File(dataDirectory, "projects.json");
     caseFile = new File(dataDirectory, "cases.json");
@@ -161,19 +161,21 @@ public class CaseLoader {
       List<OmittedRunSample> omittedRunSamples =
           loadOmittedRunSamples(noCaseRunlibReader, runsById);
       Map<Long, Assay> assaysById = loadAssays(assayReader);
-      List<Case> cases = loadCases(caseReader, projectsByName, samplesById, donorsById,
-          requisitionsById, assaysById);
+      List<Case> cases =
+          loadCases(
+              caseReader, projectsByName, samplesById, donorsById, requisitionsById, assaysById);
       if (refreshTimer != null) {
         refreshTimer.record(System.currentTimeMillis() - startTimeMillis, TimeUnit.MILLISECONDS);
       }
 
-      CaseData caseData = new CaseData.Builder()
-          .assaysById(assaysById)
-          .cases(cases)
-          .omittedSamples(omittedSamples)
-          .omittedRunSamples(omittedRunSamples)
-          .timestamp(afterTimestamp)
-          .build();
+      CaseData caseData =
+          new CaseData.Builder()
+              .assaysById(assaysById)
+              .cases(cases)
+              .omittedSamples(omittedSamples)
+              .omittedRunSamples(omittedRunSamples)
+              .timestamp(afterTimestamp)
+              .build();
 
       log.debug(String.format("Completed loading %d cases.", cases.size()));
 
@@ -219,62 +221,77 @@ public class CaseLoader {
 
   protected Map<Long, Assay> loadAssays(FileReader fileReader)
       throws DataParseException, IOException {
-    List<Assay> assays = loadFromJsonArrayFile(fileReader, json -> new Assay.Builder()
-        .id(parseLong(json, "id", true))
-        .name(parseString(json, "name", true))
-        .description(parseString(json, "description", false))
-        .version(parseString(json, "version", true))
-        .metricCategories(parseMetricCategories(json.get("metric_categories")))
-        .targets(parseAssayTargets(json.get("targets")))
-        .build());
+    List<Assay> assays =
+        loadFromJsonArrayFile(
+            fileReader,
+            json ->
+                new Assay.Builder()
+                    .id(parseLong(json, "id", true))
+                    .name(parseString(json, "name", true))
+                    .description(parseString(json, "description", false))
+                    .version(parseString(json, "version", true))
+                    .metricCategories(parseMetricCategories(json.get("metric_categories")))
+                    .targets(parseAssayTargets(json.get("targets")))
+                    .build());
     return assays.stream().collect(Collectors.toMap(Assay::getId, Function.identity()));
   }
 
-  private List<Case> loadCases(FileReader fileReader, Map<String, Project> projectsByName,
-      Map<String, Sample> samplesById, Map<String, Donor> donorsById,
-      Map<Long, Requisition> requisitionsById, Map<Long, Assay> assaysById)
+  private List<Case> loadCases(
+      FileReader fileReader,
+      Map<String, Project> projectsByName,
+      Map<String, Sample> samplesById,
+      Map<String, Donor> donorsById,
+      Map<Long, Requisition> requisitionsById,
+      Map<Long, Assay> assaysById)
       throws DataParseException, IOException {
-    return loadFromJsonArrayFile(fileReader, json -> {
-      String caseId = parseString(json, "id", true);
-      String donorId = parseString(json, "donor_id", true);
-      Long requisitionId = parseLong(json, "requisition_id", true);
-      Long assayId = parseLong(json, "assay_id", true);
-      Assay assay = assaysById.get(assayId);
-      return new CaseImpl.Builder()
-          .id(caseId)
-          .donor(donorsById.get(donorId))
-          .projects(parseProjects(json, "project_names", projectsByName, caseId))
-          .assayId(assayId)
-          .assayName(assay.getName())
-          .assayDescription(assay.getDescription())
-          .tissueOrigin(parseString(json, "tissue_origin", true))
-          .tissueType(parseString(json, "tissue_type", true))
-          .timepoint(parseString(json, "timepoint"))
-          .receipts(parseIdsAndGet(json, "receipt_ids", JsonNode::asText, samplesById))
-          .tests(parseTests(json, "assay_tests", samplesById, caseId))
-          .qcGroups(parseAnalysisQcGroups(json.get("qc_groups"), donorsById))
-          .deliverables(parseCaseDeliverables(json.get("deliverables")))
-          .requisition(requisitionsById.get(requisitionId))
-          .startDate(parseDate(json, "start_date"))
-          .receiptDaysSpent(parseInteger(json, "receipt_days_spent", true))
-          .analysisReviewDaysSpent(parseInteger(json, "analysis_review_days_spent", true))
-          .releaseApprovalDaysSpent(parseInteger(json, "release_approval_days_spent", true))
-          .releaseDaysSpent(parseInteger(json, "release_days_spent", true))
-          .caseDaysSpent(parseInteger(json, "case_days_spent", true))
-          .pauseDays(parseInteger(json, "pause_days", true))
-          .archivingStatus(parseEnum(json, "archiving_status", false, ArchivingStatus::valueOf))
-          .archivingDestination(parseString(json, "archiving_destination", false))
-          .archivingTtlDays(parseInteger(json, "archiving_ttl_days", false))
-          .build();
-    });
+    return loadFromJsonArrayFile(
+        fileReader,
+        json -> {
+          String caseId = parseString(json, "id", true);
+          String donorId = parseString(json, "donor_id", true);
+          Long requisitionId = parseLong(json, "requisition_id", true);
+          Long assayId = parseLong(json, "assay_id", true);
+          Assay assay = assaysById.get(assayId);
+          return new CaseImpl.Builder()
+              .id(caseId)
+              .donor(donorsById.get(donorId))
+              .projects(parseProjects(json, "project_names", projectsByName, caseId))
+              .assayId(assayId)
+              .assayName(assay.getName())
+              .assayDescription(assay.getDescription())
+              .tissueOrigin(parseString(json, "tissue_origin", true))
+              .tissueType(parseString(json, "tissue_type", true))
+              .timepoint(parseString(json, "timepoint"))
+              .receipts(parseIdsAndGet(json, "receipt_ids", JsonNode::asText, samplesById))
+              .tests(parseTests(json, "assay_tests", samplesById, caseId))
+              .qcGroups(parseAnalysisQcGroups(json.get("qc_groups"), donorsById))
+              .deliverables(parseCaseDeliverables(json.get("deliverables")))
+              .requisition(requisitionsById.get(requisitionId))
+              .startDate(parseDate(json, "start_date"))
+              .receiptDaysSpent(parseInteger(json, "receipt_days_spent", true))
+              .analysisReviewDaysSpent(parseInteger(json, "analysis_review_days_spent", true))
+              .releaseApprovalDaysSpent(parseInteger(json, "release_approval_days_spent", true))
+              .releaseDaysSpent(parseInteger(json, "release_days_spent", true))
+              .caseDaysSpent(parseInteger(json, "case_days_spent", true))
+              .pauseDays(parseInteger(json, "pause_days", true))
+              .archivingStatus(parseEnum(json, "archiving_status", false, ArchivingStatus::valueOf))
+              .archivingDestination(parseString(json, "archiving_destination", false))
+              .archivingTtlDays(parseInteger(json, "archiving_ttl_days", false))
+              .build();
+        });
   }
 
   protected Map<String, Donor> loadDonors(FileReader fileReader)
       throws DataParseException, IOException {
-    List<Donor> donors = loadFromJsonArrayFile(fileReader,
-        json -> new Donor.Builder().id(parseString(json, "id", true))
-            .name(parseString(json, "name", true))
-            .externalName(parseString(json, "external_name", true)).build());
+    List<Donor> donors =
+        loadFromJsonArrayFile(
+            fileReader,
+            json ->
+                new Donor.Builder()
+                    .id(parseString(json, "id", true))
+                    .name(parseString(json, "name", true))
+                    .externalName(parseString(json, "external_name", true))
+                    .build());
 
     return donors.stream().collect(Collectors.toMap(Donor::getId, Function.identity()));
   }
@@ -292,183 +309,207 @@ public class CaseLoader {
     return loaded;
   }
 
-  protected List<OmittedSample> loadOmittedSamples(FileReader fileReader,
-      Map<String, Donor> donorsById, Map<Long, Requisition> requisitionsById)
+  protected List<OmittedSample> loadOmittedSamples(
+      FileReader fileReader, Map<String, Donor> donorsById, Map<Long, Requisition> requisitionsById)
       throws DataParseException, IOException {
-    return loadFromJsonArrayFile(fileReader, json -> {
-      Long requisitionId = parseLong(json, "requisition_id", false);
-      Requisition requisition = null;
-      if (requisitionId != null) {
-        requisition = requisitionsById.get(requisitionId);
-        if (requisition == null) {
-          throw new DataParseException(String.format("Requisition ID %d not found", requisitionId));
-        }
-      }
-      return new OmittedSample.Builder()
-          .id(parseString(json, "sample_id", true))
-          .name(parseString(json, "oicr_internal_name", true))
-          .requisition(requisition)
-          .project(parseString(json, "project_name", true))
-          .donor(donorsById.get(parseString(json, "donor_id")))
-          .createdDate(parseSampleCreatedDate(json))
-          .build();
-    });
+    return loadFromJsonArrayFile(
+        fileReader,
+        json -> {
+          Long requisitionId = parseLong(json, "requisition_id", false);
+          Requisition requisition = null;
+          if (requisitionId != null) {
+            requisition = requisitionsById.get(requisitionId);
+            if (requisition == null) {
+              throw new DataParseException(
+                  String.format("Requisition ID %d not found", requisitionId));
+            }
+          }
+          return new OmittedSample.Builder()
+              .id(parseString(json, "sample_id", true))
+              .name(parseString(json, "oicr_internal_name", true))
+              .requisition(requisition)
+              .project(parseString(json, "project_name", true))
+              .donor(donorsById.get(parseString(json, "donor_id")))
+              .createdDate(parseSampleCreatedDate(json))
+              .build();
+        });
   }
 
-  protected List<OmittedRunSample> loadOmittedRunSamples(FileReader fileReader,
-      Map<Long, Run> runsById) throws DataParseException, IOException {
-    return loadFromJsonArrayFile(fileReader, json -> {
-      Long runId = parseLong(json, "sequencing_run_id", true);
-      Run run = runsById.get(runId);
-      return new OmittedRunSample.Builder()
-          .id(parseString(json, "sample_id", true))
-          .name(parseString(json, "oicr_internal_name", true))
-          .project(parseString(json, "project_name", true))
-          .runId(run.getId())
-          .runName(run.getName())
-          .sequencingLane(parseInteger(json, "sequencing_lane", true))
-          .sequencingType(MetricCategory.valueOf(parseString(json, "qc_step", true)))
-          .qcPassed(parseQcPassed(json, "qc_state", true))
-          .qcReason(parseString(json, "qc_reason"))
-          .qcNote(parseString(json, "qc_note"))
-          .qcUser(parseString(json, "qc_user"))
-          .qcDate(parseDate(json, "qc_date"))
-          .dataReviewPassed(parseDataReviewPassed(json, "data_review_state"))
-          .dataReviewUser(parseString(json, "data_review_user"))
-          .dataReviewDate(parseDate(json, "data_review_date"))
-          .build();
-    });
+  protected List<OmittedRunSample> loadOmittedRunSamples(
+      FileReader fileReader, Map<Long, Run> runsById) throws DataParseException, IOException {
+    return loadFromJsonArrayFile(
+        fileReader,
+        json -> {
+          Long runId = parseLong(json, "sequencing_run_id", true);
+          Run run = runsById.get(runId);
+          return new OmittedRunSample.Builder()
+              .id(parseString(json, "sample_id", true))
+              .name(parseString(json, "oicr_internal_name", true))
+              .project(parseString(json, "project_name", true))
+              .runId(run.getId())
+              .runName(run.getName())
+              .sequencingLane(parseInteger(json, "sequencing_lane", true))
+              .sequencingType(MetricCategory.valueOf(parseString(json, "qc_step", true)))
+              .qcPassed(parseQcPassed(json, "qc_state", true))
+              .qcReason(parseString(json, "qc_reason"))
+              .qcNote(parseString(json, "qc_note"))
+              .qcUser(parseString(json, "qc_user"))
+              .qcDate(parseDate(json, "qc_date"))
+              .dataReviewPassed(parseDataReviewPassed(json, "data_review_state"))
+              .dataReviewUser(parseString(json, "data_review_user"))
+              .dataReviewDate(parseDate(json, "data_review_date"))
+              .build();
+        });
   }
 
   protected Map<String, Project> loadProjects(FileReader fileReader)
       throws DataParseException, IOException {
-    List<Project> projects = loadFromJsonArrayFile(fileReader,
-        json -> new Project.Builder().name(parseString(json, "name", true))
-            .pipeline(parseString(json, "pipeline", true))
-            .deliverables(parseProjectDeliverables(json.get("deliverables")))
-            .build());
+    List<Project> projects =
+        loadFromJsonArrayFile(
+            fileReader,
+            json ->
+                new Project.Builder()
+                    .name(parseString(json, "name", true))
+                    .pipeline(parseString(json, "pipeline", true))
+                    .deliverables(parseProjectDeliverables(json.get("deliverables")))
+                    .build());
 
     return projects.stream().collect(Collectors.toMap(Project::getName, Function.identity()));
   }
 
-  protected Map<Long, Requisition> loadRequisitions(FileReader fileReader,
-      Map<String, Donor> donorsById) throws DataParseException, IOException {
-    List<Requisition> requisitions = loadFromJsonArrayFile(fileReader, json -> {
-      Requisition requisition = new Requisition.Builder()
-          .id(parseLong(json, "id", true))
-          .name(parseString(json, "name", true))
-          .assayIds(parseLongSet(json.get("assay_ids")))
-          .stopped(parseBoolean(json, "stopped"))
-          .stopReason(parseString(json, "stop_reason", false))
-          .paused(parseBoolean(json, "paused"))
-          .pauseReason(parseString(json, "pause_reason", false))
-          .build();
-      return requisition;
-    });
+  protected Map<Long, Requisition> loadRequisitions(
+      FileReader fileReader, Map<String, Donor> donorsById) throws DataParseException, IOException {
+    List<Requisition> requisitions =
+        loadFromJsonArrayFile(
+            fileReader,
+            json -> {
+              Requisition requisition =
+                  new Requisition.Builder()
+                      .id(parseLong(json, "id", true))
+                      .name(parseString(json, "name", true))
+                      .assayIds(parseLongSet(json.get("assay_ids")))
+                      .stopped(parseBoolean(json, "stopped"))
+                      .stopReason(parseString(json, "stop_reason", false))
+                      .paused(parseBoolean(json, "paused"))
+                      .pauseReason(parseString(json, "pause_reason", false))
+                      .build();
+              return requisition;
+            });
 
     return requisitions.stream().collect(Collectors.toMap(Requisition::getId, Function.identity()));
   }
 
   protected Map<Long, Run> loadRuns(FileReader fileReader) throws DataParseException, IOException {
-    List<Run> runs = loadFromJsonArrayFile(fileReader, json -> {
-      return new Run.Builder()
-          .id(parseLong(json, "id", true))
-          .name(parseString(json, "name", true))
-          .containerModel(parseString(json, "container_model"))
-          .joinedLanes(parseBoolean(json, "joined_lanes"))
-          .sequencingParameters(parseString(json, "sequencing_parameters"))
-          .readLength(parseInteger(json, "read_length", false))
-          .readLength2(parseInteger(json, "read_length_2", false))
-          .startDate(parseDate(json, "start_date"))
-          .completionDate(parseDate(json, "completion_date"))
-          .percentOverQ30(parseDecimal(json, "percent_over_q30", false))
-          .clustersPf(parseLong(json, "clusters_pf", false))
-          .lanes(parseLanes(json.get("lanes")))
-          .qcPassed(parseQcPassed(json, "qc_state", true))
-          .qcUser(parseString(json, "qc_user"))
-          .qcDate(parseDate(json, "qc_date"))
-          .dataReviewPassed(parseDataReviewPassed(json, "data_review_state"))
-          .dataReviewUser(parseString(json, "data_review_user"))
-          .dataReviewDate(parseDate(json, "data_review_date"))
-          .build();
-    });
+    List<Run> runs =
+        loadFromJsonArrayFile(
+            fileReader,
+            json -> {
+              return new Run.Builder()
+                  .id(parseLong(json, "id", true))
+                  .name(parseString(json, "name", true))
+                  .containerModel(parseString(json, "container_model"))
+                  .joinedLanes(parseBoolean(json, "joined_lanes"))
+                  .sequencingParameters(parseString(json, "sequencing_parameters"))
+                  .readLength(parseInteger(json, "read_length", false))
+                  .readLength2(parseInteger(json, "read_length_2", false))
+                  .startDate(parseDate(json, "start_date"))
+                  .completionDate(parseDate(json, "completion_date"))
+                  .percentOverQ30(parseDecimal(json, "percent_over_q30", false))
+                  .clustersPf(parseLong(json, "clusters_pf", false))
+                  .lanes(parseLanes(json.get("lanes")))
+                  .qcPassed(parseQcPassed(json, "qc_state", true))
+                  .qcUser(parseString(json, "qc_user"))
+                  .qcDate(parseDate(json, "qc_date"))
+                  .dataReviewPassed(parseDataReviewPassed(json, "data_review_state"))
+                  .dataReviewUser(parseString(json, "data_review_user"))
+                  .dataReviewDate(parseDate(json, "data_review_date"))
+                  .build();
+            });
 
     return runs.stream().collect(Collectors.toMap(Run::getId, Function.identity()));
   }
 
-  protected Map<String, Sample> loadSamples(FileReader fileReader, Map<String, Donor> donorsById,
-      Map<Long, Run> runsById, Map<Long, Requisition> requisitionsById) throws DataParseException,
-      IOException {
-    List<Sample> samples = loadFromJsonArrayFile(fileReader, json -> {
-      Long runId = parseLong(json, "sequencing_run_id", false);
-      if (runId != null && !runsById.containsKey(runId)) {
-        throw new DataParseException(String.format("Run ID %d not found", runId));
-      }
-      Long requisitionId = parseLong(json, "requisition_id", false);
-      Requisition requisition = null;
-      if (requisitionId != null) {
-        requisition = requisitionsById.get(requisitionId);
-        if (requisition == null) {
-          throw new DataParseException(String.format("Requisition ID %d not found", requisitionId));
-        }
-      }
-      return new SampleImpl.Builder().id(parseString(json, "sample_id", true))
-          .name(parseString(json, "oicr_internal_name", true))
-          .requisition(requisition)
-          .assayIds(parseLongSet(json.get("assay_ids")))
-          .tissueOrigin(parseString(json, "tissue_origin", true))
-          .tissueType(parseString(json, "tissue_type", true))
-          .tissueMaterial(parseString(json, "tissue_material"))
-          .timepoint(parseString(json, "timepoint"))
-          .secondaryId(parseString(json, "secondary_id"))
-          .groupId(parseString(json, "group_id"))
-          .project(parseString(json, "project_name", true))
-          .nucleicAcidType(parseString(json, "nucleic_acid_type"))
-          .librarySize(parseInteger(json, "library_size", false))
-          .libraryDesignCode(parseString(json, "library_design"))
-          .targetedSequencing(parseString(json, "targeted_sequencing"))
-          .createdDate(parseSampleCreatedDate(json))
-          .volume(parseDecimal(json, "volume", false))
-          .concentration(parseDecimal(json, "concentration", false))
-          .concentrationUnits(parseString(json, "concentration_units", false))
-          .run(runsById.get(runId))
-          .donor(donorsById.get(parseString(json, "donor_id")))
-          .meanInsertSize(parseDecimal(json, "mean_insert", false))
-          .medianInsertSize(parseDecimal(json, "median_insert", false))
-          .clustersPerSample(parseInteger(json, "clusters_per_sample", false))
-          .preliminaryClustersPerSample(
-              parseInteger(json, "preliminary_clusters_per_sample", false))
-          .duplicationRate(parseDecimal(json, "duplication_rate", false))
-          .meanCoverageDeduplicated(parseDecimal(json, "mean_coverage_deduplicated", false))
-          .preliminaryMeanCoverageDeduplicated(
-              parseDecimal(json, "preliminary_mean_coverage_deduplicated", false))
-          .rrnaContamination(parseDecimal(json, "rrna_contamination", false))
-          .mappedToCoding(parseDecimal(json, "mapped_to_coding", false))
-          .rawCoverage(parseDecimal(json, "raw_coverage", false))
-          .onTargetReads(parseDecimal(json, "on_target_reads", false))
-          .collapsedCoverage(parseDecimal(json, "collapsed_coverage", false))
-          .lambdaMethylation(parseDecimal(json, "lambda_methylation", false))
-          .lambdaClusters(parseInteger(json, "lambda_clusters", false))
-          .puc19Methylation(parseDecimal(json, "puc19_methylation", false))
-          .puc19Clusters(parseInteger(json, "puc19_clusters", false))
-          .relativeCpgInRegions(parseDecimal(json, "relative_cpg_in_regions", false))
-          .methylationBeta(parseDecimal(json, "methylation_beta", false))
-          .peReads(parseInteger(json, "pe_reads", false))
-          .qcPassed(parseQcPassed(json, "qc_state", true))
-          .qcReason(parseString(json, "qc_reason"))
-          .qcNote(parseString(json, "qc_note"))
-          .qcUser(parseString(json, "qc_user"))
-          .qcDate(parseDate(json, "qc_date"))
-          .dataReviewPassed(parseDataReviewPassed(json, "data_review_state"))
-          .dataReviewUser(parseString(json, "data_review_user"))
-          .dataReviewDate(parseDate(json, "data_review_date"))
-          .sequencingLane(parseString(json, "sequencing_lane"))
-          .transferDate(parseDate(json, "transfer_date"))
-          .dv200(parseDecimal(json, "dv200", false))
-          .metrics(parseSampleMetrics(json.get("metrics")))
-          .analysisSkipped(parseOptionalBoolean(json, "analysis_skipped"))
-          .build();
-    });
+  protected Map<String, Sample> loadSamples(
+      FileReader fileReader,
+      Map<String, Donor> donorsById,
+      Map<Long, Run> runsById,
+      Map<Long, Requisition> requisitionsById)
+      throws DataParseException, IOException {
+    List<Sample> samples =
+        loadFromJsonArrayFile(
+            fileReader,
+            json -> {
+              Long runId = parseLong(json, "sequencing_run_id", false);
+              if (runId != null && !runsById.containsKey(runId)) {
+                throw new DataParseException(String.format("Run ID %d not found", runId));
+              }
+              Long requisitionId = parseLong(json, "requisition_id", false);
+              Requisition requisition = null;
+              if (requisitionId != null) {
+                requisition = requisitionsById.get(requisitionId);
+                if (requisition == null) {
+                  throw new DataParseException(
+                      String.format("Requisition ID %d not found", requisitionId));
+                }
+              }
+              return new SampleImpl.Builder()
+                  .id(parseString(json, "sample_id", true))
+                  .name(parseString(json, "oicr_internal_name", true))
+                  .requisition(requisition)
+                  .assayIds(parseLongSet(json.get("assay_ids")))
+                  .tissueOrigin(parseString(json, "tissue_origin", true))
+                  .tissueType(parseString(json, "tissue_type", true))
+                  .tissueMaterial(parseString(json, "tissue_material"))
+                  .timepoint(parseString(json, "timepoint"))
+                  .secondaryId(parseString(json, "secondary_id"))
+                  .groupId(parseString(json, "group_id"))
+                  .project(parseString(json, "project_name", true))
+                  .nucleicAcidType(parseString(json, "nucleic_acid_type"))
+                  .librarySize(parseInteger(json, "library_size", false))
+                  .libraryDesignCode(parseString(json, "library_design"))
+                  .targetedSequencing(parseString(json, "targeted_sequencing"))
+                  .createdDate(parseSampleCreatedDate(json))
+                  .volume(parseDecimal(json, "volume", false))
+                  .concentration(parseDecimal(json, "concentration", false))
+                  .concentrationUnits(parseString(json, "concentration_units", false))
+                  .run(runsById.get(runId))
+                  .donor(donorsById.get(parseString(json, "donor_id")))
+                  .meanInsertSize(parseDecimal(json, "mean_insert", false))
+                  .medianInsertSize(parseDecimal(json, "median_insert", false))
+                  .clustersPerSample(parseInteger(json, "clusters_per_sample", false))
+                  .preliminaryClustersPerSample(
+                      parseInteger(json, "preliminary_clusters_per_sample", false))
+                  .duplicationRate(parseDecimal(json, "duplication_rate", false))
+                  .meanCoverageDeduplicated(parseDecimal(json, "mean_coverage_deduplicated", false))
+                  .preliminaryMeanCoverageDeduplicated(
+                      parseDecimal(json, "preliminary_mean_coverage_deduplicated", false))
+                  .rrnaContamination(parseDecimal(json, "rrna_contamination", false))
+                  .mappedToCoding(parseDecimal(json, "mapped_to_coding", false))
+                  .rawCoverage(parseDecimal(json, "raw_coverage", false))
+                  .onTargetReads(parseDecimal(json, "on_target_reads", false))
+                  .collapsedCoverage(parseDecimal(json, "collapsed_coverage", false))
+                  .lambdaMethylation(parseDecimal(json, "lambda_methylation", false))
+                  .lambdaClusters(parseInteger(json, "lambda_clusters", false))
+                  .puc19Methylation(parseDecimal(json, "puc19_methylation", false))
+                  .puc19Clusters(parseInteger(json, "puc19_clusters", false))
+                  .relativeCpgInRegions(parseDecimal(json, "relative_cpg_in_regions", false))
+                  .methylationBeta(parseDecimal(json, "methylation_beta", false))
+                  .peReads(parseInteger(json, "pe_reads", false))
+                  .qcPassed(parseQcPassed(json, "qc_state", true))
+                  .qcReason(parseString(json, "qc_reason"))
+                  .qcNote(parseString(json, "qc_note"))
+                  .qcUser(parseString(json, "qc_user"))
+                  .qcDate(parseDate(json, "qc_date"))
+                  .dataReviewPassed(parseDataReviewPassed(json, "data_review_state"))
+                  .dataReviewUser(parseString(json, "data_review_user"))
+                  .dataReviewDate(parseDate(json, "data_review_date"))
+                  .sequencingLane(parseString(json, "sequencing_lane"))
+                  .transferDate(parseDate(json, "transfer_date"))
+                  .dv200(parseDecimal(json, "dv200", false))
+                  .metrics(parseSampleMetrics(json.get("metrics")))
+                  .analysisSkipped(parseOptionalBoolean(json, "analysis_skipped"))
+                  .build();
+            });
 
     return samples.stream().collect(Collectors.toMap(Sample::getId, Function.identity()));
   }
@@ -591,22 +632,23 @@ public class CaseLoader {
     }
   }
 
-  private static List<AnalysisQcGroup> parseAnalysisQcGroups(JsonNode json,
-      Map<String, Donor> donorsById) throws DataParseException {
+  private static List<AnalysisQcGroup> parseAnalysisQcGroups(
+      JsonNode json, Map<String, Donor> donorsById) throws DataParseException {
     if (json == null || !json.isArray()) {
       throw new DataParseException("Invalid requisition qc_groups");
     }
     List<AnalysisQcGroup> qcGroups = new ArrayList<>();
     for (JsonNode node : json) {
-      qcGroups.add(new AnalysisQcGroup.Builder()
-          .tissueOrigin(parseString(node, "tissue_origin", true))
-          .tissueType(parseString(node, "tissue_type", true))
-          .libraryDesignCode(parseString(node, "library_design", true))
-          .groupId(parseString(node, "group_id", false))
-          .purity(parseDecimal(node, "purity", false))
-          .collapsedCoverage(parseDecimal(node, "collapsed_coverage", false))
-          .callability(parseDecimal(node, "callability", false))
-          .build());
+      qcGroups.add(
+          new AnalysisQcGroup.Builder()
+              .tissueOrigin(parseString(node, "tissue_origin", true))
+              .tissueType(parseString(node, "tissue_type", true))
+              .libraryDesignCode(parseString(node, "library_design", true))
+              .groupId(parseString(node, "group_id", false))
+              .purity(parseDecimal(node, "purity", false))
+              .collapsedCoverage(parseDecimal(node, "collapsed_coverage", false))
+              .callability(parseDecimal(node, "callability", false))
+              .build());
     }
     return qcGroups;
   }
@@ -633,8 +675,9 @@ public class CaseLoader {
     return node == null ? null : node.asText();
   }
 
-  private <I, T> List<T> parseIdsAndGet(JsonNode json, String idsFieldName,
-      Function<JsonNode, I> convertField, Map<I, T> itemsById) throws DataParseException {
+  private <I, T> List<T> parseIdsAndGet(
+      JsonNode json, String idsFieldName, Function<JsonNode, I> convertField, Map<I, T> itemsById)
+      throws DataParseException {
     JsonNode idsNode = json.get(idsFieldName);
     if (idsNode == null || !idsNode.isArray()) {
       throw new DataParseException(String.format("Field %s is not an array", idsFieldName));
@@ -651,8 +694,9 @@ public class CaseLoader {
     return items;
   }
 
-  private <T> T parseEnum(JsonNode json, String fieldName, boolean required,
-      Function<String, T> valueOf) throws DataParseException {
+  private <T> T parseEnum(
+      JsonNode json, String fieldName, boolean required, Function<String, T> valueOf)
+      throws DataParseException {
     String value = parseString(json, fieldName, required);
     if (value == null) {
       return null;
@@ -707,12 +751,13 @@ public class CaseLoader {
     }
     List<MetricSubcategory> subcategories = new ArrayList<>();
     for (JsonNode node : json) {
-      subcategories.add(new MetricSubcategory.Builder()
-          .name(parseString(node, "name", false))
-          .sortPriority(parseInteger(node, "sort_priority", false))
-          .libraryDesignCode(parseString(node, "library_design", false))
-          .metrics(parseMetrics(node.get("metrics")))
-          .build());
+      subcategories.add(
+          new MetricSubcategory.Builder()
+              .name(parseString(node, "name", false))
+              .sortPriority(parseInteger(node, "sort_priority", false))
+              .libraryDesignCode(parseString(node, "library_design", false))
+              .metrics(parseMetrics(node.get("metrics")))
+              .build());
     }
     return subcategories;
   }
@@ -724,22 +769,23 @@ public class CaseLoader {
     List<Metric> metrics = new ArrayList<>();
     for (JsonNode node : json) {
       ThresholdType thresholdType = ThresholdType.valueOf(node.get("threshold_type").asText());
-      metrics.add(new Metric.Builder()
-          .name(parseString(node, "name", true))
-          .sortPriority(parseInteger(node, "sort_priority", false))
-          .minimum(parseDecimal(node, "minimum", false))
-          .maximum(parseDecimal(node, "maximum", false))
-          .units(parseString(node, "units", false))
-          .tissueMaterial(parseString(node, "tissue_material", false))
-          .tissueOrigin(parseString(node, "tissue_origin", false))
-          .tissueType(parseString(node, "tissue_type", false))
-          .negateTissueType(parseBoolean(node, "negate_tissue_type"))
-          .nucleicAcidType(parseString(node, "nucleic_acid_type", false))
-          .containerModel(parseString(node, "container_model", false))
-          .readLength(parseInteger(node, "read_length", false))
-          .readLength2(parseInteger(node, "read_length_2", false))
-          .thresholdType(thresholdType)
-          .build());
+      metrics.add(
+          new Metric.Builder()
+              .name(parseString(node, "name", true))
+              .sortPriority(parseInteger(node, "sort_priority", false))
+              .minimum(parseDecimal(node, "minimum", false))
+              .maximum(parseDecimal(node, "maximum", false))
+              .units(parseString(node, "units", false))
+              .tissueMaterial(parseString(node, "tissue_material", false))
+              .tissueOrigin(parseString(node, "tissue_origin", false))
+              .tissueType(parseString(node, "tissue_type", false))
+              .negateTissueType(parseBoolean(node, "negate_tissue_type"))
+              .nucleicAcidType(parseString(node, "nucleic_acid_type", false))
+              .containerModel(parseString(node, "container_model", false))
+              .readLength(parseInteger(node, "read_length", false))
+              .readLength2(parseInteger(node, "read_length_2", false))
+              .thresholdType(thresholdType)
+              .build());
     }
     return metrics;
   }
@@ -752,18 +798,19 @@ public class CaseLoader {
     }
     List<SampleMetric> metrics = new ArrayList<>();
     for (JsonNode node : json) {
-      metrics.add(new SampleMetric.Builder()
-          .name(parseString(node, "name", true))
-          .thresholdType(ThresholdType.valueOf(parseString(node, "threshold_type", true)))
-          .minimum(parseDecimal(node, "threshold_min", false))
-          .maximum(parseDecimal(node, "threshold_max", false))
-          .metricLevel(MetricLevel.valueOf(parseString(node, "metric_level", true)))
-          .preliminary(parseOptionalBoolean(node, "preliminary"))
-          .value(parseDecimal(node, "value", false))
-          .laneValues(parseLaneValues(node.get("run_values")))
-          .qcPassed(parseOptionalBoolean(node, "qc_passed"))
-          .units(parseString(node, "units", false))
-          .build());
+      metrics.add(
+          new SampleMetric.Builder()
+              .name(parseString(node, "name", true))
+              .thresholdType(ThresholdType.valueOf(parseString(node, "threshold_type", true)))
+              .minimum(parseDecimal(node, "threshold_min", false))
+              .maximum(parseDecimal(node, "threshold_max", false))
+              .metricLevel(MetricLevel.valueOf(parseString(node, "metric_level", true)))
+              .preliminary(parseOptionalBoolean(node, "preliminary"))
+              .value(parseDecimal(node, "value", false))
+              .laneValues(parseLaneValues(node.get("run_values")))
+              .qcPassed(parseOptionalBoolean(node, "qc_passed"))
+              .units(parseString(node, "units", false))
+              .build());
     }
     return metrics;
   }
@@ -811,7 +858,8 @@ public class CaseLoader {
   private AssayTargets parseAssayTargets(JsonNode json) throws DataParseException {
     AssayTargets.Builder builder = new AssayTargets.Builder();
     if (json != null && json.isObject()) {
-      builder.caseDays(parseInteger(json, "case_days", false))
+      builder
+          .caseDays(parseInteger(json, "case_days", false))
           .receiptDays(parseInteger(json, "receipt_days", false))
           .extractionDays(parseInteger(json, "extraction_days", false))
           .libraryPreparationDays(parseInteger(json, "library_preparation_days", false))
@@ -824,8 +872,9 @@ public class CaseLoader {
     return builder.build();
   }
 
-  private Set<Project> parseProjects(JsonNode json, String fieldName,
-      Map<String, Project> projectsByName, String caseId) throws DataParseException {
+  private Set<Project> parseProjects(
+      JsonNode json, String fieldName, Map<String, Project> projectsByName, String caseId)
+      throws DataParseException {
     JsonNode projectsNode = json.get(fieldName);
     if (projectsNode == null || !projectsNode.isArray() || projectsNode.isEmpty()) {
       throw new DataParseException(String.format("Projects node for case %s is invalid", caseId));
@@ -837,8 +886,8 @@ public class CaseLoader {
     return projects;
   }
 
-  private List<Test> parseTests(JsonNode json, String fieldName, Map<String, Sample> samplesById,
-      String caseId)
+  private List<Test> parseTests(
+      JsonNode json, String fieldName, Map<String, Sample> samplesById, String caseId)
       throws DataParseException {
     JsonNode testsNode = json.get(fieldName);
     if (testsNode == null || !testsNode.isArray()) {
@@ -847,50 +896,55 @@ public class CaseLoader {
     }
     List<Test> tests = new ArrayList<>();
     for (JsonNode testNode : testsNode) {
-      tests.add(new Test.Builder()
-          .name(parseString(testNode, "name", true))
-          .tissueOrigin(parseString(testNode, "tissue_origin"))
-          .tissueType(parseString(testNode, "tissue_type"))
-          .timepoint(parseString(testNode, "timepoint"))
-          .groupId(parseString(testNode, "group_id"))
-          .libraryDesignCode(parseString(testNode, "library_design", false))
-          .libraryQualificationDesignCode(parseString(testNode, "library_qualification_design"))
-          .targetedSequencing(parseString(testNode, "targeted_sequencing"))
-          .extractionSkipped(parseBoolean(testNode, "extraction_skipped"))
-          .libraryPreparationSkipped(parseBoolean(testNode, "library_preparation_skipped"))
-          .libraryQualificationSkipped(parseBoolean(testNode, "library_qualification_skipped"))
-          .extractions(parseIdsAndGet(testNode, "extraction_ids", JsonNode::asText, samplesById))
-          .libraryPreparations(
-              parseIdsAndGet(testNode, "library_preparation_ids", JsonNode::asText, samplesById))
-          .libraryQualifications(
-              parseIdsAndGet(testNode, "library_qualification_ids", JsonNode::asText, samplesById))
-          .fullDepthSequencings(
-              parseIdsAndGet(testNode, "full_depth_sequencing_ids", JsonNode::asText, samplesById))
-          .extractionDaysSpent(parseInteger(testNode, "extraction_days_spent", true))
-          .extractionPreparationDaysSpent(
-              parseInteger(testNode, "extraction_preparation_days_spent", true))
-          .extractionQcDaysSpent(parseInteger(testNode, "extraction_qc_days_spent", true))
-          .extractionTransferDaysSpent(
-              parseInteger(testNode, "extraction_transfer_days_spent", true))
-          .libraryPreparationDaysSpent(
-              parseInteger(testNode, "library_preparation_days_spent", true))
-          .libraryQualificationDaysSpent(
-              parseInteger(testNode, "library_qualification_days_spent", true))
-          .libraryQualificationLoadingDaysSpent(
-              parseInteger(testNode, "library_qualification_loading_days_spent", true))
-          .libraryQualificationSequencingDaysSpent(
-              parseInteger(testNode, "library_qualification_sequencing_days_spent", true))
-          .libraryQualificationQcDaysSpent(
-              parseInteger(testNode, "library_qualification_qc_days_spent", true))
-          .fullDepthSequencingDaysSpent(
-              parseInteger(testNode, "full_depth_sequencing_days_spent", true))
-          .fullDepthSequencingLoadingDaysSpent(
-              parseInteger(testNode, "full_depth_sequencing_loading_days_spent", true))
-          .fullDepthSequencingSequencingDaysSpent(
-              parseInteger(testNode, "full_depth_sequencing_sequencing_days_spent", true))
-          .fullDepthSequencingQcDaysSpent(
-              parseInteger(testNode, "full_depth_sequencing_qc_days_spent", true))
-          .build());
+      tests.add(
+          new Test.Builder()
+              .name(parseString(testNode, "name", true))
+              .tissueOrigin(parseString(testNode, "tissue_origin"))
+              .tissueType(parseString(testNode, "tissue_type"))
+              .timepoint(parseString(testNode, "timepoint"))
+              .groupId(parseString(testNode, "group_id"))
+              .libraryDesignCode(parseString(testNode, "library_design", false))
+              .libraryQualificationDesignCode(parseString(testNode, "library_qualification_design"))
+              .targetedSequencing(parseString(testNode, "targeted_sequencing"))
+              .extractionSkipped(parseBoolean(testNode, "extraction_skipped"))
+              .libraryPreparationSkipped(parseBoolean(testNode, "library_preparation_skipped"))
+              .libraryQualificationSkipped(parseBoolean(testNode, "library_qualification_skipped"))
+              .extractions(
+                  parseIdsAndGet(testNode, "extraction_ids", JsonNode::asText, samplesById))
+              .libraryPreparations(
+                  parseIdsAndGet(
+                      testNode, "library_preparation_ids", JsonNode::asText, samplesById))
+              .libraryQualifications(
+                  parseIdsAndGet(
+                      testNode, "library_qualification_ids", JsonNode::asText, samplesById))
+              .fullDepthSequencings(
+                  parseIdsAndGet(
+                      testNode, "full_depth_sequencing_ids", JsonNode::asText, samplesById))
+              .extractionDaysSpent(parseInteger(testNode, "extraction_days_spent", true))
+              .extractionPreparationDaysSpent(
+                  parseInteger(testNode, "extraction_preparation_days_spent", true))
+              .extractionQcDaysSpent(parseInteger(testNode, "extraction_qc_days_spent", true))
+              .extractionTransferDaysSpent(
+                  parseInteger(testNode, "extraction_transfer_days_spent", true))
+              .libraryPreparationDaysSpent(
+                  parseInteger(testNode, "library_preparation_days_spent", true))
+              .libraryQualificationDaysSpent(
+                  parseInteger(testNode, "library_qualification_days_spent", true))
+              .libraryQualificationLoadingDaysSpent(
+                  parseInteger(testNode, "library_qualification_loading_days_spent", true))
+              .libraryQualificationSequencingDaysSpent(
+                  parseInteger(testNode, "library_qualification_sequencing_days_spent", true))
+              .libraryQualificationQcDaysSpent(
+                  parseInteger(testNode, "library_qualification_qc_days_spent", true))
+              .fullDepthSequencingDaysSpent(
+                  parseInteger(testNode, "full_depth_sequencing_days_spent", true))
+              .fullDepthSequencingLoadingDaysSpent(
+                  parseInteger(testNode, "full_depth_sequencing_loading_days_spent", true))
+              .fullDepthSequencingSequencingDaysSpent(
+                  parseInteger(testNode, "full_depth_sequencing_sequencing_days_spent", true))
+              .fullDepthSequencingQcDaysSpent(
+                  parseInteger(testNode, "full_depth_sequencing_qc_days_spent", true))
+              .build());
     }
     return tests;
   }
@@ -902,31 +956,44 @@ public class CaseLoader {
     }
     List<CaseDeliverable> deliverables = new ArrayList<>();
     for (JsonNode node : deliverablesNode) {
-      deliverables.add(new CaseDeliverableImpl.Builder()
-          .deliverableCategory(parseString(node, "deliverable_category"))
-          .analysisReviewSkipped(parseBoolean(node, "analysis_review_skipped"))
-          .analysisReviewQcDate(parseDate(node, "analysis_review_qc_date"))
-          .analysisReviewQcStatus(parseCaseQc(node, "analysis_review_qc_state",
-              "analysis_review_qc_release", AnalysisReviewQcStatus::of))
-          .analysisReviewQcUser(parseString(node, "analysis_review_qc_user"))
-          .analysisReviewQcNote(parseString(node, "analysis_review_qc_note"))
-          .releaseApprovalQcDate(parseDate(node, "release_approval_qc_date"))
-          .releaseApprovalQcStatus(parseCaseQc(node, "release_approval_qc_state",
-              "release_approval_qc_release", ReleaseApprovalQcStatus::of))
-          .releaseApprovalQcUser(parseString(node, "release_approval_qc_user"))
-          .releaseApprovalQcNote(parseString(node, "release_approval_qc_note"))
-          .releases(parseReleases(node.get("releases")))
-          .analysisReviewDaysSpent(parseInteger(node, "analysis_review_days_spent", true))
-          .releaseApprovalDaysSpent(parseInteger(node, "release_approval_days_spent", true))
-          .releaseDaysSpent(parseInteger(node, "release_days_spent", true))
-          .deliverableDaysSpent(parseInteger(node, "deliverable_days_spent", true))
-          .build());
+      deliverables.add(
+          new CaseDeliverableImpl.Builder()
+              .deliverableCategory(parseString(node, "deliverable_category"))
+              .analysisReviewSkipped(parseBoolean(node, "analysis_review_skipped"))
+              .analysisReviewQcDate(parseDate(node, "analysis_review_qc_date"))
+              .analysisReviewQcStatus(
+                  parseCaseQc(
+                      node,
+                      "analysis_review_qc_state",
+                      "analysis_review_qc_release",
+                      AnalysisReviewQcStatus::of))
+              .analysisReviewQcUser(parseString(node, "analysis_review_qc_user"))
+              .analysisReviewQcNote(parseString(node, "analysis_review_qc_note"))
+              .releaseApprovalQcDate(parseDate(node, "release_approval_qc_date"))
+              .releaseApprovalQcStatus(
+                  parseCaseQc(
+                      node,
+                      "release_approval_qc_state",
+                      "release_approval_qc_release",
+                      ReleaseApprovalQcStatus::of))
+              .releaseApprovalQcUser(parseString(node, "release_approval_qc_user"))
+              .releaseApprovalQcNote(parseString(node, "release_approval_qc_note"))
+              .releases(parseReleases(node.get("releases")))
+              .analysisReviewDaysSpent(parseInteger(node, "analysis_review_days_spent", true))
+              .releaseApprovalDaysSpent(parseInteger(node, "release_approval_days_spent", true))
+              .releaseDaysSpent(parseInteger(node, "release_days_spent", true))
+              .deliverableDaysSpent(parseInteger(node, "deliverable_days_spent", true))
+              .build());
     }
     return deliverables;
   }
 
-  private <T extends CaseQc> T parseCaseQc(JsonNode node, String qcPassedFieldName,
-      String releaseFieldName, BiFunction<Boolean, Boolean, T> of) throws DataParseException {
+  private <T extends CaseQc> T parseCaseQc(
+      JsonNode node,
+      String qcPassedFieldName,
+      String releaseFieldName,
+      BiFunction<Boolean, Boolean, T> of)
+      throws DataParseException {
     Boolean qcPassed = parseQcPassed(node, qcPassedFieldName, false);
     Boolean release = parseOptionalBoolean(node, releaseFieldName);
     return of.apply(qcPassed, release);
@@ -940,13 +1007,14 @@ public class CaseLoader {
     }
     List<CaseRelease> list = new ArrayList<>();
     for (JsonNode node : json) {
-      list.add(new CaseReleaseImpl.Builder()
-          .deliverable(parseString(node, "deliverable", true))
-          .qcDate(parseDate(node, "qc_date"))
-          .qcStatus(parseCaseQc(node, "qc_state", "qc_release", ReleaseQcStatus::of))
-          .qcUser(parseString(node, "qc_user"))
-          .qcNote(parseString(node, "qc_note"))
-          .build());
+      list.add(
+          new CaseReleaseImpl.Builder()
+              .deliverable(parseString(node, "deliverable", true))
+              .qcDate(parseDate(node, "qc_date"))
+              .qcStatus(parseCaseQc(node, "qc_state", "qc_release", ReleaseQcStatus::of))
+              .qcUser(parseString(node, "qc_user"))
+              .qcNote(parseString(node, "qc_note"))
+              .build());
     }
     return list;
   }
@@ -978,5 +1046,4 @@ public class CaseLoader {
   private static interface ParseFunction<T, R> {
     R apply(T input) throws DataParseException;
   }
-
 }

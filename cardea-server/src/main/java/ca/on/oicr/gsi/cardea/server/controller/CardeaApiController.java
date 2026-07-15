@@ -1,19 +1,16 @@
 package ca.on.oicr.gsi.cardea.server.controller;
 
-import ca.on.oicr.gsi.cardea.server.CaseUtils;
-import ca.on.oicr.gsi.cardea.server.service.CaseService;
-import io.swagger.v3.oas.annotations.Operation;
 import ca.on.oicr.gsi.cardea.data.Assay;
 import ca.on.oicr.gsi.cardea.data.Case;
 import ca.on.oicr.gsi.cardea.data.CaseData;
 import ca.on.oicr.gsi.cardea.data.CaseStatusesForRun;
 import ca.on.oicr.gsi.cardea.data.ShesmuCase;
 import ca.on.oicr.gsi.cardea.data.ShesmuDetailedCase;
-
+import ca.on.oicr.gsi.cardea.server.CaseUtils;
+import ca.on.oicr.gsi.cardea.server.service.CaseService;
+import io.swagger.v3.oas.annotations.Operation;
 import java.time.ZonedDateTime;
-
 import java.util.Set;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -23,8 +20,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("/")
 public class CardeaApiController {
-  @Autowired
-  private CaseService caseService;
+  @Autowired private CaseService caseService;
 
   @GetMapping("/case-statuses/{runName}")
   public CaseStatusesForRun getCaseStatusesForRun(@PathVariable String runName) {
@@ -70,8 +66,10 @@ public class CardeaApiController {
   }
 
   @GetMapping("/cases/{caseId}/priority")
-  @Operation(summary = "Retrieve case priority by case ID",
-      description = "Returns the integer priority for the specified case with higher numbers indicating higher priority")
+  @Operation(
+      summary = "Retrieve case priority by case ID",
+      description =
+          "Returns the integer priority for the specified case with higher numbers indicating higher priority")
   public int getCasePriority(@PathVariable String caseId) {
     Case kase = caseService.getCase(caseId);
     if (kase == null) {
@@ -80,5 +78,4 @@ public class CardeaApiController {
     Assay assay = caseService.getAssay(kase.getAssayId());
     return CaseUtils.getCasePriority(kase, assay);
   }
-
 }

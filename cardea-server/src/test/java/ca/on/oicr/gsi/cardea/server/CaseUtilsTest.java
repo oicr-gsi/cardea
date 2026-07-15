@@ -4,13 +4,14 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Mockito.*;
-import java.util.Collections;
-import org.junit.jupiter.api.Test;
+
 import ca.on.oicr.gsi.cardea.data.Assay;
 import ca.on.oicr.gsi.cardea.data.AssayTargets;
 import ca.on.oicr.gsi.cardea.data.Case;
 import ca.on.oicr.gsi.cardea.data.CaseDeliverable;
 import ca.on.oicr.gsi.cardea.data.CaseRelease;
+import java.util.Collections;
+import org.junit.jupiter.api.Test;
 
 public class CaseUtilsTest {
 
@@ -43,8 +44,8 @@ public class CaseUtilsTest {
     testGetCasePriority(false, 55, null, 55);
   }
 
-  private static void testGetCasePriority(boolean clinical, int caseAge, Integer tatTarget,
-      int expectedPriority) {
+  private static void testGetCasePriority(
+      boolean clinical, int caseAge, Integer tatTarget, int expectedPriority) {
     Case kase = mockCase(clinical, caseAge);
     Assay assay = mockAssay(tatTarget);
     assertEquals(expectedPriority, CaseUtils.getCasePriority(kase, assay));
@@ -70,5 +71,4 @@ public class CaseUtilsTest {
     when(assay.getTargets()).thenReturn(targets);
     return assay;
   }
-
 }

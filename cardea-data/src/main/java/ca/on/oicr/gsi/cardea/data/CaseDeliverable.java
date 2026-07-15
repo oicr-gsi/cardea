@@ -1,9 +1,9 @@
 package ca.on.oicr.gsi.cardea.data;
 
-import java.time.LocalDate;
-import java.util.List;
 import ca.on.oicr.gsi.cardea.data.CaseQc.AnalysisReviewQcStatus;
 import ca.on.oicr.gsi.cardea.data.CaseQc.ReleaseApprovalQcStatus;
+import java.time.LocalDate;
+import java.util.List;
 
 @com.fasterxml.jackson.databind.annotation.JsonDeserialize(as = CaseDeliverableImpl.class)
 @tools.jackson.databind.annotation.JsonDeserialize(as = CaseDeliverableImpl.class)
@@ -40,5 +40,4 @@ public interface CaseDeliverable {
   int getReleaseDaysSpent();
 
   int getDeliverableDaysSpent();
-
 }

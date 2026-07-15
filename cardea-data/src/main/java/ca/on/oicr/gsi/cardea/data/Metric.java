@@ -4,9 +4,7 @@ import static java.util.Objects.requireNonNull;
 
 import java.math.BigDecimal;
 
-/**
- * Immutable Metric
- */
+/** Immutable Metric */
 @com.fasterxml.jackson.databind.annotation.JsonDeserialize(builder = Metric.Builder.class)
 @tools.jackson.databind.annotation.JsonDeserialize(builder = Metric.Builder.class)
 public class Metric {
@@ -191,7 +189,5 @@ public class Metric {
       this.units = units;
       return this;
     }
-
   }
-
 }

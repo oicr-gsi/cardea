@@ -1,14 +1,13 @@
 package ca.on.oicr.gsi.cardea.data;
 
 import static java.util.Objects.requireNonNull;
+
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
-/**
- * Immutable Project
- */
+/** Immutable Project */
 @com.fasterxml.jackson.databind.annotation.JsonDeserialize(builder = Project.Builder.class)
 @tools.jackson.databind.annotation.JsonDeserialize(builder = Project.Builder.class)
 public class Project {
@@ -20,9 +19,12 @@ public class Project {
   private Project(Builder builder) {
     this.name = requireNonNull(builder.name);
     this.pipeline = requireNonNull(builder.pipeline);
-    Map<String, List<String>> tempDeliverables = builder.deliverables.entrySet().stream()
-        .collect(Collectors.toMap(entry -> entry.getKey(),
-            entry -> Collections.unmodifiableList(entry.getValue())));
+    Map<String, List<String>> tempDeliverables =
+        builder.deliverables.entrySet().stream()
+            .collect(
+                Collectors.toMap(
+                    entry -> entry.getKey(),
+                    entry -> Collections.unmodifiableList(entry.getValue())));
     this.deliverables = Collections.unmodifiableMap(tempDeliverables);
   }
 
@@ -64,6 +66,5 @@ public class Project {
       this.deliverables = deliverables;
       return this;
     }
-
   }
 }

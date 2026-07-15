@@ -1,11 +1,11 @@
 package ca.on.oicr.gsi.cardea;
 
-import org.junit.jupiter.api.BeforeAll;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jdk8.Jdk8Module;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
+import org.junit.jupiter.api.BeforeAll;
 
 public class Jackson2Test extends JacksonTest {
 
@@ -27,5 +27,4 @@ public class Jackson2Test extends JacksonTest {
       throws JsonMappingException, JsonProcessingException {
     return mapper.readerFor(clazz).readValue(value);
   }
-
 }

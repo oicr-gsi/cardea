@@ -3,11 +3,14 @@ package ca.on.oicr.gsi.cardea.server;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
+
+import ca.on.oicr.gsi.cardea.data.AnalysisQcGroup;
 import ca.on.oicr.gsi.cardea.data.Assay;
 import ca.on.oicr.gsi.cardea.data.AssayTargets;
 import ca.on.oicr.gsi.cardea.data.Case;
 import ca.on.oicr.gsi.cardea.data.CaseData;
 import ca.on.oicr.gsi.cardea.data.CaseDeliverable;
+import ca.on.oicr.gsi.cardea.data.CaseQc.AnalysisReviewQcStatus;
 import ca.on.oicr.gsi.cardea.data.CaseRelease;
 import ca.on.oicr.gsi.cardea.data.Donor;
 import ca.on.oicr.gsi.cardea.data.Lane;
@@ -18,18 +21,12 @@ import ca.on.oicr.gsi.cardea.data.OmittedRunSample;
 import ca.on.oicr.gsi.cardea.data.OmittedSample;
 import ca.on.oicr.gsi.cardea.data.Project;
 import ca.on.oicr.gsi.cardea.data.Requisition;
-import ca.on.oicr.gsi.cardea.data.AnalysisQcGroup;
 import ca.on.oicr.gsi.cardea.data.Run;
 import ca.on.oicr.gsi.cardea.data.Sample;
 import ca.on.oicr.gsi.cardea.data.SampleMetric;
+import ca.on.oicr.gsi.cardea.data.SampleMetric.MetricLevel;
 import ca.on.oicr.gsi.cardea.data.SampleMetricLane;
 import ca.on.oicr.gsi.cardea.data.ThresholdType;
-import ca.on.oicr.gsi.cardea.data.CaseQc.AnalysisReviewQcStatus;
-import ca.on.oicr.gsi.cardea.data.SampleMetric.MetricLevel;
-import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
-
 import java.io.File;
 import java.io.FileReader;
 import java.math.BigDecimal;
@@ -40,6 +37,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 public class CaseLoaderTest {
 
@@ -138,16 +138,14 @@ public class CaseLoaderTest {
     assertEquals(new BigDecimal("89.1"), metric.getValue());
     assertNotNull(metric.getLaneValues());
     assertEquals(2, metric.getLaneValues().size());
-    SampleMetricLane lane1 = metric.getLaneValues().stream()
-        .filter(x -> x.getLaneNumber() == 1)
-        .findAny().orElse(null);
+    SampleMetricLane lane1 =
+        metric.getLaneValues().stream().filter(x -> x.getLaneNumber() == 1).findAny().orElse(null);
     assertNotNull(lane1);
     assertNull(lane1.getLaneValue());
     assertEquals(new BigDecimal("90.0"), lane1.getRead1Value());
     assertEquals(new BigDecimal("88.0"), lane1.getRead2Value());
-    SampleMetricLane lane2 = metric.getLaneValues().stream()
-        .filter(x -> x.getLaneNumber() == 2)
-        .findAny().orElse(null);
+    SampleMetricLane lane2 =
+        metric.getLaneValues().stream().filter(x -> x.getLaneNumber() == 2).findAny().orElse(null);
     assertNotNull(lane2);
     assertNull(lane2.getLaneValue());
     assertEquals(new BigDecimal("90.0"), lane2.getRead1Value());
@@ -198,14 +196,20 @@ public class CaseLoaderTest {
 
     assertNotNull(kase.getReceipts());
     assertEquals(5, kase.getReceipts().size());
-    Sample sample = kase.getReceipts().stream().filter(x -> x.getId().equals(testSampleId))
-        .findAny().orElse(null);
+    Sample sample =
+        kase.getReceipts().stream()
+            .filter(x -> x.getId().equals(testSampleId))
+            .findAny()
+            .orElse(null);
     assertSample(sample);
 
     assertNotNull(kase.getTests());
     assertEquals(3, kase.getTests().size());
-    ca.on.oicr.gsi.cardea.data.Test test = kase.getTests().stream()
-        .filter(x -> x.getName().equals("Normal WG")).findAny().orElse(null);
+    ca.on.oicr.gsi.cardea.data.Test test =
+        kase.getTests().stream()
+            .filter(x -> x.getName().equals("Normal WG"))
+            .findAny()
+            .orElse(null);
     assertNotNull(test);
     assertEquals("Normal WG", test.getName());
     assertNotNull(test.getExtractions());
@@ -247,18 +251,22 @@ public class CaseLoaderTest {
 
     assertNotNull(kase.getQcGroups());
     assertEquals(3, kase.getQcGroups().size());
-    AnalysisQcGroup qcGroup = kase.getQcGroups().stream()
-        .filter(x -> "M".equals(x.getTissueType()) && "WG".equals(x.getLibraryDesignCode()))
-        .findAny().orElse(null);
+    AnalysisQcGroup qcGroup =
+        kase.getQcGroups().stream()
+            .filter(x -> "M".equals(x.getTissueType()) && "WG".equals(x.getLibraryDesignCode()))
+            .findAny()
+            .orElse(null);
     assertNotNull(qcGroup);
     assertEquals(new BigDecimal("87.6189"), qcGroup.getCallability());
 
     List<OmittedRunSample> omittedRunSamples = data.getOmittedRunSamples();
     assertNotNull(omittedRunSamples);
     assertEquals(2, omittedRunSamples.size());
-    OmittedRunSample omittedRunSample = omittedRunSamples.stream()
-        .filter(x -> "MISS_011408_Co_P_PE_490_WG".equals(x.getName()))
-        .findFirst().orElse(null);
+    OmittedRunSample omittedRunSample =
+        omittedRunSamples.stream()
+            .filter(x -> "MISS_011408_Co_P_PE_490_WG".equals(x.getName()))
+            .findFirst()
+            .orElse(null);
     assertNotNull(omittedRunSample);
     assertOmittedRunSample(omittedRunSample);
   }
@@ -279,16 +287,18 @@ public class CaseLoaderTest {
           assay.getMetricCategories().get(MetricCategory.LIBRARY_PREP);
       assertNotNull(subcategories);
       assertEquals(2, subcategories.size());
-      MetricSubcategory subcategory = subcategories.stream()
-          .filter(x -> "WT Library QC (Qubit, TS, FA)".equals(x.getName()))
-          .findAny()
-          .orElse(null);
+      MetricSubcategory subcategory =
+          subcategories.stream()
+              .filter(x -> "WT Library QC (Qubit, TS, FA)".equals(x.getName()))
+              .findAny()
+              .orElse(null);
       assertNotNull(subcategory);
       assertEquals("WT", subcategory.getLibraryDesignCode());
-      Metric metric = subcategory.getMetrics().stream()
-          .filter(x -> "Concentration (Qubit)".equals(x.getName()))
-          .findAny()
-          .orElse(null);
+      Metric metric =
+          subcategory.getMetrics().stream()
+              .filter(x -> "Concentration (Qubit)".equals(x.getName()))
+              .findAny()
+              .orElse(null);
       assertNotNull(metric);
       assertEquals(new BigDecimal("0.7"), metric.getMinimum());
       AssayTargets targets = assay.getTargets();
@@ -329,9 +339,11 @@ public class CaseLoaderTest {
     try (FileReader reader = sut.getNoCaseReader()) {
       List<OmittedSample> samples = sut.loadOmittedSamples(reader, donorsById, requisitionsById);
       assertEquals(2, samples.size());
-      OmittedSample sample = samples.stream()
-          .filter(x -> Objects.equals("SAM123457", x.getId()))
-          .findFirst().orElse(null);
+      OmittedSample sample =
+          samples.stream()
+              .filter(x -> Objects.equals("SAM123457", x.getId()))
+              .findFirst()
+              .orElse(null);
       assertOmittedSample(sample);
     }
   }
@@ -408,11 +420,12 @@ public class CaseLoaderTest {
 
       List<OmittedRunSample> samples = sut.loadOmittedRunSamples(reader, runsById);
       assertEquals(2, samples.size());
-      OmittedRunSample sample = samples.stream()
-          .filter(x -> "MISS_011408_Co_P_PE_490_WG".equals(x.getName()))
-          .findFirst().orElse(null);
+      OmittedRunSample sample =
+          samples.stream()
+              .filter(x -> "MISS_011408_Co_P_PE_490_WG".equals(x.getName()))
+              .findFirst()
+              .orElse(null);
       assertOmittedRunSample(sample);
     }
   }
-
 }

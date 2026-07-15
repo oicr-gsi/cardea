@@ -1,10 +1,11 @@
 package ca.on.oicr.gsi.cardea.server.service;
 
+import ca.on.oicr.gsi.Pair;
 import ca.on.oicr.gsi.cardea.data.*;
 import ca.on.oicr.gsi.cardea.data.CaseQc.ReleaseQcStatus;
 import ca.on.oicr.gsi.cardea.server.CaseLoader;
-import ca.on.oicr.gsi.Pair;
-
+import io.micrometer.core.instrument.Gauge;
+import io.micrometer.core.instrument.MeterRegistry;
 import java.time.Duration;
 import java.time.LocalDate;
 import java.time.ZonedDateTime;
@@ -24,16 +25,13 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
-import io.micrometer.core.instrument.Gauge;
-import io.micrometer.core.instrument.MeterRegistry;
 
 @Service
 public class CaseService {
 
   private static final Logger log = LoggerFactory.getLogger(CaseService.class);
   private CaseData caseData;
-  @Autowired
-  private CaseLoader dataLoader;
+  @Autowired private CaseLoader dataLoader;
   private int refreshFailures = 0;
 
   public CaseService(@Autowired MeterRegistry meterRegistry) {
@@ -42,7 +40,8 @@ public class CaseService {
           .description("Number of consecutive failures to refresh the case data")
           .register(meterRegistry);
       Gauge.builder("case_data_age_seconds", () -> this.getDataAge().toSeconds())
-          .description("Time since case data was refreshed").register(meterRegistry);
+          .description("Time since case data was refreshed")
+          .register(meterRegistry);
     }
   }
 
@@ -55,24 +54,27 @@ public class CaseService {
   }
 
   public CaseStatusesForRun getCaseStatusesForRun(String runName) {
-    Set<Case> casesMatchingRunName = caseData.getCases().stream()
-        .filter(kase -> getRunNamesFor(kase).stream().anyMatch(rName -> runName.equals(rName)))
-        .collect(Collectors.toSet());
+    Set<Case> casesMatchingRunName =
+        caseData.getCases().stream()
+            .filter(kase -> getRunNamesFor(kase).stream().anyMatch(rName -> runName.equals(rName)))
+            .collect(Collectors.toSet());
 
-    List<Pair<String, String>> statusForCaseList = casesMatchingRunName.stream()
-        .map(k -> new Pair<String, String>(getCaseStatus(k).getLabel(), k.getId()))
-        .collect(Collectors.toList());
+    List<Pair<String, String>> statusForCaseList =
+        casesMatchingRunName.stream()
+            .map(k -> new Pair<String, String>(getCaseStatus(k).getLabel(), k.getId()))
+            .collect(Collectors.toList());
     Map<String, Set<String>> statusesForRun = new HashMap<String, Set<String>>();
-    statusForCaseList.forEach((p) -> {
-      if (statusesForRun.get(p.first()) == null) {
-        statusesForRun.put(p.first(), new HashSet<>());
-      }
-      statusesForRun.get(p.first()).add(p.second());
-    });
+    statusForCaseList.forEach(
+        (p) -> {
+          if (statusesForRun.get(p.first()) == null) {
+            statusesForRun.put(p.first(), new HashSet<>());
+          }
+          statusesForRun.get(p.first()).add(p.second());
+        });
 
-    return new CaseStatusesForRun(statusesForRun.get(CaseStatus.ACTIVE.getLabel()),
-        statusesForRun.get(
-            CaseStatus.COMPLETED.getLabel()),
+    return new CaseStatusesForRun(
+        statusesForRun.get(CaseStatus.ACTIVE.getLabel()),
+        statusesForRun.get(CaseStatus.COMPLETED.getLabel()),
         statusesForRun.get(CaseStatus.STOPPED.getLabel()));
   }
 
@@ -91,7 +93,8 @@ public class CaseService {
   public Case getCase(String caseId) {
     return caseData.getCases().stream()
         .filter(kase -> Objects.equals(kase.getId(), caseId))
-        .findAny().orElse(null);
+        .findAny()
+        .orElse(null);
   }
 
   public Assay getAssay(long assayId) {
@@ -108,37 +111,42 @@ public class CaseService {
   }
 
   private CaseStatus getCaseCompletion(Case kase) {
-    if (!kase.getDeliverables().isEmpty() && kase.getDeliverables().stream()
-        .allMatch(deliverable -> deliverable.getReleases().stream()
-            .allMatch(release -> {
-              ReleaseQcStatus status = release.getQcStatus();
-              return status != null && !status.isPending();
-            }))) {
+    if (!kase.getDeliverables().isEmpty()
+        && kase.getDeliverables().stream()
+            .allMatch(
+                deliverable ->
+                    deliverable.getReleases().stream()
+                        .allMatch(
+                            release -> {
+                              ReleaseQcStatus status = release.getQcStatus();
+                              return status != null && !status.isPending();
+                            }))) {
       return CaseStatus.COMPLETED;
     } else {
       return CaseStatus.ACTIVE;
     }
   }
 
-
   private Set<String> getRunNamesFor(Case kase) {
     return kase.getTests().stream()
-        .map(test -> {
-          var lqs = test.getLibraryQualifications().stream().map(Sample::getRun);
-          var fdls = test.getFullDepthSequencings().stream().map(Sample::getRun);
-          return Stream.concat(lqs, fdls)
-              .filter(Objects::nonNull)
-              .map(Run::getName)
-              .collect(Collectors.toSet());
-        })
+        .map(
+            test -> {
+              var lqs = test.getLibraryQualifications().stream().map(Sample::getRun);
+              var fdls = test.getFullDepthSequencings().stream().map(Sample::getRun);
+              return Stream.concat(lqs, fdls)
+                  .filter(Objects::nonNull)
+                  .map(Run::getName)
+                  .collect(Collectors.toSet());
+            })
         .flatMap(Set::stream)
         .collect(Collectors.toSet());
   }
 
   public Set<Case> getCasesForRequisition(String requisitionName) {
-    Set<Case> cases = caseData.getCases().stream()
-        .filter(kase -> requisitionName.equals(kase.getRequisition().getName()))
-        .collect(Collectors.toSet());
+    Set<Case> cases =
+        caseData.getCases().stream()
+            .filter(kase -> requisitionName.equals(kase.getRequisition().getName()))
+            .collect(Collectors.toSet());
 
     return cases.isEmpty() ? null : cases;
   }
@@ -153,64 +161,87 @@ public class CaseService {
     return caseData.getCases().stream()
         .sorted(Comparator.comparing(Case::getId))
         .map(kase -> convertCaseToShesmuDetailedCase(kase))
-        .collect(Collectors.toCollection(
-            () -> new TreeSet<>(Comparator.comparing(ShesmuDetailedCase::getCaseIdentifier))));
+        .collect(
+            Collectors.toCollection(
+                () -> new TreeSet<>(Comparator.comparing(ShesmuDetailedCase::getCaseIdentifier))));
   }
 
   private Set<ShesmuSequencing> getSequencingForShesmuCase(Case kase) {
 
     TreeSet<ShesmuSequencing> sequencings =
-        new TreeSet<>(Comparator.comparing(ShesmuSequencing::getTest)
-            .thenComparing(ShesmuSequencing::getType)
-            .thenComparing(shesmuSequencing -> shesmuSequencing.getLimsIds().stream()
-                .map(ShesmuSample::getId) // IDs are sorted as part of makeShesmuSequencing
-                .collect(Collectors.joining(","))));
+        new TreeSet<>(
+            Comparator.comparing(ShesmuSequencing::getTest)
+                .thenComparing(ShesmuSequencing::getType)
+                .thenComparing(
+                    shesmuSequencing ->
+                        shesmuSequencing.getLimsIds().stream()
+                            .map(
+                                ShesmuSample
+                                    ::getId) // IDs are sorted as part of makeShesmuSequencing
+                            .collect(Collectors.joining(","))));
 
     final long reqId = kase.getRequisition().getId();
 
     for (Test test : kase.getTests()) {
 
-      ShesmuSequencing fullDepthSeq = makeShesmuSequencing(test.getFullDepthSequencings(),
-          MetricCategory.FULL_DEPTH_SEQUENCING, reqId, test.getName());
+      ShesmuSequencing fullDepthSeq =
+          makeShesmuSequencing(
+              test.getFullDepthSequencings(),
+              MetricCategory.FULL_DEPTH_SEQUENCING,
+              reqId,
+              test.getName());
       if (fullDepthSeq != null) {
         sequencings.add(fullDepthSeq);
       }
 
-      ShesmuSequencing libraryQual = makeShesmuSequencing(test.getLibraryQualifications(),
-          MetricCategory.LIBRARY_QUALIFICATION, reqId, test.getName());
+      ShesmuSequencing libraryQual =
+          makeShesmuSequencing(
+              test.getLibraryQualifications(),
+              MetricCategory.LIBRARY_QUALIFICATION,
+              reqId,
+              test.getName());
       if (libraryQual != null) {
         sequencings.add(libraryQual);
       }
-    } ;
+    }
+    ;
 
     return sequencings;
   }
 
   private Set<ShesmuCaseDeliverable> getDeliverablesForShesmuCase(Case kase) {
-    Set<ShesmuCaseDeliverable> deliverables =  kase.getDeliverables().stream()
-        .map(d -> new ShesmuCaseDeliverable.Builder()
-            .deliverableCategory(d.getDeliverableCategory())
-            .analysisReviewSkipped(d.isAnalysisReviewSkipped())
-            .analysisReviewQcDateLocal(d.getAnalysisReviewQcDate())
-            .analysisReviewQcStatus(d.getAnalysisReviewQcStatus())
-            .analysisReviewQcUser(d.getAnalysisReviewQcUser())
-            .releaseApprovalQcDateLocal(d.getReleaseApprovalQcDate())
-            .releaseApprovalQcStatus(d.getReleaseApprovalQcStatus())
-            .releaseApprovalQcUser(d.getReleaseApprovalQcUser())
-            .releases(d.getReleases().stream().map(r -> new ShesmuCaseRelease.Builder()
-                .deliverable(r.getDeliverable())
-                .qcDateLocal(r.getQcDate())
-                .qcStatus(r.getQcStatus())
-                .qcUser(r.getQcUser())
-                .build()).collect(Collectors.toUnmodifiableSet()))
-            .build()
-        ).collect(Collectors.toUnmodifiableSet());
+    Set<ShesmuCaseDeliverable> deliverables =
+        kase.getDeliverables().stream()
+            .map(
+                d ->
+                    new ShesmuCaseDeliverable.Builder()
+                        .deliverableCategory(d.getDeliverableCategory())
+                        .analysisReviewSkipped(d.isAnalysisReviewSkipped())
+                        .analysisReviewQcDateLocal(d.getAnalysisReviewQcDate())
+                        .analysisReviewQcStatus(d.getAnalysisReviewQcStatus())
+                        .analysisReviewQcUser(d.getAnalysisReviewQcUser())
+                        .releaseApprovalQcDateLocal(d.getReleaseApprovalQcDate())
+                        .releaseApprovalQcStatus(d.getReleaseApprovalQcStatus())
+                        .releaseApprovalQcUser(d.getReleaseApprovalQcUser())
+                        .releases(
+                            d.getReleases().stream()
+                                .map(
+                                    r ->
+                                        new ShesmuCaseRelease.Builder()
+                                            .deliverable(r.getDeliverable())
+                                            .qcDateLocal(r.getQcDate())
+                                            .qcStatus(r.getQcStatus())
+                                            .qcUser(r.getQcUser())
+                                            .build())
+                                .collect(Collectors.toUnmodifiableSet()))
+                        .build())
+            .collect(Collectors.toUnmodifiableSet());
 
     return deliverables;
   }
 
-  private ShesmuSequencing makeShesmuSequencing(List<Sample> samples, MetricCategory type,
-      long reqId, String name) {
+  private ShesmuSequencing makeShesmuSequencing(
+      List<Sample> samples, MetricCategory type, long reqId, String name) {
 
     TreeSet<ShesmuSample> shesmuSamples = new TreeSet<>(Comparator.comparing(ShesmuSample::getId));
 
@@ -218,8 +249,9 @@ public class CaseService {
     boolean hasWaiting = false;
     for (Sample sample : samples) {
       if (sample.getRun() == null && type == MetricCategory.LIBRARY_QUALIFICATION) {
-        // this is for samples - QC via qPCR, so sequencing is "complete" in that there will be no sequencing samples to QC
-        hasPassed = isTrue(sample.getQcPassed());  // there's no data review on samples
+        // this is for samples - QC via qPCR, so sequencing is "complete" in that there will be no
+        // sequencing samples to QC
+        hasPassed = isTrue(sample.getQcPassed()); // there's no data review on samples
         hasWaiting = false;
       }
       if (sample.getRun() != null) {
@@ -227,7 +259,8 @@ public class CaseService {
         if (sample.getDataReviewPassed() == null
             || (sample.getQcPassed() == null && sample.getQcUser() == null)) {
           hasWaiting = true;
-        } else if (isTrue(sample.getDataReviewPassed()) && isTrue(sample.getQcPassed())
+        } else if (isTrue(sample.getDataReviewPassed())
+            && isTrue(sample.getQcPassed())
             && isTrue(sample.getRun().getQcPassed())
             && isTrue(sample.getRun().getDataReviewPassed())) {
           hasPassed = true;
@@ -239,11 +272,12 @@ public class CaseService {
           hasWaiting = true;
         }
 
-        shesmuSamples.add(new ShesmuSample.Builder()
-            .id(sample.getId())
-            .supplemental(!Objects.equals(sample.getRequisitionId(), reqId))
-            .qcFailed(getQcFailed(sample))
-            .build());
+        shesmuSamples.add(
+            new ShesmuSample.Builder()
+                .id(sample.getId())
+                .supplemental(!Objects.equals(sample.getRequisitionId(), reqId))
+                .qcFailed(getQcFailed(sample))
+                .build());
       }
     }
 
@@ -269,17 +303,16 @@ public class CaseService {
 
   private Set<String> getLimsIusIdsForShesmu(Case kase) {
     return kase.getTests().stream()
-        .map(test -> {
-          var lqs = test.getLibraryQualifications()
-              .stream()
-              .filter(s -> s.getRun() != null) // only keep library qualifications that are
-                                               // run-libraries/IUSes
-              .map(Sample::getId);
-          var fdls = test.getFullDepthSequencings().stream().map(Sample::getId);
-          return Stream.concat(lqs, fdls)
-              .filter(Objects::nonNull)
-              .collect(Collectors.toSet());
-        })
+        .map(
+            test -> {
+              var lqs =
+                  test.getLibraryQualifications().stream()
+                      .filter(s -> s.getRun() != null) // only keep library qualifications that are
+                      // run-libraries/IUSes
+                      .map(Sample::getId);
+              var fdls = test.getFullDepthSequencings().stream().map(Sample::getId);
+              return Stream.concat(lqs, fdls).filter(Objects::nonNull).collect(Collectors.toSet());
+            })
         .flatMap(Set::stream)
         .collect(Collectors.toSet());
   }
@@ -353,5 +386,4 @@ public class CaseService {
       log.error("Failed to refresh case data", e);
     }
   }
-
 }
