@@ -7,6 +7,17 @@ This file is updated automatically as described in [Unreleased Changes](changes/
 
 ---------------------------------------------------------------------------------------------------
 
+## [1.33.0] - 2026-07-15
+
+### Added
+
+* Support for Jackson 3 (while maintaining support for Jackson 2)
+
+### Fixed
+
+* Add case ID to data load error messages where available
+
+
 ## [1.32.0] - 2026-05-05
 
 ### Added
