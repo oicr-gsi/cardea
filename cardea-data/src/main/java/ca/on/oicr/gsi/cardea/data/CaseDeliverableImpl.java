@@ -2,13 +2,13 @@ package ca.on.oicr.gsi.cardea.data;
 
 import static java.util.Objects.requireNonNull;
 
+import ca.on.oicr.gsi.cardea.data.CaseQc.AnalysisReviewQcStatus;
+import ca.on.oicr.gsi.cardea.data.CaseQc.ReleaseApprovalQcStatus;
 import java.time.LocalDate;
 import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Stream;
-import ca.on.oicr.gsi.cardea.data.CaseQc.AnalysisReviewQcStatus;
-import ca.on.oicr.gsi.cardea.data.CaseQc.ReleaseApprovalQcStatus;
 
 @com.fasterxml.jackson.databind.annotation.JsonDeserialize(
     builder = CaseDeliverableImpl.Builder.class)
@@ -43,8 +43,10 @@ public class CaseDeliverableImpl implements CaseDeliverable {
     this.releaseApprovalQcStatus = builder.releaseApprovalQcStatus;
     this.releaseApprovalQcUser = builder.releaseApprovalQcUser;
     this.releaseApprovalQcNote = builder.releaseApprovalQcNote;
-    this.releases = builder.releases == null ? Collections.emptyList()
-        : Collections.unmodifiableList(builder.releases);
+    this.releases =
+        builder.releases == null
+            ? Collections.emptyList()
+            : Collections.unmodifiableList(builder.releases);
     this.analysisReviewDaysSpent = builder.analysisReviewDaysSpent;
     this.releaseApprovalDaysSpent = builder.releaseApprovalDaysSpent;
     this.releaseDaysSpent = builder.releaseDaysSpent;
@@ -53,13 +55,13 @@ public class CaseDeliverableImpl implements CaseDeliverable {
     if (builder.latestActivityDate != null) {
       this.latestActivityDate = builder.latestActivityDate;
     } else {
-      this.latestActivityDate = Stream
-          .concat(
-              releases == null ? Stream.empty() : releases.stream().map(CaseRelease::getQcDate),
-              Stream.of(analysisReviewQcDate, releaseApprovalQcDate))
-          .filter(Objects::nonNull)
-          .max(LocalDate::compareTo)
-          .orElse(null);
+      this.latestActivityDate =
+          Stream.concat(
+                  releases == null ? Stream.empty() : releases.stream().map(CaseRelease::getQcDate),
+                  Stream.of(analysisReviewQcDate, releaseApprovalQcDate))
+              .filter(Objects::nonNull)
+              .max(LocalDate::compareTo)
+              .orElse(null);
     }
   }
 
@@ -247,7 +249,5 @@ public class CaseDeliverableImpl implements CaseDeliverable {
     public CaseDeliverableImpl build() {
       return new CaseDeliverableImpl(this);
     }
-
   }
-
 }

@@ -1,8 +1,6 @@
 package ca.on.oicr.gsi.cardea.data;
 
-/**
- * Immutable Assay Targets
- */
+/** Immutable Assay Targets */
 @com.fasterxml.jackson.databind.annotation.JsonDeserialize(builder = AssayTargets.Builder.class)
 @tools.jackson.databind.annotation.JsonDeserialize(builder = AssayTargets.Builder.class)
 public class AssayTargets {
@@ -127,7 +125,5 @@ public class AssayTargets {
     public AssayTargets build() {
       return new AssayTargets(this);
     }
-
   }
-
 }

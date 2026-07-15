@@ -1,18 +1,13 @@
-[
-  {
-    "name": "PROJ",
-    "pipeline": "Research",
-    "deliverables": {
-      "Data Release": [
-        {
-          "name": "Full Pipeline",
-          "analysis_review_required": true
-        },
-        {
-          "name": "cBioPortal Submission",
-          "analysis_review_required": true
-        }
-      ]
-    }
+[ {
+  "name": "PROJ",
+  "pipeline": "Research",
+  "deliverables": {
+    "Data Release": [ {
+      "name": "Full Pipeline",
+      "analysis_review_required": true
+    }, {
+      "name": "cBioPortal Submission",
+      "analysis_review_required": true
+    } ]
   }
-]
+} ]

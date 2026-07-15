@@ -13,7 +13,7 @@
 
 ## Build/Run
 
-From the project root, build runnable `.jar` file (located in `cardea-server/target`): 
+From the project root, build runnable `.jar` file (located in `cardea-server/target`):
 
 `mvn clean package`
 

@@ -2,13 +2,12 @@ package ca.on.oicr.gsi.cardea.data;
 
 import static java.util.Collections.*;
 import static java.util.Objects.requireNonNull;
+
 import java.time.ZonedDateTime;
 import java.util.List;
 import java.util.Map;
 
-/**
- * Immutable CaseData
- */
+/** Immutable CaseData */
 @com.fasterxml.jackson.databind.annotation.JsonDeserialize(builder = CaseData.Builder.class)
 @tools.jackson.databind.annotation.JsonDeserialize(builder = CaseData.Builder.class)
 public class CaseData {
@@ -83,8 +82,5 @@ public class CaseData {
       this.timestamp = timestamp;
       return this;
     }
-
-
   }
-
 }

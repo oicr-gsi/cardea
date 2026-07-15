@@ -6,9 +6,7 @@ import java.time.LocalDate;
 import java.util.Collections;
 import java.util.Set;
 
-/**
- * Immutable OmittedSample
- */
+/** Immutable OmittedSample */
 @com.fasterxml.jackson.databind.annotation.JsonDeserialize(builder = OmittedSample.Builder.class)
 @tools.jackson.databind.annotation.JsonDeserialize(builder = OmittedSample.Builder.class)
 public class OmittedSample {
@@ -27,8 +25,10 @@ public class OmittedSample {
     this.name = requireNonNull(builder.name);
     this.requisitionId = builder.requisitionId;
     this.requisitionName = builder.requisitionName;
-    this.assayIds = builder.assayIds == null ? Collections.emptySet()
-        : Collections.unmodifiableSet(builder.assayIds);
+    this.assayIds =
+        builder.assayIds == null
+            ? Collections.emptySet()
+            : Collections.unmodifiableSet(builder.assayIds);
     this.project = requireNonNull(builder.project);
     this.donor = requireNonNull(builder.donor);
     this.createdDate = requireNonNull(builder.createdDate);
@@ -131,7 +131,5 @@ public class OmittedSample {
       this.assayIds = assayIds;
       return this;
     }
-
   }
-
 }

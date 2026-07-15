@@ -118,5 +118,4 @@ public interface Sample {
   List<SampleMetric> getMetrics();
 
   Boolean getAnalysisSkipped();
-
 }

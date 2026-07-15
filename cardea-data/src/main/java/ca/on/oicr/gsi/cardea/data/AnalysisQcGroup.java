@@ -4,9 +4,7 @@ import static java.util.Objects.requireNonNull;
 
 import java.math.BigDecimal;
 
-/**
- * Immutable RequisitionQcGroup
- */
+/** Immutable RequisitionQcGroup */
 @com.fasterxml.jackson.databind.annotation.JsonDeserialize(builder = AnalysisQcGroup.Builder.class)
 @tools.jackson.databind.annotation.JsonDeserialize(builder = AnalysisQcGroup.Builder.class)
 public class AnalysisQcGroup {
@@ -107,7 +105,5 @@ public class AnalysisQcGroup {
       this.tissueType = tissueType;
       return this;
     }
-
   }
-
 }

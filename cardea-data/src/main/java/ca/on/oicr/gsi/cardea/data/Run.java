@@ -1,15 +1,14 @@
 package ca.on.oicr.gsi.cardea.data;
 
 import static java.util.Objects.requireNonNull;
+
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 
-/**
- * Immutable Run
- */
+/** Immutable Run */
 @com.fasterxml.jackson.databind.annotation.JsonDeserialize(builder = Run.Builder.class)
 @tools.jackson.databind.annotation.JsonDeserialize(builder = Run.Builder.class)
 public class Run {
@@ -59,12 +58,9 @@ public class Run {
 
   @Override
   public boolean equals(Object obj) {
-    if (this == obj)
-      return true;
-    if (obj == null)
-      return false;
-    if (getClass() != obj.getClass())
-      return false;
+    if (this == obj) return true;
+    if (obj == null) return false;
+    if (getClass() != obj.getClass()) return false;
     Run other = (Run) obj;
     return Objects.equals(id, other.id);
   }
@@ -262,7 +258,5 @@ public class Run {
       this.sequencingParameters = sequencingParameters;
       return this;
     }
-
   }
-
 }

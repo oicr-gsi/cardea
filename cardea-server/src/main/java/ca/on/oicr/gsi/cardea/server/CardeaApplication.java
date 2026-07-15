@@ -8,8 +8,7 @@ import org.springframework.scheduling.annotation.EnableScheduling;
 @EnableScheduling
 public class CardeaApplication {
 
-	public static void main(String[] args) {
-		SpringApplication.run(CardeaApplication.class, args);
-	}
-
+  public static void main(String[] args) {
+    SpringApplication.run(CardeaApplication.class, args);
+  }
 }

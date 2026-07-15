@@ -9,9 +9,7 @@ import java.util.List;
 import java.util.function.Function;
 import java.util.stream.Stream;
 
-/**
- * Immutable Test
- */
+/** Immutable Test */
 @com.fasterxml.jackson.databind.annotation.JsonDeserialize(builder = Test.Builder.class)
 @tools.jackson.databind.annotation.JsonDeserialize(builder = Test.Builder.class)
 public class Test {
@@ -60,21 +58,32 @@ public class Test {
     this.libraryQualificationSkipped = builder.libraryQualificationSkipped;
     this.extractions =
         builder.extractions == null ? emptyList() : unmodifiableList(builder.extractions);
-    this.libraryPreparations = builder.libraryPreparations == null ? emptyList()
-        : unmodifiableList(builder.libraryPreparations);
-    this.libraryQualifications = builder.libraryQualifications == null ? emptyList()
-        : unmodifiableList(builder.libraryQualifications);
-    this.fullDepthSequencings = builder.fullDepthSequencings == null ? emptyList()
-        : unmodifiableList(builder.fullDepthSequencings);
+    this.libraryPreparations =
+        builder.libraryPreparations == null
+            ? emptyList()
+            : unmodifiableList(builder.libraryPreparations);
+    this.libraryQualifications =
+        builder.libraryQualifications == null
+            ? emptyList()
+            : unmodifiableList(builder.libraryQualifications);
+    this.fullDepthSequencings =
+        builder.fullDepthSequencings == null
+            ? emptyList()
+            : unmodifiableList(builder.fullDepthSequencings);
 
     if (builder.latestActivityDate != null) {
       this.latestActivityDate = builder.latestActivityDate;
     } else {
-      this.latestActivityDate = Stream
-          .of(extractions.stream(), libraryPreparations.stream(), libraryQualifications.stream(),
-              fullDepthSequencings.stream())
-          .flatMap(Function.identity()).map(Sample::getLatestActivityDate).max(LocalDate::compareTo)
-          .orElse(null);
+      this.latestActivityDate =
+          Stream.of(
+                  extractions.stream(),
+                  libraryPreparations.stream(),
+                  libraryQualifications.stream(),
+                  fullDepthSequencings.stream())
+              .flatMap(Function.identity())
+              .map(Sample::getLatestActivityDate)
+              .max(LocalDate::compareTo)
+              .orElse(null);
     }
 
     this.extractionDaysSpent = builder.extractionDaysSpent;

@@ -1,68 +1,66 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-  xmlns="http://maven.apache.org/POM/4.0.0"
-  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+
+  <parent>
+    <groupId>org.springframework.boot</groupId>
+    <artifactId>spring-boot-starter-parent</artifactId>
+    <version>4.1.0</version>
+    <relativePath/>
+  </parent>
+  <groupId>ca.on.oicr.gsi.cardea</groupId>
 
   <artifactId>cardea</artifactId>
-  <groupId>ca.on.oicr.gsi.cardea</groupId>
   <version>1.33.1-SNAPSHOT</version>
-  <modelVersion>4.0.0</modelVersion>
+
+  <packaging>pom</packaging>
 
   <name>Cardea Case API</name>
   <description>Cardea Case data API</description>
-
-  <packaging>pom</packaging>
 
   <modules>
     <module>cardea-data</module>
     <module>cardea-server</module>
   </modules>
 
-  <parent>
-    <artifactId>spring-boot-starter-parent</artifactId>
-    <groupId>org.springframework.boot</groupId>
-    <relativePath />
-    <version>4.1.0</version>
-  </parent>
-
-  <dependencyManagement>
-    <dependencies>
-      <dependency>
-        <artifactId>springdoc-openapi-starter-webmvc-ui</artifactId>
-        <groupId>org.springdoc</groupId>
-        <version>2.1.0</version>
-      </dependency>
-      <dependency>
-        <artifactId>server-utils</artifactId>
-        <groupId>ca.on.oicr.gsi</groupId>
-        <version>1.0.4</version>
-      </dependency>
-      <dependency>
-        <artifactId>cardea-data</artifactId>
-        <groupId>ca.on.oicr.gsi.cardea</groupId>
-        <version>${project.version}</version>
-      </dependency>
-      <dependency>
-        <groupId>io.micrometer</groupId>
-        <artifactId>micrometer-registry-prometheus</artifactId>
-        <scope>runtime</scope>
-        <version>1.14.2</version>
-      </dependency>
-    </dependencies>
-  </dependencyManagement>
-
   <distributionManagement>
-    <downloadUrl>https://artifacts.oicr.on.ca/artifactory/gsi-release</downloadUrl>
     <repository>
       <id>deploy.artifacts.oicr</id>
       <name>GSI Releases</name>
       <url>https://artifacts.oicr.on.ca/artifactory/gsi-release</url>
     </repository>
+    <downloadUrl>https://artifacts.oicr.on.ca/artifactory/gsi-release</downloadUrl>
   </distributionManagement>
 
   <properties>
     <java.version>17</java.version>
   </properties>
+
+  <dependencyManagement>
+    <dependencies>
+      <dependency>
+        <groupId>org.springdoc</groupId>
+        <artifactId>springdoc-openapi-starter-webmvc-ui</artifactId>
+        <version>2.1.0</version>
+      </dependency>
+      <dependency>
+        <groupId>ca.on.oicr.gsi</groupId>
+        <artifactId>server-utils</artifactId>
+        <version>1.0.4</version>
+      </dependency>
+      <dependency>
+        <groupId>ca.on.oicr.gsi.cardea</groupId>
+        <artifactId>cardea-data</artifactId>
+        <version>${project.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>io.micrometer</groupId>
+        <artifactId>micrometer-registry-prometheus</artifactId>
+        <version>1.14.2</version>
+        <scope>runtime</scope>
+      </dependency>
+    </dependencies>
+  </dependencyManagement>
 
   <repositories>
     <repository>
@@ -74,14 +72,14 @@
       <url>https://packages.atlassian.com/mvn/maven-external/</url>
     </repository>
     <repository>
-      <id>deploy.artifacts.oicr</id>
-      <name>GSI Releases</name>
       <releases>
         <enabled>true</enabled>
       </releases>
       <snapshots>
         <enabled>false</enabled>
       </snapshots>
+      <id>deploy.artifacts.oicr</id>
+      <name>GSI Releases</name>
       <url>https://artifacts.oicr.on.ca/artifactory/gsi-release</url>
     </repository>
   </repositories>
@@ -125,10 +123,10 @@
         <executions>
           <execution>
             <id>install-pre-push-hook</id>
-            <phase>initialize</phase>
             <goals>
               <goal>install-git-pre-push-hook</goal>
             </goals>
+            <phase>initialize</phase>
           </execution>
         </executions>
       </plugin>

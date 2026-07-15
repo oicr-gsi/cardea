@@ -8,8 +8,8 @@ import java.util.Set;
 
 /**
  * Immutable RunAndLibraries
- * 
- * This is being moved to Dimsum because its only intended use is for data transformation within
+ *
+ * <p>This is being moved to Dimsum because its only intended use is for data transformation within
  * Dimsum
  */
 @com.fasterxml.jackson.databind.annotation.JsonDeserialize(builder = RunAndLibraries.Builder.class)
@@ -65,7 +65,5 @@ public class RunAndLibraries {
       this.run = run;
       return this;
     }
-
   }
-
 }

@@ -8,13 +8,10 @@ import java.time.LocalDate;
 import java.time.LocalTime;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
-
 import java.util.Optional;
 import java.util.Set;
 
-/**
- * Immutable ShesmuCase
- */
+/** Immutable ShesmuCase */
 @com.fasterxml.jackson.databind.annotation.JsonDeserialize(builder = ShesmuCase.Builder.class)
 @tools.jackson.databind.annotation.JsonDeserialize(builder = ShesmuCase.Builder.class)
 public class ShesmuCase {
@@ -138,10 +135,7 @@ public class ShesmuCase {
         return Optional.empty();
       }
       return Optional.of(
-          ZonedDateTime.of(
-              completedDate,
-              LocalTime.MIDNIGHT,
-              ZoneId.of("UTC")).toInstant());
+          ZonedDateTime.of(completedDate, LocalTime.MIDNIGHT, ZoneId.of("UTC")).toInstant());
     }
   }
 }

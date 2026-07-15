@@ -1,19 +1,20 @@
 package ca.on.oicr.gsi.cardea.data;
 
 import static java.util.Objects.requireNonNull;
+
 import java.math.BigDecimal;
 import java.util.Collections;
 import java.util.Set;
 
-/**
- * Immutable SampleMetric
- */
+/** Immutable SampleMetric */
 @com.fasterxml.jackson.databind.annotation.JsonDeserialize(builder = SampleMetric.Builder.class)
 @tools.jackson.databind.annotation.JsonDeserialize(builder = SampleMetric.Builder.class)
 public class SampleMetric {
 
   public static enum MetricLevel {
-    SAMPLE, RUN, LANE
+    SAMPLE,
+    RUN,
+    LANE
   }
 
   private final String name;
@@ -149,6 +150,5 @@ public class SampleMetric {
     public SampleMetric build() {
       return new SampleMetric(this);
     }
-
   }
 }

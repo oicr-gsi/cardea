@@ -2,9 +2,7 @@ package ca.on.oicr.gsi.cardea.data;
 
 import static java.util.Objects.requireNonNull;
 
-/**
- * Immutable Test
- */
+/** Immutable Test */
 @com.fasterxml.jackson.databind.annotation.JsonDeserialize(builder = ShesmuSample.Builder.class)
 @tools.jackson.databind.annotation.JsonDeserialize(builder = ShesmuSample.Builder.class)
 public class ShesmuSample {
@@ -13,13 +11,11 @@ public class ShesmuSample {
   private final boolean supplemental;
   private final boolean qcFailed;
 
-
   private ShesmuSample(Builder builder) {
     this.id = requireNonNull(builder.id);
     this.supplemental = requireNonNull(builder.supplemental);
     this.qcFailed = requireNonNull(builder.qcFailed);
   }
-
 
   public String getId() {
     return id;
@@ -33,8 +29,6 @@ public class ShesmuSample {
     return qcFailed;
   }
 
-
-
   @com.fasterxml.jackson.databind.annotation.JsonPOJOBuilder(withPrefix = "")
   @tools.jackson.databind.annotation.JsonPOJOBuilder(withPrefix = "")
   public static class Builder {
@@ -46,7 +40,6 @@ public class ShesmuSample {
     public ShesmuSample build() {
       return new ShesmuSample(this);
     }
-
 
     public Builder id(String id) {
       this.id = id;
@@ -62,7 +55,5 @@ public class ShesmuSample {
       this.qcFailed = qcFailed;
       return this;
     }
-
-
   }
 }

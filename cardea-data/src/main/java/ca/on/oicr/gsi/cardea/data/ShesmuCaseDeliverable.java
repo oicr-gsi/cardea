@@ -159,10 +159,7 @@ public class ShesmuCaseDeliverable {
         return Optional.empty();
       }
       return Optional.of(
-          ZonedDateTime.of(
-              localDate,
-              LocalTime.MIDNIGHT,
-              ZoneId.of("UTC")).toInstant());
+          ZonedDateTime.of(localDate, LocalTime.MIDNIGHT, ZoneId.of("UTC")).toInstant());
     }
   }
 }
