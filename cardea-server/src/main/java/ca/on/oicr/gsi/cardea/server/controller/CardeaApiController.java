@@ -65,6 +65,12 @@ public class CardeaApiController {
     return caseService.getShesmuDetailedCases();
   }
 
+  @GetMapping("/cases/{caseId}")
+  @Operation(summary = "Get case by case ID", description = "Get the full case info by case ID")
+  public Case getCaseData(@PathVariable String caseId) {
+    return caseService.getCase(caseId);
+  }
+
   @GetMapping("/cases/{caseId}/priority")
   @Operation(
       summary = "Retrieve case priority by case ID",
