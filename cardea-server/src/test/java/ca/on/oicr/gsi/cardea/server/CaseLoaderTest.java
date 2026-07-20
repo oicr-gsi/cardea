@@ -47,7 +47,8 @@ public class CaseLoaderTest {
   private static final String testProjectName = "PROJ";
   private static final String testSampleId = "SAM413577";
   private static final long testRunId = 5476L;
-  private static File dataDirectory;
+    private static final long testAnotherRunId = 5540L;
+    private static File dataDirectory;
   private CaseLoader sut;
 
   @BeforeAll
@@ -122,6 +123,27 @@ public class CaseLoaderTest {
     assertEquals(new BigDecimal("0.66"), lane1.getPercentPfixRead1());
     assertEquals(new BigDecimal("0.65"), lane1.getPercentPfixRead2());
   }
+
+    private static void assertAnotherRun(Run run) {
+        assertNotNull(run);
+        assertEquals(testAnotherRunId, run.getId());
+        assertEquals("210914_A00469_0210_BHLFMGDSX2", run.getName());
+        assertEquals("S4", run.getContainerModel());
+        assertFalse(run.hasJoinedLanes());
+        assertEquals("2×151", run.getSequencingParameters());
+        assertEquals(151, run.getReadLength());
+        assertEquals(151, run.getReadLength2());
+        assertEquals(LocalDate.of(2021, 8, 15), run.getStartDate());
+        assertEquals(LocalDate.of(2021, 9, 16), run.getCompletionDate());
+        assertTrue(run.getQcPassed());
+        assertEquals("Technician One", run.getQcUser());
+        assertEquals(LocalDate.of(2021, 9, 16), run.getQcDate());
+        assertEquals(new BigDecimal("89.47"), run.getControlPercentOverQ30());
+        assertEquals(11014852608L, run.getOutputReads());
+        assertEquals(1, run.getLanes().size());
+        Lane lane1 = run.getLanes().get(0);
+        assertEquals(1, lane1.getLaneNumber());
+    }
 
   private static void assertRunSample(Sample sample) {
     assertEquals("5476_1_LDI73620", sample.getId());
@@ -237,7 +259,7 @@ public class CaseLoaderTest {
     assertEquals(4, test.getFullDepthSequencingQcDaysSpent());
     assertRun(fullDepth.getRun());
 
-    assertNotNull(kase.getDeliverables());
+      assertNotNull(kase.getDeliverables());
     assertEquals(1, kase.getDeliverables().size());
     CaseDeliverable deliverable = kase.getDeliverables().get(0);
     assertEquals("Clinical Report", deliverable.getDeliverableCategory());
@@ -406,6 +428,7 @@ public class CaseLoaderTest {
       Map<Long, Run> runsById = sut.loadRuns(reader);
       assertEquals(6, runsById.size());
       assertRun(runsById.get(testRunId));
+        assertAnotherRun(runsById.get(testAnotherRunId));
     }
   }
 

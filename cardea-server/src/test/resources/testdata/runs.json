@@ -170,8 +170,8 @@
   "data_review_state": "Passed",
   "data_review_user": "QA Manager",
   "data_review_date": "2021-09-27",
-  "percent_over_q30": 89.47,
-  "clusters_pf": 11014852608,
+  "control_percent_over_q30": 89.47,
+  "output_reads": 11014852608,
   "lanes": {
     "1": {
       "lane_number": 1,
@@ -180,30 +180,6 @@
       "clusters_pf": 2789968896,
       "percent_phix_read1": 0.66,
       "percent_phix_read2": 0.64
-    },
-    "2": {
-      "lane_number": 2,
-      "percent_over_q30_read1": 91,
-      "percent_over_q30_read2": 88,
-      "clusters_pf": 2752289536,
-      "percent_phix_read1": 0.65,
-      "percent_phix_read2": 0.63
-    },
-    "3": {
-      "lane_number": 3,
-      "percent_over_q30_read1": 91,
-      "percent_over_q30_read2": 88,
-      "clusters_pf": 2734044928,
-      "percent_phix_read1": 0.66,
-      "percent_phix_read2": 0.63
-    },
-    "4": {
-      "lane_number": 4,
-      "percent_over_q30_read1": 90,
-      "percent_over_q30_read2": 88,
-      "clusters_pf": 2738548480,
-      "percent_phix_read1": 0.65,
-      "percent_phix_read2": 0.63
     }
   }
 } ]

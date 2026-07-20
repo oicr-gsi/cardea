@@ -17,6 +17,7 @@ public class Run {
   private final LocalDate startDate;
   private final LocalDate completionDate;
   private final String containerModel;
+  private final BigDecimal controlPercentOverQ30;
   private final LocalDate dataReviewDate;
   private final Boolean dataReviewPassed;
   private final String dataReviewUser;
@@ -24,6 +25,7 @@ public class Run {
   private final boolean joinedLanes;
   private final List<Lane> lanes;
   private final String name;
+  private final Long outputReads;
   private final BigDecimal percentOverQ30;
   private final LocalDate qcDate;
   private final Boolean qcPassed;
@@ -39,12 +41,14 @@ public class Run {
     this.id = builder.id;
     this.name = requireNonNull(builder.name);
     this.containerModel = builder.containerModel;
+    this.controlPercentOverQ30 = builder.controlPercentOverQ30;
     this.joinedLanes = builder.joinedLanes;
     this.sequencingParameters = builder.sequencingParameters;
     this.readLength = builder.readLength;
     this.readLength2 = builder.readLength2;
     this.startDate = builder.startDate;
     this.completionDate = builder.completionDate;
+    this.outputReads = builder.outputReads;
     this.percentOverQ30 = builder.percentOverQ30;
     this.clustersPf = builder.clustersPf;
     this.lanes = Collections.unmodifiableList(requireNonNull(builder.lanes));
@@ -81,6 +85,10 @@ public class Run {
     return containerModel;
   }
 
+  public BigDecimal getControlPercentOverQ30() {
+    return controlPercentOverQ30;
+  }
+
   public LocalDate getDataReviewDate() {
     return dataReviewDate;
   }
@@ -103,6 +111,10 @@ public class Run {
 
   public String getName() {
     return name;
+  }
+
+  public Long getOutputReads() {
+    return outputReads;
   }
 
   public BigDecimal getPercentOverQ30() {
@@ -150,6 +162,7 @@ public class Run {
     private LocalDate startDate;
     private LocalDate completionDate;
     private String containerModel;
+    private BigDecimal controlPercentOverQ30;
     private LocalDate dataReviewDate;
     private Boolean dataReviewPassed;
     private String dataReviewUser;
@@ -157,6 +170,7 @@ public class Run {
     private boolean joinedLanes;
     private List<Lane> lanes;
     private String name;
+    private Long outputReads;
     private BigDecimal percentOverQ30;
     private LocalDate qcDate;
     private Boolean qcPassed;
@@ -186,6 +200,11 @@ public class Run {
 
     public Builder containerModel(String containerModel) {
       this.containerModel = containerModel;
+      return this;
+    }
+
+    public Builder controlPercentOverQ30(BigDecimal controlPercentOverQ30) {
+      this.controlPercentOverQ30 = controlPercentOverQ30;
       return this;
     }
 
@@ -221,6 +240,11 @@ public class Run {
 
     public Builder name(String name) {
       this.name = name;
+      return this;
+    }
+
+    public Builder outputReads(Long outputReads) {
+      this.outputReads = outputReads;
       return this;
     }
 
