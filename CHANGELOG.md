@@ -7,6 +7,12 @@ This file is updated automatically as described in [Unreleased Changes](changes/
 
 ---------------------------------------------------------------------------------------------------
 
+## [1.34.0] - 2026-07-20
+
+### Added
+
+* endpoint to get case by case ID
+
 ## [1.33.0] - 2026-07-15
 
 ### Added
