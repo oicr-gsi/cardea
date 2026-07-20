@@ -127,12 +127,9 @@ public class CaseLoaderTest {
   private static void assertAnotherRun(Run run) {
     assertNotNull(run);
     assertEquals(testAnotherRunId, run.getId());
-    assertEquals("210914_A00469_0210_BHLFMGDSX2", run.getName());
-    assertEquals("S4", run.getContainerModel());
+    assertEquals("438555", run.getName());
+    assertEquals("FC12.2T", run.getContainerModel());
     assertFalse(run.hasJoinedLanes());
-    assertEquals("2×151", run.getSequencingParameters());
-    assertEquals(151, run.getReadLength());
-    assertEquals(151, run.getReadLength2());
     assertEquals(LocalDate.of(2021, 8, 15), run.getStartDate());
     assertEquals(LocalDate.of(2021, 9, 16), run.getCompletionDate());
     assertTrue(run.getQcPassed());

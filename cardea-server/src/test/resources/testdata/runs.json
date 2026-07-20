@@ -156,12 +156,9 @@
   }
 }, {
   "id": 5540,
-  "name": "210914_A00469_0210_BHLFMGDSX2",
-  "container_model": "S4",
+  "name": "438555",
+  "container_model": "FC12.2T",
   "joined_lanes": false,
-  "sequencing_parameters": "2×151",
-  "read_length": 151,
-  "read_length_2": 151,
   "start_date": "2021-08-15T00:00:00-04:00",
   "completion_date": "2021-09-16T00:00:00-04:00",
   "qc_state": "Ready",
@@ -174,12 +171,7 @@
   "output_reads": 11014852608,
   "lanes": {
     "1": {
-      "lane_number": 1,
-      "percent_over_q30_read1": 91,
-      "percent_over_q30_read2": 89,
-      "clusters_pf": 2789968896,
-      "percent_phix_read1": 0.66,
-      "percent_phix_read2": 0.64
+      "lane_number": 1
     }
   }
 } ]
