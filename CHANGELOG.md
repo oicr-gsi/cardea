@@ -7,6 +7,12 @@ This file is updated automatically as described in [Unreleased Changes](changes/
 
 ---------------------------------------------------------------------------------------------------
 
+## [1.34.1] - 2026-07-28
+
+### Fixed
+
+* Loading omitted run samples that are neither library qualification nor full-depth sequencing
+
 ## [1.34.0] - 2026-07-20
 
 ### Added
