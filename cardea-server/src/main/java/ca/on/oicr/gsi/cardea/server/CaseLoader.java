@@ -342,6 +342,7 @@ public class CaseLoader {
         json -> {
           Long runId = parseLong(json, "sequencing_run_id", true);
           Run run = runsById.get(runId);
+          String qcStep = parseString(json, "qc_step", false);
           return new OmittedRunSample.Builder()
               .id(parseString(json, "sample_id", true))
               .name(parseString(json, "oicr_internal_name", true))
@@ -349,7 +350,7 @@ public class CaseLoader {
               .runId(run.getId())
               .runName(run.getName())
               .sequencingLane(parseInteger(json, "sequencing_lane", true))
-              .sequencingType(MetricCategory.valueOf(parseString(json, "qc_step", true)))
+              .sequencingType(qcStep == null ? null : MetricCategory.valueOf(qcStep))
               .qcPassed(parseQcPassed(json, "qc_state", true))
               .qcReason(parseString(json, "qc_reason"))
               .qcNote(parseString(json, "qc_note"))

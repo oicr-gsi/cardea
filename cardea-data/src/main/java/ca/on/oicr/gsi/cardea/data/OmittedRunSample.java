@@ -32,11 +32,7 @@ public class OmittedRunSample {
     this.runId = requireNonNull(builder.runId);
     this.runName = requireNonNull(builder.runName);
     this.sequencingLane = requireNonNull(builder.sequencingLane);
-    this.sequencingType = requireNonNull(builder.sequencingType);
-    if (sequencingType != MetricCategory.LIBRARY_QUALIFICATION
-        && sequencingType != MetricCategory.FULL_DEPTH_SEQUENCING) {
-      throw new IllegalArgumentException("Invalid category for run-sample: " + sequencingType);
-    }
+    this.sequencingType = builder.sequencingType;
     this.qcPassed = builder.qcPassed;
     this.qcReason = builder.qcReason;
     this.qcNote = builder.qcNote;
