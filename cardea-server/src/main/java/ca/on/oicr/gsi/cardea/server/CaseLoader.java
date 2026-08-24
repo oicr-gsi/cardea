@@ -475,27 +475,7 @@ public class CaseLoader {
                   .concentrationUnits(parseString(json, "concentration_units", false))
                   .run(runsById.get(runId))
                   .donor(donorsById.get(parseString(json, "donor_id")))
-                  .meanInsertSize(parseDecimal(json, "mean_insert", false))
-                  .medianInsertSize(parseDecimal(json, "median_insert", false))
-                  .clustersPerSample(parseInteger(json, "clusters_per_sample", false))
-                  .preliminaryClustersPerSample(
-                      parseInteger(json, "preliminary_clusters_per_sample", false))
-                  .duplicationRate(parseDecimal(json, "duplication_rate", false))
-                  .meanCoverageDeduplicated(parseDecimal(json, "mean_coverage_deduplicated", false))
-                  .preliminaryMeanCoverageDeduplicated(
-                      parseDecimal(json, "preliminary_mean_coverage_deduplicated", false))
-                  .rrnaContamination(parseDecimal(json, "rrna_contamination", false))
-                  .mappedToCoding(parseDecimal(json, "mapped_to_coding", false))
-                  .rawCoverage(parseDecimal(json, "raw_coverage", false))
-                  .onTargetReads(parseDecimal(json, "on_target_reads", false))
                   .collapsedCoverage(parseDecimal(json, "collapsed_coverage", false))
-                  .lambdaMethylation(parseDecimal(json, "lambda_methylation", false))
-                  .lambdaClusters(parseInteger(json, "lambda_clusters", false))
-                  .puc19Methylation(parseDecimal(json, "puc19_methylation", false))
-                  .puc19Clusters(parseInteger(json, "puc19_clusters", false))
-                  .relativeCpgInRegions(parseDecimal(json, "relative_cpg_in_regions", false))
-                  .methylationBeta(parseDecimal(json, "methylation_beta", false))
-                  .peReads(parseInteger(json, "pe_reads", false))
                   .qcPassed(parseQcPassed(json, "qc_state", true))
                   .qcReason(parseString(json, "qc_reason"))
                   .qcNote(parseString(json, "qc_note"))
@@ -721,9 +701,7 @@ public class CaseLoader {
       throw new DataParseException("Invalid run lanes");
     }
     List<Lane> lanes = new ArrayList<>();
-    Iterator<Entry<String, JsonNode>> iterator = json.fields();
-    while (iterator.hasNext()) {
-      Entry<String, JsonNode> entry = iterator.next();
+    for (Entry<String, JsonNode> entry : json.properties()) {
       Lane lane = parseLane(entry.getValue());
       lanes.add(lane);
     }
@@ -736,9 +714,7 @@ public class CaseLoader {
       throw new DataParseException("Invalid assay metric categories");
     }
     Map<MetricCategory, List<MetricSubcategory>> map = new HashMap<>();
-    Iterator<Entry<String, JsonNode>> iterator = json.fields();
-    while (iterator.hasNext()) {
-      Entry<String, JsonNode> entry = iterator.next();
+    for (Entry<String, JsonNode> entry : json.properties()) {
       MetricCategory category = MetricCategory.valueOf(entry.getKey());
       map.put(category, parseMetricSubcategories(entry.getValue()));
     }
@@ -823,9 +799,7 @@ public class CaseLoader {
       throw new DataParseException("Invalid sample metric run values");
     }
     Set<SampleMetricLane> laneValues = new HashSet<>();
-    Iterator<Entry<String, JsonNode>> lanes = json.fields();
-    while (lanes.hasNext()) {
-      Entry<String, JsonNode> laneEntry = lanes.next();
+    for (Entry<String, JsonNode> laneEntry : json.properties()) {
       Integer laneNumber = Integer.valueOf(laneEntry.getKey());
       if (!laneEntry.getValue().isObject()) {
         throw new DataParseException("Invalid sample metric lane values");
@@ -1026,9 +1000,7 @@ public class CaseLoader {
       throw new DataParseException("Invalid project deliverable types");
     }
     Map<String, List<String>> map = new HashMap<>();
-    Iterator<Entry<String, JsonNode>> iterator = json.fields();
-    while (iterator.hasNext()) {
-      Entry<String, JsonNode> entry = iterator.next();
+    for (Entry<String, JsonNode> entry : json.properties()) {
       String deliverableCategory = entry.getKey();
       JsonNode listJson = entry.getValue();
       if (listJson == null || !listJson.isArray()) {

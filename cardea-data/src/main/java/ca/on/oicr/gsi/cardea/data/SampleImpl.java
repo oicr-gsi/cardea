@@ -16,8 +16,6 @@ import java.util.stream.Stream;
 public class SampleImpl implements Sample {
 
   private final Set<Long> assayIds;
-  private final Integer clustersPerSample; // AKA "Pass Filter Clusters" for full-depth (call ready)
-  private final Integer preliminaryClustersPerSample;
   private final BigDecimal concentration;
   private final String concentrationUnits;
   private final LocalDate createdDate;
@@ -25,33 +23,20 @@ public class SampleImpl implements Sample {
   private final Boolean dataReviewPassed;
   private final String dataReviewUser;
   private final Donor donor;
-  private final BigDecimal duplicationRate;
   private final String groupId;
   private final String id;
-  private final Integer lambdaClusters;
-  private final BigDecimal lambdaMethylation;
   private final LocalDate latestActivityDate;
   private final String libraryDesignCode;
   private final Integer librarySize;
-  private final BigDecimal mappedToCoding;
-  private final BigDecimal meanCoverageDeduplicated;
-  private final BigDecimal preliminaryMeanCoverageDeduplicated;
-  private final BigDecimal meanInsertSize;
-  private final BigDecimal medianInsertSize;
   private final String name;
   private final String nucleicAcidType;
-  private final BigDecimal onTargetReads;
   private final BigDecimal collapsedCoverage;
   private final String project;
-  private final Integer puc19Clusters;
-  private final BigDecimal puc19Methylation;
   private final LocalDate qcDate;
   private final Boolean qcPassed;
   private final String qcReason;
   private final String qcNote;
   private final String qcUser;
-  private final BigDecimal rrnaContamination;
-  private final BigDecimal rawCoverage;
   private final Long requisitionId;
   private final String requisitionName;
   private final Run run;
@@ -63,9 +48,6 @@ public class SampleImpl implements Sample {
   private final String tissueOrigin;
   private final String tissueType;
   private final BigDecimal volume;
-  private final BigDecimal relativeCpgInRegions;
-  private final BigDecimal methylationBeta;
-  private final Integer peReads;
   private final LocalDate transferDate;
   private final BigDecimal dv200;
   private final List<SampleMetric> metrics;
@@ -97,25 +79,7 @@ public class SampleImpl implements Sample {
     this.concentrationUnits = builder.concentrationUnits;
     this.run = builder.run;
     this.donor = requireNonNull(builder.donor);
-    this.meanInsertSize = builder.meanInsertSize;
-    this.medianInsertSize = builder.medianInsertSize;
-    this.clustersPerSample = builder.clustersPerSample;
-    this.preliminaryClustersPerSample = builder.preliminaryClustersPerSample;
-    this.duplicationRate = builder.duplicationRate;
-    this.meanCoverageDeduplicated = builder.meanCoverageDeduplicated;
-    this.preliminaryMeanCoverageDeduplicated = builder.preliminaryMeanCoverageDeduplicated;
-    this.rrnaContamination = builder.rrnaContamination;
-    this.mappedToCoding = builder.mappedToCoding;
-    this.rawCoverage = builder.rawCoverage;
-    this.onTargetReads = builder.onTargetReads;
     this.collapsedCoverage = builder.collapsedCoverage;
-    this.lambdaMethylation = builder.lambdaMethylation;
-    this.lambdaClusters = builder.lambdaClusters;
-    this.puc19Methylation = builder.puc19Methylation;
-    this.puc19Clusters = builder.puc19Clusters;
-    this.relativeCpgInRegions = builder.relativeCpgInRegions;
-    this.methylationBeta = builder.methylationBeta;
-    this.peReads = builder.peReads;
     this.qcPassed = builder.qcPassed;
     this.qcReason = builder.qcReason;
     this.qcNote = builder.qcNote;
@@ -161,16 +125,6 @@ public class SampleImpl implements Sample {
   }
 
   @Override
-  public Integer getClustersPerSample() {
-    return clustersPerSample;
-  }
-
-  @Override
-  public Integer getPreliminaryClustersPerSample() {
-    return preliminaryClustersPerSample;
-  }
-
-  @Override
   public BigDecimal getConcentration() {
     return concentration;
   }
@@ -206,11 +160,6 @@ public class SampleImpl implements Sample {
   }
 
   @Override
-  public BigDecimal getDuplicationRate() {
-    return duplicationRate;
-  }
-
-  @Override
   public String getGroupId() {
     return groupId;
   }
@@ -218,16 +167,6 @@ public class SampleImpl implements Sample {
   @Override
   public String getId() {
     return id;
-  }
-
-  @Override
-  public Integer getLambdaClusters() {
-    return lambdaClusters;
-  }
-
-  @Override
-  public BigDecimal getLambdaMethylation() {
-    return lambdaMethylation;
   }
 
   @Override
@@ -246,31 +185,6 @@ public class SampleImpl implements Sample {
   }
 
   @Override
-  public BigDecimal getMappedToCoding() {
-    return mappedToCoding;
-  }
-
-  @Override
-  public BigDecimal getMeanCoverageDeduplicated() {
-    return meanCoverageDeduplicated;
-  }
-
-  @Override
-  public BigDecimal getPreliminaryMeanCoverageDeduplicated() {
-    return preliminaryMeanCoverageDeduplicated;
-  }
-
-  @Override
-  public BigDecimal getMeanInsertSize() {
-    return meanInsertSize;
-  }
-
-  @Override
-  public BigDecimal getMedianInsertSize() {
-    return medianInsertSize;
-  }
-
-  @Override
   public String getName() {
     return name;
   }
@@ -281,11 +195,6 @@ public class SampleImpl implements Sample {
   }
 
   @Override
-  public BigDecimal getOnTargetReads() {
-    return onTargetReads;
-  }
-
-  @Override
   public BigDecimal getCollapsedCoverage() {
     return collapsedCoverage;
   }
@@ -293,16 +202,6 @@ public class SampleImpl implements Sample {
   @Override
   public String getProject() {
     return project;
-  }
-
-  @Override
-  public Integer getPuc19Clusters() {
-    return puc19Clusters;
-  }
-
-  @Override
-  public BigDecimal getPuc19Methylation() {
-    return puc19Methylation;
   }
 
   @Override
@@ -328,11 +227,6 @@ public class SampleImpl implements Sample {
   @Override
   public String getQcUser() {
     return qcUser;
-  }
-
-  @Override
-  public BigDecimal getRawCoverage() {
-    return rawCoverage;
   }
 
   @Override
@@ -391,26 +285,6 @@ public class SampleImpl implements Sample {
   }
 
   @Override
-  public BigDecimal getRrnaContamination() {
-    return rrnaContamination;
-  }
-
-  @Override
-  public BigDecimal getRelativeCpgInRegions() {
-    return relativeCpgInRegions;
-  }
-
-  @Override
-  public BigDecimal getMethylationBeta() {
-    return methylationBeta;
-  }
-
-  @Override
-  public Integer getPeReads() {
-    return peReads;
-  }
-
-  @Override
   public LocalDate getTransferDate() {
     return transferDate;
   }
@@ -439,8 +313,6 @@ public class SampleImpl implements Sample {
   @tools.jackson.databind.annotation.JsonPOJOBuilder(withPrefix = "")
   public static class Builder {
 
-    private Integer clustersPerSample;
-    private Integer preliminaryClustersPerSample;
     private BigDecimal concentration;
     private String concentrationUnits;
     private LocalDate createdDate;
@@ -448,32 +320,19 @@ public class SampleImpl implements Sample {
     private Boolean dataReviewPassed;
     private String dataReviewUser;
     private Donor donor;
-    private BigDecimal duplicationRate;
     private String groupId;
     private String id;
-    private Integer lambdaClusters;
-    private BigDecimal lambdaMethylation;
     private String libraryDesignCode;
     private Integer librarySize;
-    private BigDecimal mappedToCoding;
-    private BigDecimal meanCoverageDeduplicated;
-    private BigDecimal preliminaryMeanCoverageDeduplicated;
-    private BigDecimal meanInsertSize;
-    private BigDecimal medianInsertSize;
     private String name;
     private String nucleicAcidType;
-    private BigDecimal onTargetReads;
     private BigDecimal collapsedCoverage;
     private String project;
-    private Integer puc19Clusters;
-    private BigDecimal puc19Methylation;
     private LocalDate qcDate;
     private Boolean qcPassed;
     private String qcReason;
     private String qcNote;
     private String qcUser;
-    private BigDecimal rrnaContamination;
-    private BigDecimal rawCoverage;
     private Long requisitionId;
     private String requisitionName;
     private Set<Long> assayIds;
@@ -486,9 +345,6 @@ public class SampleImpl implements Sample {
     private String tissueOrigin;
     private String tissueType;
     private BigDecimal volume;
-    private BigDecimal relativeCpgInRegions;
-    private BigDecimal methylationBeta;
-    private Integer peReads;
     private LocalDate latestActivityDate;
     private LocalDate transferDate;
     private BigDecimal dv200;
@@ -497,16 +353,6 @@ public class SampleImpl implements Sample {
 
     public Sample build() {
       return new SampleImpl(this);
-    }
-
-    public Builder clustersPerSample(Integer clustersPerSample) {
-      this.clustersPerSample = clustersPerSample;
-      return this;
-    }
-
-    public Builder preliminaryClustersPerSample(Integer preliminaryClustersPerSample) {
-      this.preliminaryClustersPerSample = preliminaryClustersPerSample;
-      return this;
     }
 
     public Builder concentration(BigDecimal concentration) {
@@ -544,11 +390,6 @@ public class SampleImpl implements Sample {
       return this;
     }
 
-    public Builder duplicationRate(BigDecimal duplicationRate) {
-      this.duplicationRate = duplicationRate;
-      return this;
-    }
-
     public Builder groupId(String groupId) {
       this.groupId = groupId;
       return this;
@@ -556,16 +397,6 @@ public class SampleImpl implements Sample {
 
     public Builder id(String id) {
       this.id = id;
-      return this;
-    }
-
-    public Builder lambdaClusters(Integer lambdaClusters) {
-      this.lambdaClusters = lambdaClusters;
-      return this;
-    }
-
-    public Builder lambdaMethylation(BigDecimal lambdaMethylation) {
-      this.lambdaMethylation = lambdaMethylation;
       return this;
     }
 
@@ -579,32 +410,6 @@ public class SampleImpl implements Sample {
       return this;
     }
 
-    public Builder mappedToCoding(BigDecimal mappedToCoding) {
-      this.mappedToCoding = mappedToCoding;
-      return this;
-    }
-
-    public Builder meanCoverageDeduplicated(BigDecimal meanCoverageDeduplicated) {
-      this.meanCoverageDeduplicated = meanCoverageDeduplicated;
-      return this;
-    }
-
-    public Builder preliminaryMeanCoverageDeduplicated(
-        BigDecimal preliminaryMeanCoverageDeduplicated) {
-      this.preliminaryMeanCoverageDeduplicated = preliminaryMeanCoverageDeduplicated;
-      return this;
-    }
-
-    public Builder meanInsertSize(BigDecimal meanInsertSize) {
-      this.meanInsertSize = meanInsertSize;
-      return this;
-    }
-
-    public Builder medianInsertSize(BigDecimal medianInsertSize) {
-      this.medianInsertSize = medianInsertSize;
-      return this;
-    }
-
     public Builder name(String name) {
       this.name = name;
       return this;
@@ -615,11 +420,6 @@ public class SampleImpl implements Sample {
       return this;
     }
 
-    public Builder onTargetReads(BigDecimal onTargetReads) {
-      this.onTargetReads = onTargetReads;
-      return this;
-    }
-
     public Builder collapsedCoverage(BigDecimal collapsedCoverage) {
       this.collapsedCoverage = collapsedCoverage;
       return this;
@@ -627,16 +427,6 @@ public class SampleImpl implements Sample {
 
     public Builder project(String project) {
       this.project = project;
-      return this;
-    }
-
-    public Builder puc19Clusters(Integer puc19Clusters) {
-      this.puc19Clusters = puc19Clusters;
-      return this;
-    }
-
-    public Builder puc19Methylation(BigDecimal puc19Methylation) {
-      this.puc19Methylation = puc19Methylation;
       return this;
     }
 
@@ -662,16 +452,6 @@ public class SampleImpl implements Sample {
 
     public Builder qcUser(String qcUser) {
       this.qcUser = qcUser;
-      return this;
-    }
-
-    public Builder rrnaContamination(BigDecimal rrnaContamination) {
-      this.rrnaContamination = rrnaContamination;
-      return this;
-    }
-
-    public Builder rawCoverage(BigDecimal rawCoverage) {
-      this.rawCoverage = rawCoverage;
       return this;
     }
 
@@ -739,21 +519,6 @@ public class SampleImpl implements Sample {
 
     public Builder volume(BigDecimal volume) {
       this.volume = volume;
-      return this;
-    }
-
-    public Builder relativeCpgInRegions(BigDecimal relativeCpgInRegions) {
-      this.relativeCpgInRegions = relativeCpgInRegions;
-      return this;
-    }
-
-    public Builder methylationBeta(BigDecimal methylationBeta) {
-      this.methylationBeta = methylationBeta;
-      return this;
-    }
-
-    public Builder peReads(Integer peReads) {
-      this.peReads = peReads;
       return this;
     }
 

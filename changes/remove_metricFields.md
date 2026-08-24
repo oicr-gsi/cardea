@@ -1,0 +1,19 @@
+sample fields that are redundant with values in the sample metrics collection
+* clustersPerSample
+* preliminaryClustersPerSample
+* duplicationRate
+* lambdaClusters
+* lambdaMethylation
+* mappedToCoding
+* meanCoverageDeduplicated
+* preliminaryMeanCoverageDeduplicated
+* meanInsertSize
+* medianInsertSize
+* onTargetReads
+* puc19Clusters
+* puc19Methylation
+* rawCoverage
+* rrnaContamination
+* relativeCpgInRegions
+* methylationBeta
+* peReads
