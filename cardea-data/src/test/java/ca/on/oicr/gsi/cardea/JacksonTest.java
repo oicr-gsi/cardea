@@ -362,8 +362,6 @@ public abstract class JacksonTest {
 
   private static void assertSampleEqual(Sample one, Sample two) {
     assertEquals(one.getAssayIds(), two.getAssayIds());
-    assertEquals(one.getClustersPerSample(), two.getClustersPerSample());
-    assertEquals(one.getPreliminaryClustersPerSample(), two.getPreliminaryClustersPerSample());
     assertEquals(one.getConcentration(), two.getConcentration());
     assertEquals(one.getConcentrationUnits(), two.getConcentrationUnits());
     assertEquals(one.getCreatedDate(), two.getCreatedDate());
@@ -371,33 +369,19 @@ public abstract class JacksonTest {
     assertEquals(one.getDataReviewPassed(), two.getDataReviewPassed());
     assertEquals(one.getDataReviewUser(), two.getDataReviewUser());
     assertDonorsEqual(one.getDonor(), two.getDonor());
-    assertEquals(one.getDuplicationRate(), two.getDuplicationRate());
     assertEquals(one.getGroupId(), two.getGroupId());
     assertEquals(one.getId(), two.getId());
-    assertEquals(one.getLambdaClusters(), two.getLambdaClusters());
-    assertEquals(one.getLambdaMethylation(), two.getLambdaMethylation());
     assertEquals(one.getLatestActivityDate(), two.getLatestActivityDate());
     assertEquals(one.getLibraryDesignCode(), two.getLibraryDesignCode());
     assertEquals(one.getLibrarySize(), two.getLibrarySize());
-    assertEquals(one.getMappedToCoding(), two.getMappedToCoding());
-    assertEquals(one.getMeanCoverageDeduplicated(), two.getMeanCoverageDeduplicated());
-    assertEquals(
-        one.getPreliminaryMeanCoverageDeduplicated(), two.getPreliminaryMeanCoverageDeduplicated());
-    assertEquals(one.getMeanInsertSize(), two.getMeanInsertSize());
-    assertEquals(one.getMedianInsertSize(), two.getMedianInsertSize());
     assertEquals(one.getName(), two.getName());
     assertEquals(one.getNucleicAcidType(), two.getNucleicAcidType());
-    assertEquals(one.getOnTargetReads(), two.getOnTargetReads());
     assertEquals(one.getProject(), two.getProject());
-    assertEquals(one.getPuc19Clusters(), two.getPuc19Clusters());
-    assertEquals(one.getPuc19Methylation(), two.getPuc19Methylation());
     assertEquals(one.getQcDate(), two.getQcDate());
     assertEquals(one.getQcPassed(), two.getQcPassed());
     assertEquals(one.getQcReason(), two.getQcReason());
     assertEquals(one.getQcNote(), two.getQcNote());
     assertEquals(one.getQcUser(), two.getQcUser());
-    assertEquals(one.getRrnaContamination(), two.getRrnaContamination());
-    assertEquals(one.getRawCoverage(), two.getRawCoverage());
     assertEquals(one.getRequisitionId(), two.getRequisitionId());
     assertEquals(one.getRequisitionName(), two.getRequisitionName());
     assertRunEqual(one.getRun(), two.getRun());
@@ -409,9 +393,6 @@ public abstract class JacksonTest {
     assertEquals(one.getTissueOrigin(), two.getTissueOrigin());
     assertEquals(one.getTissueType(), two.getTissueType());
     assertEquals(one.getVolume(), two.getVolume());
-    assertEquals(one.getRelativeCpgInRegions(), two.getRelativeCpgInRegions());
-    assertEquals(one.getMethylationBeta(), two.getMethylationBeta());
-    assertEquals(one.getPeReads(), two.getPeReads());
     assertEquals(one.getTransferDate(), two.getTransferDate());
     assertEquals(one.getDv200(), two.getDv200());
     assertMetricsEqual(one.getMetrics(), two.getMetrics());
@@ -750,8 +731,6 @@ public abstract class JacksonTest {
   private static Sample makeSample(String name) {
     return new SampleImpl.Builder()
         .assayIds(Collections.singleton(77L))
-        .clustersPerSample(5)
-        .preliminaryClustersPerSample(6)
         .concentration(new BigDecimal("12.34"))
         .concentrationUnits("ng/uL")
         .createdDate(LocalDate.of(2024, 1, 5))
@@ -759,31 +738,18 @@ public abstract class JacksonTest {
         .dataReviewPassed(true)
         .dataReviewUser("QA Person")
         .donor(makeDonor())
-        .duplicationRate(new BigDecimal("23.45"))
         .groupId("Group")
         .id("SAM2")
-        .lambdaClusters(8)
-        .lambdaMethylation(new BigDecimal("34.56"))
         .libraryDesignCode("WG")
         .librarySize(111)
-        .mappedToCoding(new BigDecimal("45.67"))
-        .meanCoverageDeduplicated(new BigDecimal("56.78"))
-        .preliminaryMeanCoverageDeduplicated(new BigDecimal("67.89"))
-        .meanInsertSize(new BigDecimal("78.90"))
-        .medianInsertSize(new BigDecimal("89.01"))
         .name(name)
         .nucleicAcidType("DNA")
-        .onTargetReads(new BigDecimal("90.12"))
         .project("PROJ")
-        .puc19Clusters(22)
-        .puc19Methylation(new BigDecimal("2.22"))
         .qcDate(LocalDate.of(2024, 1, 7))
         .qcPassed(true)
         .qcReason("Ready")
         .qcNote("All good")
         .qcUser("Lab Tech")
-        .rrnaContamination(new BigDecimal("3.33"))
-        .rawCoverage(new BigDecimal("4.44"))
         .requisition(makeRequisition())
         .run(makeRun())
         .secondaryId("asdf1234")
@@ -794,9 +760,6 @@ public abstract class JacksonTest {
         .tissueOrigin("Lv")
         .tissueType("P")
         .volume(new BigDecimal("5.55"))
-        .relativeCpgInRegions(new BigDecimal("6.66"))
-        .methylationBeta(new BigDecimal("7.77"))
-        .peReads(35)
         .transferDate(LocalDate.of(2024, 06, 11))
         .dv200(new BigDecimal("999.99"))
         .metrics(makeSampleMetrics())

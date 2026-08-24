@@ -11,10 +11,6 @@ public interface Sample {
 
   Set<Long> getAssayIds();
 
-  Integer getClustersPerSample();
-
-  Integer getPreliminaryClustersPerSample();
-
   BigDecimal getConcentration();
 
   String getConcentrationUnits();
@@ -29,15 +25,9 @@ public interface Sample {
 
   Donor getDonor();
 
-  BigDecimal getDuplicationRate();
-
   String getGroupId();
 
   String getId();
-
-  Integer getLambdaClusters();
-
-  BigDecimal getLambdaMethylation();
 
   LocalDate getLatestActivityDate();
 
@@ -45,29 +35,13 @@ public interface Sample {
 
   Integer getLibrarySize();
 
-  BigDecimal getMappedToCoding();
-
-  BigDecimal getMeanCoverageDeduplicated();
-
-  BigDecimal getPreliminaryMeanCoverageDeduplicated();
-
-  BigDecimal getMeanInsertSize();
-
-  BigDecimal getMedianInsertSize();
-
   String getName();
 
   String getNucleicAcidType();
 
-  BigDecimal getOnTargetReads();
-
   BigDecimal getCollapsedCoverage();
 
   String getProject();
-
-  Integer getPuc19Clusters();
-
-  BigDecimal getPuc19Methylation();
 
   LocalDate getQcDate();
 
@@ -78,8 +52,6 @@ public interface Sample {
   String getQcNote();
 
   String getQcUser();
-
-  BigDecimal getRawCoverage();
 
   Long getRequisitionId();
 
@@ -102,14 +74,6 @@ public interface Sample {
   String getTissueType();
 
   BigDecimal getVolume();
-
-  BigDecimal getRrnaContamination();
-
-  BigDecimal getRelativeCpgInRegions();
-
-  BigDecimal getMethylationBeta();
-
-  Integer getPeReads();
 
   LocalDate getTransferDate();
 
