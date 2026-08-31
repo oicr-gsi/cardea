@@ -7,6 +7,30 @@ This file is updated automatically as described in [Unreleased Changes](changes/
 
 ---------------------------------------------------------------------------------------------------
 
+## [1.35.0] - 2026-08-31
+
+### Removed
+
+* sample fields that are redundant with values in the sample metrics collection
+  * clustersPerSample
+  * preliminaryClustersPerSample
+  * duplicationRate
+  * lambdaClusters
+  * lambdaMethylation
+  * mappedToCoding
+  * meanCoverageDeduplicated
+  * preliminaryMeanCoverageDeduplicated
+  * meanInsertSize
+  * medianInsertSize
+  * onTargetReads
+  * puc19Clusters
+  * puc19Methylation
+  * rawCoverage
+  * rrnaContamination
+  * relativeCpgInRegions
+  * methylationBeta
+  * peReads
+
 ## [1.34.1] - 2026-07-28
 
 ### Fixed
