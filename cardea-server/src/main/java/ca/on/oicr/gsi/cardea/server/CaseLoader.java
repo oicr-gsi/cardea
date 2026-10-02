@@ -775,10 +775,13 @@ public class CaseLoader {
     }
     List<SampleMetric> metrics = new ArrayList<>();
     for (JsonNode node : json) {
+      String thresholdTypeString = parseString(node, "threshold_type", false);
+      ThresholdType thresholdType =
+          thresholdTypeString == null ? null : ThresholdType.valueOf(thresholdTypeString);
       metrics.add(
           new SampleMetric.Builder()
               .name(parseString(node, "name", true))
-              .thresholdType(ThresholdType.valueOf(parseString(node, "threshold_type", true)))
+              .thresholdType(thresholdType)
               .minimum(parseDecimal(node, "threshold_min", false))
               .maximum(parseDecimal(node, "threshold_max", false))
               .metricLevel(MetricLevel.valueOf(parseString(node, "metric_level", true)))
