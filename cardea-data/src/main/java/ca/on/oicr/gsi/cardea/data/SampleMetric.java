@@ -30,7 +30,7 @@ public class SampleMetric {
 
   private SampleMetric(Builder builder) {
     this.name = requireNonNull(builder.name);
-    this.thresholdType = requireNonNull(builder.thresholdType);
+    this.thresholdType = builder.thresholdType;
     this.minimum = builder.minimum;
     this.maximum = builder.maximum;
     this.metricLevel = requireNonNull(builder.metricLevel);
