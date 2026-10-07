@@ -7,6 +7,12 @@ This file is updated automatically as described in [Unreleased Changes](changes/
 
 ---------------------------------------------------------------------------------------------------
 
+## [1.36.0] - 2026-10-07
+
+### Changed
+
+* Metric threshold type is now optional to support required metrics where the threshold is unknown
+
 ## [1.35.0] - 2026-08-31
 
 ### Removed

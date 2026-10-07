@@ -6,7 +6,7 @@
   <parent>
     <groupId>ca.on.oicr.gsi.cardea</groupId>
     <artifactId>cardea</artifactId>
-    <version>1.35.1-SNAPSHOT</version>
+    <version>1.36.0</version>
   </parent>
   <groupId>ca.on.oicr.gsi.cardea</groupId>
 
